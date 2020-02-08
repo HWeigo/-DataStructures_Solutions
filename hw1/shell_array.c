@@ -28,23 +28,73 @@ int countIntegers(char *filename)
 
 long *Array_Load_From_File(char *filename, int *size)
 {
+	FILE *fptr;
+	fptr = fopen(filename, "r");
+	
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return NULL;
+	}
+
+	long tmp1;
+	int cnt  = 0;
+	while(fread(&tmp1, sizeof(long), 1,fptr))
+	{
+		cnt++;
+	}
+
+	*size = cnt;
+
+	if((*size) == 0)
+	{
+		return NULL;
+	}
+
+	fseek(fptr, 0, SEEK_SET);
+
 	long *lptr = NULL;
-	*lptr = 1;
+	lptr = malloc(sizeof(long) * cnt);
+	
+	size_t tmp2;
+	for(int i=0; i<(*size); i++)
+	{
+		tmp2 = fread(&(lptr[i]), sizeof(long),1,fptr);
+		if(tmp2 != 1) return NULL;
+	}
+	
+	fclose(fptr);
 	return lptr;
 }
 
-int main(int argc, char ** argv)
+int Array_Save_To_File(char *filename, long *array, int size)
 {
-	//argv[1]: name of input file (binary)
-	//argv[2]: name of output file (binary)
-	if(argc != 3)
+	FILE *fptr;
+	fptr  = fopen(filename, "w");
+
+	if(fptr == NULL)
 	{
-		return EXIT_FAILURE;
+		fprintf(stderr, "fopen failed.");
+	}
+	
+	int cnt = 0;
+	for(int i=0; i<size; ++i)
+	{
+		size_t tmp = fwrite(&array[i], sizeof(long), 1, fptr);
+		if(tmp != 1)
+		{
+			return -1;
+		}
+		else
+		{
+			cnt++;
+		}
 	}
 
-	printf("cnt = %d\n", countIntegers(argv[1]));
-	
-	return EXIT_SUCCESS;
+	fclose(fptr);
+	return cnt;
 
 }
+
+
 
