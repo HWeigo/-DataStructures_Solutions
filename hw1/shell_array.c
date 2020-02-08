@@ -4,26 +4,15 @@
 #include <stdbool.h>
 #include "shell_array.h"
 
-int countIntegers(char *filename)
+#define DEBUG_HW
+
+static void printArray(long *array, int size)
 {
-	FILE *fptr;
-	fptr = fopen(filename, "r");
-	
-	if(fptr == NULL)
+	for(int i=0; i<size;++i)
 	{
-		fprintf(stderr, "fopen failed.");
-		return -1;
+		printf("%ld ", array[i]);
 	}
-
-	long tmp;
-	int cnt  = 0;
-	while(fread(&tmp, sizeof(long), 1,fptr))
-	{
-		cnt++;
-	}
-
-	fclose(fptr);
-	return cnt;
+	printf("\n");
 }
 
 long *Array_Load_From_File(char *filename, int *size)
@@ -64,11 +53,21 @@ long *Array_Load_From_File(char *filename, int *size)
 	}
 	
 	fclose(fptr);
+
+#ifdef DEBUG_HW
+	printf("Before sorting:\n");
+	printArray(lptr, *size);
+#endif
 	return lptr;
 }
 
 int Array_Save_To_File(char *filename, long *array, int size)
 {
+#ifdef DEBUG_HW
+	printf("After sorting:\n");
+	printArray(array, *size);
+#endif
+
 	FILE *fptr;
 	fptr  = fopen(filename, "w");
 
