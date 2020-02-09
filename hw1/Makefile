@@ -25,11 +25,10 @@ testmemory: hw13
 testall: test1 test2 test3 test4 test5 test6  
 
 test1: pa1 
-	./pa1 examples/15.b output  
+	./pa1 examples/15.b 15_sorted.b  
 
-test2: hw13 
-	./hw13 inputs/test2 > output2 
-	diff output2 expected/expected2
+test2: pa1 
+	./pa1 examples/1K.b 1K_sorted.b
 
 test3: hw13 
 	./hw13 inputs/test3 > output3 

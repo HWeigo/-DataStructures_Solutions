@@ -35,7 +35,7 @@ static void printList(Node *head)
 		p = p->next;
 		cnt++;
 	}
-	printf("\n Number in linked list: %d", cnt);
+	printf("\n Number in linked list: %d\n", cnt);
 }
 
 Node *List_Load_From_File(char *filename)
@@ -59,11 +59,11 @@ Node *List_Load_From_File(char *filename)
 	Node *head = NULL;
 	fseek(fptr, 0, SEEK_SET);
 	size_t tmp2;
-	for(int i=cnt-1;i>=0;i--)
+	for(int i=cnt;i>=0;i--)
 	{
 		fseek(fptr, sizeof(long)*i, SEEK_SET);
 		tmp2 = fread(&tmp1, sizeof(long), 1, fptr);
-		if(tmp2 != 1) return NULL;
+		if(tmp2 == 2) return NULL; // Last element fread return tmp2=0
 		head = List_insert(head, tmp1);	
 	}
 
