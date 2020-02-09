@@ -59,7 +59,7 @@ Node *List_Load_From_File(char *filename)
 	Node *head = NULL;
 	fseek(fptr, 0, SEEK_SET);
 	size_t tmp2;
-	for(int i=cnt-1;i>0;i++)
+	for(int i=cnt-1;i>=0;i--)
 	{
 		fseek(fptr, sizeof(long)*i, SEEK_SET);
 		tmp2 = fread(&tmp1, sizeof(long), 1, fptr);
