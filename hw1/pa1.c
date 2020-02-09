@@ -3,7 +3,10 @@
 #include <string.h> 
 #include <stdbool.h>
 #include "shell_array.h"
+#include "shell_list.h"
 
+#define list
+//#define array
 int main(int argc, char ** argv)
 {
     //argv[1]: name of input file (binary)
@@ -11,7 +14,8 @@ int main(int argc, char ** argv)
     if(argc != 3)
     {   
         return EXIT_FAILURE;
-    }   
+    } 
+#ifdef array 
     int size;    
 	long *arr = NULL;
     
@@ -26,6 +30,18 @@ int main(int argc, char ** argv)
 	}
 
 	free(arr);
+#endif
+
+#ifdef list
+	Node *head = NULL;
+	head = List_Load_From_File(argv[1]);
+	int writeNum;
+	writeNum = List_Save_To_File(argv[2], head);
+	if(writeNum == 0)
+	{
+		return EXIT_FAILURE;
+	}
+#endif 
     return EXIT_SUCCESS;
 
 }

@@ -5,7 +5,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS = 	 
 
-SRCS = pa1.c shell_array.c
+SRCS = pa1.c shell_array.c shell_list.c 
 OBJS = $(SRCS:%.c=%.o)
 
 pa1: $(OBJS)

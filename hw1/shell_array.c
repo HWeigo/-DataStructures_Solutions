@@ -65,7 +65,7 @@ int Array_Save_To_File(char *filename, long *array, int size)
 {
 #ifdef DEBUG_HW
 	printf("After sorting:\n");
-	printArray(array, *size);
+	printArray(array, size);
 #endif
 
 	FILE *fptr;
