@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "shell_list.h"
 
-#define DEBUG_HW
+//#define DEBUG_HW
 
 typedef struct _subList {
 	Node *node;
@@ -130,6 +130,7 @@ int List_Save_To_File(char *filename, Node *head)
 		size_t tmp = fwrite(&(p->value), sizeof(long), 1, fptr);
 		if(tmp != 1)
 		{
+			fclose(fptr);
 			return -1;
 		}
 		else
@@ -260,6 +261,15 @@ static Node *subList_sort(Node *nptr, long size, long k)
 			if((listprt->next)->list == NULL)
 			{
 				nodeptr->next = NULL;
+				
+				// free memory in ListHeads
+				while(head != NULL)
+				{
+					ListHeads *nextList = head->next;
+					free(head);
+					head = nextList;
+				}
+				free(stmp);	
 				return new;
 			}
 			subptr = (listprt->next)->list;
@@ -268,19 +278,25 @@ static Node *subList_sort(Node *nptr, long size, long k)
 			//printf("Adding:%ld \n", nodeptr->value);
 			listprt->list = stmp->next;
 			listprt=listprt->next;
-			//free stmp!
+			//free stmp
+			free(stmp);
 
 		}
 		stmp = listprt->list;
-	//	if(listprt->next == NULL)
-	//	{
-	//		nodeptr->next = NULL;
-	//		return new;
-	//	}
+
 		subptr = head->list;
 		if(head->list == NULL)
 		{
 			nodeptr->next = NULL;
+			
+			// free memory in ListHeads
+			while(head != NULL)
+			{
+				ListHeads *nextList = head->next;
+				free(head);
+				head = nextList;
+			}
+			free(stmp);
 			return new;
 		}
 		nodeptr->next = subptr->node;
@@ -289,8 +305,17 @@ static Node *subList_sort(Node *nptr, long size, long k)
 		listprt->list = stmp->next;
 		listprt=head;
 		//free stmp!
+		free(stmp);
 	}
 	nodeptr->next = NULL;
+	
+	// free memory in ListHeads
+	while(head != NULL)
+	{
+		ListHeads *nextList = head->next;
+		free(head);
+		head = nextList;
+	}
 	return new;
 }
 

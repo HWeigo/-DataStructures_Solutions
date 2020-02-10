@@ -18,8 +18,8 @@ pa1: $(OBJS)
 .c.o:
 	$(GCC) $(TESTFALGS) -c $*.c
 
-testmemory: hw13  
-	$(VAL) ./hw13 inputs/test6
+testmemory: pa1  
+	$(VAL) ./pa1 examples/10K.b memorytest.b
 #testing only input3 and output3
 
 testall: test1 test2 test3 test4 test5 test6  

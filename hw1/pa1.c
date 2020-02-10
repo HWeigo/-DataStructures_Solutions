@@ -48,6 +48,15 @@ int main(int argc, char ** argv)
 	{
 		return EXIT_FAILURE;
 	}
+
+	//free memory in nodes
+	while(head != NULL)
+	{
+		Node *p  = head->next;
+		free(head);
+		head = p;
+	}
+	
 #endif 
     return EXIT_SUCCESS;
 
