@@ -23,6 +23,7 @@ long *Array_Load_From_File(char *filename, int *size)
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen failed.");
+		fclose(fptr);
 		return NULL;
 	}
 
@@ -37,6 +38,7 @@ long *Array_Load_From_File(char *filename, int *size)
 
 	if((*size) == 0)
 	{
+		fclose(fptr);
 		return NULL;
 	}
 
@@ -49,7 +51,11 @@ long *Array_Load_From_File(char *filename, int *size)
 	for(int i=0; i<(*size); i++)
 	{
 		tmp2 = fread(&(lptr[i]), sizeof(long),1,fptr);
-		if(tmp2 != 1) return NULL;
+		if(tmp2 != 1) 
+		{
+			fclose(fptr);
+			return NULL;
+		}
 	}
 	
 	fclose(fptr);
@@ -74,6 +80,8 @@ int Array_Save_To_File(char *filename, long *array, int size)
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen failed.");
+		fclose(fptr);
+		return -1;
 	}
 	
 	int cnt = 0;
@@ -82,6 +90,7 @@ int Array_Save_To_File(char *filename, long *array, int size)
 		size_t tmp = fwrite(&array[i], sizeof(long), 1, fptr);
 		if(tmp != 1)
 		{
+			fclose(fptr);
 			return -1;
 		}
 		else

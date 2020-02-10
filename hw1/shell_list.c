@@ -78,7 +78,8 @@ Node *List_Load_From_File(char *filename)
     if(fptr == NULL)
     {
         fprintf(stderr, "fopen failed.");
-        return NULL;
+        fclose(fptr);
+		return NULL;
     }
 
     long tmp1;
@@ -131,7 +132,7 @@ int List_Save_To_File(char *filename, Node *head)
 
 	Node *p = head;
 	int cnt = 0;
-	while(p->next != NULL)
+	while(p != NULL)
 	{
 		size_t tmp = fwrite(&(p->value), sizeof(long), 1, fptr);
 		if(tmp != 1)
@@ -151,10 +152,52 @@ int List_Save_To_File(char *filename, Node *head)
 
 Node *List_Shellsort(Node *list, long *n_comp)
 {
+	for k in list 
+	
+	Node *p = list;
+	// count list size
+	long size = 0;
+	while(p != NULL)
+	{
+		p = p->next;
+		++size;
+	}
+
+	ListHeads *head;
+	ListHeads *tail;
+	long subList_size = 0;
+	lptr = malloc(sizeof(ListHeads));
+	head->list = subList_create(p, size, k, &subList_size);
+	head->size = subList_size;
+	head->next = NULL;
+	tail = head;
 
 }
 
-subList *subList_create(Node *nptr, long size, long k)
+static void subList_sort(Node *nptr, long size, long k)
+{
+	ListHeads *head = NULL;
+	ListHeads *tail = NULL;
+	long subList_size = 0;
+
+	head = malloc(sizeof(ListHeads));
+	head->list = subList_create(nptr, size, k, subList_size);
+	head->size = subList_size;
+	head->next = NULL;
+	tail = head;
+	for(long i=0; i<k; ++i)
+	{
+		tail->next = malloc(sizeof(ListHeads));
+		tail = tail->next;
+		tail->list = subList_create(nptr, size, k, subList_size);
+		tail->size = subList_size;
+		tail->next = NULL;
+
+		nptr = nptr->next;
+	}
+}
+
+static subList *subList_create(Node *nptr, long size, long k, long *subList_size)
 {
 	if(nptr == NULL)
 	{
@@ -166,7 +209,7 @@ subList *subList_create(Node *nptr, long size, long k)
 	
 	head = subList_construct(nptr);
 	tail = head;
-	long subList_size = 1;
+	*subList_size = 1;
 	while(nptr != NULL)
 	{
 		for(long i=0; i<k;++i)
@@ -177,8 +220,17 @@ subList *subList_create(Node *nptr, long size, long k)
 				return head;
 			}
 		}
-		subList_size++;
+		(*subList_size)++;
 		tail->next = subList_construct(nptr);
 		tail = tail->next;
 	}
+}
+
+static void subList_print(subList *head)
+{
+	while(head != NULL)
+	{
+		printf("%ld ", (head->node)->value);
+		head = head->next;
+	} 
 }
