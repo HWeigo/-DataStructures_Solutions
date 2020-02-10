@@ -5,8 +5,8 @@
 #include "shell_array.h"
 #include "shell_list.h"
 
-//#define list
-#define array
+#define list
+//#define array
 int main(int argc, char ** argv)
 {
     //argv[1]: name of input file (binary)
@@ -38,6 +38,9 @@ int main(int argc, char ** argv)
 #ifdef list
 	Node *head = NULL;
 	head = List_Load_From_File(argv[1]);
+	long num_comp =0;
+	List_Shellsort(head, &num_comp);
+
 	int writeNum;
 	writeNum = List_Save_To_File(argv[2], head);
 	if(writeNum == 0)

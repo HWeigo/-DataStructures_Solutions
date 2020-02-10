@@ -6,21 +6,26 @@
 
 #define DEBUG_HW
 
-static typedef struct _subList {
+typedef struct _subList {
 	Node *node;
-	struct subList *next;
+	struct _subList *next;
 } subList;
 
-static typedef struct _ListHeads {
+typedef struct _ListHeads {
     subList *list;
 	long size;
-    struct ListHeads *next;
+    struct _ListHeads *next;
 } ListHeads;
 
 //static Node *List_insert(Node *head, long v);
 static Node *Node_construct(long v);
 static void printList(Node *head);
-static void List_destroy(Node *head);
+//static void List_destroy(Node *head);
+static subList *subList_construct(Node *addr);
+static void subList_sort(Node *nptr, long size, long k);
+static subList *subList_create(Node *nptr, long size, long k, long *subList_size);
+static void subList_print(subList *head);
+static void bubbleSort(subList *head, long size);
 
 //static Node *List_insert(Node *head, long v)
 //{
@@ -29,16 +34,15 @@ static void List_destroy(Node *head);
 //	return p;
 //}
 
-static void List_destroy(Node *head)
-{
-	while(head != NULL)
-	{
-		Node *p = head->next;
-		free(head);
-		head = p;
-	}
-
-}
+//static void List_destroy(Node *head)
+//{
+//	while(head != NULL)
+//	{
+//		Node *p = head->next;
+//		free(head);
+//		head = p;
+//	}
+//}
 
 static Node *Node_construct(long v)
 {
@@ -152,7 +156,7 @@ int List_Save_To_File(char *filename, Node *head)
 
 Node *List_Shellsort(Node *list, long *n_comp)
 {
-	for k in list 
+	long k = 7;
 	
 	Node *p = list;
 	// count list size
@@ -163,16 +167,43 @@ Node *List_Shellsort(Node *list, long *n_comp)
 		++size;
 	}
 
-	ListHeads *head;
-	ListHeads *tail;
-	long subList_size = 0;
-	lptr = malloc(sizeof(ListHeads));
-	head->list = subList_create(p, size, k, &subList_size);
-	head->size = subList_size;
-	head->next = NULL;
-	tail = head;
+	subList_sort(list, size, k);
+
+	return p;
 
 }
+
+static void bubbleSort(subList *head, long size)
+{
+	if((size == 0) || (head == NULL))
+	{
+		return;
+	}
+	bool isChange = true;
+	for(long i = 0; i<(size-1); ++i)
+	{
+		subList *p = head;
+		for(long j=0; j<(size-1-i);++j)
+		{
+			if(((p->node)->value) > ((p->next)->node)->value)
+			{
+				//swap address in p->node and p->next->node
+				Node *tmp = p->node;
+				p->node = (p->next)->node;
+				(p->next)->node = tmp;
+
+				isChange = true;
+			}
+			p = p->next;
+		}
+		if(!isChange)
+		{
+			return;
+		}
+	}
+	return;
+}
+
 
 static void subList_sort(Node *nptr, long size, long k)
 {
@@ -181,20 +212,47 @@ static void subList_sort(Node *nptr, long size, long k)
 	long subList_size = 0;
 
 	head = malloc(sizeof(ListHeads));
-	head->list = subList_create(nptr, size, k, subList_size);
+	head->list = subList_create(nptr, size, k, &subList_size);
 	head->size = subList_size;
 	head->next = NULL;
 	tail = head;
-	for(long i=0; i<k; ++i)
+	nptr = nptr->next;
+	for(long i=1; i<k; ++i)
 	{
 		tail->next = malloc(sizeof(ListHeads));
 		tail = tail->next;
-		tail->list = subList_create(nptr, size, k, subList_size);
+		tail->list = subList_create(nptr, size, k, &subList_size);
 		tail->size = subList_size;
 		tail->next = NULL;
 
 		nptr = nptr->next;
 	}
+
+	ListHeads *p = head;
+	while(p != NULL)
+	{
+		bubbleSort(p->list, p->size);
+#ifdef DEBUG_HW
+		subList_print(p->list);
+		printf("Number in subarray: %ld\n", p->size);
+#endif 
+		p = p->next;
+	} 
+	
+	Node *new = (head->list)->node;
+	Node *tmp = new;
+	subList *subptr = NULL;
+	p = head;
+	for(long i=0; i<(head->size);++i)
+	{
+		for(long j=0; j<k; ++j)
+		{
+			p = p->next;
+			tmp->next = (p->list)->node;
+			tmp = tmp->next;
+		}
+	}
+
 }
 
 static subList *subList_create(Node *nptr, long size, long k, long *subList_size)
@@ -217,6 +275,9 @@ static subList *subList_create(Node *nptr, long size, long k, long *subList_size
 			nptr = nptr->next;
 			if(nptr == NULL)
 			{
+#ifdef DEBUG_HW
+				//subList_print(head);
+#endif 
 				return head;
 			}
 		}
@@ -224,6 +285,8 @@ static subList *subList_create(Node *nptr, long size, long k, long *subList_size
 		tail->next = subList_construct(nptr);
 		tail = tail->next;
 	}
+
+	return head;
 }
 
 static void subList_print(subList *head)
@@ -233,4 +296,5 @@ static void subList_print(subList *head)
 		printf("%ld ", (head->node)->value);
 		head = head->next;
 	} 
+	printf("\n");
 }
