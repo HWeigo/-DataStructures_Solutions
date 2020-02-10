@@ -39,10 +39,11 @@ int main(int argc, char ** argv)
 	Node *head = NULL;
 	head = List_Load_From_File(argv[1]);
 	long num_comp =0;
-	List_Shellsort(head, &num_comp);
+	head = List_Shellsort(head, &num_comp);
 
 	int writeNum;
 	writeNum = List_Save_To_File(argv[2], head);
+	printf("%d\n", writeNum);
 	if(writeNum == 0)
 	{
 		return EXIT_FAILURE;

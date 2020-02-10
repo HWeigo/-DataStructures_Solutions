@@ -4,8 +4,9 @@
 #include <stdbool.h>
 #include "shell_array.h"
 
-#define DEBUG_HW
+//#define DEBUG_HW
 
+#ifdef DEBUG_HW 
 static void printArray(long *array, int size)
 {
 	for(int i=0; i<size;++i)
@@ -14,6 +15,7 @@ static void printArray(long *array, int size)
 	}
 	printf("\n");
 }
+#endif 
 
 long *Array_Load_From_File(char *filename, int *size)
 {

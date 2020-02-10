@@ -19,13 +19,16 @@ typedef struct _ListHeads {
 
 //static Node *List_insert(Node *head, long v);
 static Node *Node_construct(long v);
-static void printList(Node *head);
 //static void List_destroy(Node *head);
 static subList *subList_construct(Node *addr);
 static Node *subList_sort(Node *nptr, long size, long k);
 static subList *subList_create(Node *nptr, long size, long k, long *subList_size);
-static void subList_print(subList *head);
 static void bubbleSort(subList *head, long size);
+
+#ifdef DEBUG_HW 
+static void subList_print(subList *head);
+static void printList(Node *head);
+#endif 
 
 //static Node *List_insert(Node *head, long v)
 //{
@@ -58,20 +61,6 @@ static subList *subList_construct(Node *addr)
     p->node = addr;
     p->next = NULL;
     return p;
-}
-
-
-static void printList(Node *head)
-{
-	Node *p = head;
-	int cnt = 0;
-	while(p != NULL)
-	{
-		printf("%ld ", p->value);
-		p = p->next;
-		cnt++;
-	}
-	printf("\n Number in linked list: %d\n", cnt);
 }
 
 Node *List_Load_From_File(char *filename)
@@ -182,8 +171,10 @@ Node *List_Shellsort(Node *list, long *n_comp)
 		output = subList_sort(output, size, k);
 		k = (k-1)/3;
 	}
+#ifdef DEBUG_HW 
 	printList(output);
-	
+#endif
+
 	return output;
 
 }
@@ -274,7 +265,7 @@ static Node *subList_sort(Node *nptr, long size, long k)
 			subptr = (listprt->next)->list;
 			nodeptr->next = subptr->node;
 			nodeptr = nodeptr->next;
-			printf("Adding:%ld \n", nodeptr->value);
+			//printf("Adding:%ld \n", nodeptr->value);
 			listprt->list = stmp->next;
 			listprt=listprt->next;
 			//free stmp!
@@ -294,7 +285,7 @@ static Node *subList_sort(Node *nptr, long size, long k)
 		}
 		nodeptr->next = subptr->node;
 		nodeptr = nodeptr->next;
-		printf("Adding:%ld \n", nodeptr->value);
+		//printf("Adding:%ld \n", nodeptr->value);
 		listprt->list = stmp->next;
 		listprt=head;
 		//free stmp!
@@ -336,7 +327,7 @@ static subList *subList_create(Node *nptr, long size, long k, long *subList_size
 
 	return head;
 }
-
+#ifdef DEBUG_HW 
 static void subList_print(subList *head)
 {
 	while(head != NULL)
@@ -346,3 +337,18 @@ static void subList_print(subList *head)
 	} 
 	printf("\n");
 }
+
+static void printList(Node *head)
+{
+	Node *p = head;
+	int cnt = 0;
+	while(p != NULL)
+	{
+		printf("%ld ", p->value);
+		p = p->next;
+		cnt++;
+	}
+	printf("\n Number in linked list: %d\n", cnt);
+}
+#endif 
+

@@ -29,18 +29,16 @@ test1: pa1
 
 test2: pa1 
 	./pa1 examples/1K.b 1K_sorted.b
+	diff 1K_sorted.b examples/1Ksl.b
 
-test3: hw13 
-	./hw13 inputs/test3 > output3 
-	diff output3 expected/expected3 
+test3: pa1  
+	./pa1 examples/10K.b 10K_sorted.b 
 
-test4: hw13 		
-	./hw13 inputs/test4 > output4 
-	diff output4 expected/expected4 
+test4: pa1 		
+	./pa1 examples/100K.b 100K_sorted.b 
 
-test5: hw13 
-	./hw13 inputs/test5 > output5 
-	diff output5 expected/expected5 
+test5: pa1 
+	./pa1 examples/1M.b 1M_sorted.b
 
 test6: hw13 
 	./hw13 inputs/test6 > output6 
@@ -48,4 +46,4 @@ test6: hw13
 
 
 clean: # remove all machine generated files
-	rm -f pa1 *.o output?
+	rm -f pa1 *.o ?_sorted.b
