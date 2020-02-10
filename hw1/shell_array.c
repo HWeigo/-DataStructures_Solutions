@@ -95,5 +95,35 @@ int Array_Save_To_File(char *filename, long *array, int size)
 
 }
 
+void Array_Shellsort(long *array, int size, long *n_comp)
+{
+	long k = 1;
+	int p = 1;
+	while(k < size)
+	{
+		k = k*3 +1;
+		p += 1;
+	}
+	k = (k-1)/3;
 
+	long temp;
+	int i;
+	while(k >= 1)
+	{
+		for(int j=k; j<size; j++)
+		{
+			temp = array[j];
+			i = j;
+			while((i >= k) && (array[i-k] > temp))
+			{
+				array[i] = array[i-k];
+				i -= k;
+				(*n_comp)++;
+			}
+			array[i] = temp;
+		}
+		
+		k = (k-1)/3;
+	}
+}
 

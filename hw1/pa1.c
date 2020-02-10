@@ -5,8 +5,8 @@
 #include "shell_array.h"
 #include "shell_list.h"
 
-#define list
-//#define array
+//#define list
+#define array
 int main(int argc, char ** argv)
 {
     //argv[1]: name of input file (binary)
@@ -21,6 +21,9 @@ int main(int argc, char ** argv)
     
 	arr = Array_Load_From_File(argv[1], &size);
 	printf("cnt = %d\n", size);
+	
+	long num_comp = 0;
+	Array_Shellsort(arr, size, &num_comp);
 
 	int writeNum;
 	writeNum = Array_Save_To_File(argv[2], arr, size);

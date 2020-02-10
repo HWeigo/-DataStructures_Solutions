@@ -6,15 +6,27 @@
 
 #define DEBUG_HW
 
-static Node *List_insert(Node *head, long v);
+//static Node *List_insert(Node *head, long v);
 static Node *Node_construct(long v);
 static void printList(Node *head);
+static void List_destroy(Node *head);
 
-static Node *List_insert(Node *head, long v)
+//static Node *List_insert(Node *head, long v)
+//{
+//	Node *p = Node_construct(v);
+//	p->next = head;
+//	return p;
+//}
+
+static void List_destroy(Node *head)
 {
-	Node *p = Node_construct(v);
-	p->next = head;
-	return p;
+	while(head != NULL)
+	{
+		Node *p = head->next;
+		free(head);
+		head = p;
+	}
+
 }
 
 static Node *Node_construct(long v)
@@ -29,7 +41,7 @@ static void printList(Node *head)
 {
 	Node *p = head;
 	int cnt = 0;
-	while(p->next != NULL)
+	while(p != NULL)
 	{
 		printf("%ld ", p->value);
 		p = p->next;
@@ -56,15 +68,33 @@ Node *List_Load_From_File(char *filename)
         cnt++;
     }   
 
+//	Node *head = NULL;
+//	fseek(fptr, 0, SEEK_SET);
+//	size_t tmp2;
+//	for(int i=cnt-1;i>=0;i--)
+//	{
+//		fseek(fptr, sizeof(long)*i, SEEK_SET);
+//		tmp2 = fread(&tmp1, sizeof(long), 1, fptr);
+//		if(tmp2 != 1) return NULL; // Last element fread return tmp2=0
+//		head = List_insert(head, tmp1);	
+//	}
+
 	Node *head = NULL;
-	fseek(fptr, 0, SEEK_SET);
+	Node *tail = NULL;
 	size_t tmp2;
-	for(int i=cnt;i>=0;i--)
+
+	fseek(fptr, 0, SEEK_SET);
+	tmp2 = fread(&tmp1, sizeof(long), 1, fptr);
+	if(tmp2 != 1) return NULL; // Last element fread return tmp2=0
+	head = Node_construct(tmp1);
+	tail = head;
+	
+	for(int i=0; i<cnt-1; i++)
 	{
-		fseek(fptr, sizeof(long)*i, SEEK_SET);
 		tmp2 = fread(&tmp1, sizeof(long), 1, fptr);
-		if(tmp2 == 2) return NULL; // Last element fread return tmp2=0
-		head = List_insert(head, tmp1);	
+		if(tmp2 != 1) return NULL; // Last element fread return tmp2=0
+		tail->next = Node_construct(tmp1);
+		tail = tail->next;
 	}
 
 	fclose(fptr);
