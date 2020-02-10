@@ -22,7 +22,7 @@ static Node *Node_construct(long v);
 static void printList(Node *head);
 //static void List_destroy(Node *head);
 static subList *subList_construct(Node *addr);
-static void subList_sort(Node *nptr, long size, long k);
+static Node *subList_sort(Node *nptr, long size, long k);
 static subList *subList_create(Node *nptr, long size, long k, long *subList_size);
 static void subList_print(subList *head);
 static void bubbleSort(subList *head, long size);
@@ -156,20 +156,35 @@ int List_Save_To_File(char *filename, Node *head)
 
 Node *List_Shellsort(Node *list, long *n_comp)
 {
-	long k = 7;
+    long k = 1;
+    int p = 1;
+
 	
-	Node *p = list;
+	Node *output = list;
 	// count list size
 	long size = 0;
-	while(p != NULL)
+	while(output != NULL)
 	{
-		p = p->next;
+		output = output->next;
 		++size;
 	}
+	
+	while(k < size)
+    {   
+        k = k*3 +1; 
+        p += 1;
+    }   
+    k = (k-1)/3;
 
-	subList_sort(list, size, k);
-
-	return p;
+	output = list;
+	while(k >= 1)
+	{
+		output = subList_sort(output, size, k);
+		k = (k-1)/3;
+	}
+	printList(output);
+	
+	return output;
 
 }
 
@@ -205,7 +220,7 @@ static void bubbleSort(subList *head, long size)
 }
 
 
-static void subList_sort(Node *nptr, long size, long k)
+static Node *subList_sort(Node *nptr, long size, long k)
 {
 	ListHeads *head = NULL;
 	ListHeads *tail = NULL;
@@ -240,19 +255,47 @@ static void subList_sort(Node *nptr, long size, long k)
 	} 
 	
 	Node *new = (head->list)->node;
-	Node *tmp = new;
-	subList *subptr = NULL;
-	p = head;
+	Node *nodeptr = new;
+	ListHeads *listprt = head;
+	subList *subptr = listprt->list;
+//	ListHeads *ltmp;
+	subList *stmp;
 	for(long i=0; i<(head->size);++i)
 	{
-		for(long j=0; j<k; ++j)
+		for(long j=0; j<(k-1); ++j)
 		{
-			p = p->next;
-			tmp->next = (p->list)->node;
-			tmp = tmp->next;
-		}
-	}
+			//ltmp = listprt;
+			stmp = listprt->list;
+			if((listprt->next)->list == NULL)
+			{
+				nodeptr->next = NULL;
+				return new;
+			}
+			subptr = (listprt->next)->list;
+			nodeptr->next = subptr->node;
+			nodeptr = nodeptr->next;
+			printf("Adding:%ld \n", nodeptr->value);
+			listprt->list = stmp->next;
+			listprt=listprt->next;
+			//free stmp!
 
+		}
+		stmp = listprt->list;
+	//	if(listprt->next == NULL)
+	//	{
+	//		nodeptr->next = NULL;
+	//		return new;
+	//	}
+		subptr = head->list;
+		nodeptr->next = subptr->node;
+		nodeptr = nodeptr->next;
+		printf("Adding:%ld \n", nodeptr->value);
+		listprt->list = stmp->next;
+		listprt=head;
+		//free stmp!
+	}
+	nodeptr->next = NULL;
+	return new;
 }
 
 static subList *subList_create(Node *nptr, long size, long k, long *subList_size)
