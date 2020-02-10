@@ -287,6 +287,11 @@ static Node *subList_sort(Node *nptr, long size, long k)
 	//		return new;
 	//	}
 		subptr = head->list;
+		if(head->list == NULL)
+		{
+			nodeptr->next = NULL;
+			return new;
+		}
 		nodeptr->next = subptr->node;
 		nodeptr = nodeptr->next;
 		printf("Adding:%ld \n", nodeptr->value);
