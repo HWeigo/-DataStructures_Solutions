@@ -131,6 +131,7 @@ void Array_Shellsort(long *array, int size, long *n_comp)
 				i -= k;
 				(*n_comp)++;
 			}
+			(*n_comp)++;
 			array[i] = temp;
 		}
 		

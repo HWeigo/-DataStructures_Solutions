@@ -21,9 +21,9 @@ typedef struct _ListHeads {
 static Node *Node_construct(long v);
 //static void List_destroy(Node *head);
 static subList *subList_construct(Node *addr);
-static Node *subList_sort(Node *nptr, long size, long k);
+static Node *subList_sort(Node *nptr, long size, long k, long *n_comp);
 static subList *subList_create(Node *nptr, long size, long k, long *subList_size);
-static void bubbleSort(subList *head, long size);
+static void bubbleSort(subList *head, long size, long *n_comp);
 
 #ifdef DEBUG_HW 
 static void subList_print(subList *head);
@@ -169,7 +169,7 @@ Node *List_Shellsort(Node *list, long *n_comp)
 	output = list;
 	while(k >= 1)
 	{
-		output = subList_sort(output, size, k);
+		output = subList_sort(output, size, k, n_comp);
 		k = (k-1)/3;
 	}
 #ifdef DEBUG_HW 
@@ -180,7 +180,8 @@ Node *List_Shellsort(Node *list, long *n_comp)
 
 }
 
-static void bubbleSort(subList *head, long size)
+// bubbleSort used to sort subarray
+static void bubbleSort(subList *head, long size, long *n_comp)
 {
 	if((size == 0) || (head == NULL))
 	{
@@ -201,6 +202,7 @@ static void bubbleSort(subList *head, long size)
 
 				isChange = true;
 			}
+			(*n_comp)++;
 			p = p->next;
 		}
 		if(!isChange)
@@ -212,7 +214,7 @@ static void bubbleSort(subList *head, long size)
 }
 
 
-static Node *subList_sort(Node *nptr, long size, long k)
+static Node *subList_sort(Node *nptr, long size, long k, long *n_comp)
 {
 	ListHeads *head = NULL;
 	ListHeads *tail = NULL;
@@ -238,19 +240,19 @@ static Node *subList_sort(Node *nptr, long size, long k)
 	ListHeads *p = head;
 	while(p != NULL)
 	{
-		bubbleSort(p->list, p->size);
+		bubbleSort(p->list, p->size, n_comp);
 #ifdef DEBUG_HW
 		subList_print(p->list);
 		printf("Number in subarray: %ld\n", p->size);
 #endif 
 		p = p->next;
 	} 
-	
+
+	// link nodes in different subList 
 	Node *new = (head->list)->node;
 	Node *nodeptr = new;
 	ListHeads *listprt = head;
 	subList *subptr = listprt->list;
-//	ListHeads *ltmp;
 	subList *stmp;
 	for(long i=0; i<(head->size);++i)
 	{
@@ -275,10 +277,12 @@ static Node *subList_sort(Node *nptr, long size, long k)
 			subptr = (listprt->next)->list;
 			nodeptr->next = subptr->node;
 			nodeptr = nodeptr->next;
-			//printf("Adding:%ld \n", nodeptr->value);
+#ifdef DEBUG_HW 
+			printf("Adding:%ld \n", nodeptr->value);
+#endif 
 			listprt->list = stmp->next;
 			listprt=listprt->next;
-			//free stmp
+			//free subListNode
 			free(stmp);
 
 		}
@@ -301,10 +305,12 @@ static Node *subList_sort(Node *nptr, long size, long k)
 		}
 		nodeptr->next = subptr->node;
 		nodeptr = nodeptr->next;
-		//printf("Adding:%ld \n", nodeptr->value);
+#ifdef DEBUG_HW 
+		printf("Adding:%ld \n", nodeptr->value);
+#endif 
 		listprt->list = stmp->next;
 		listprt=head;
-		//free stmp!
+		//free subListNode
 		free(stmp);
 	}
 	nodeptr->next = NULL;

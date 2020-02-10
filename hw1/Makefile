@@ -24,26 +24,39 @@ testmemory: pa1
 
 testall: test1 test2 test3 test4 test5 test6  
 
-test1: pa1 
-	./pa1 examples/15.b 15_sorted.b  
+test1a: pa1 
+	./pa1 -a examples/15.b 15_sa.b  
+	diff 15_sa.b examples/15sa.b  
 
-test2: pa1 
-	./pa1 examples/1K.b 1K_sorted.b
-	diff 1K_sorted.b examples/1Ksl.b
+test2a: pa1 
+	./pa1 -a examples/1K.b 1K_sa.b
+	diff  1K_sa.b examples/1Ksa.b
 
-test3: pa1  
-	./pa1 examples/10K.b 10K_sorted.b 
+test3a: pa1  
+	./pa1 -a examples/10K.b 10K_sa.b 
 
-test4: pa1 		
-	./pa1 examples/100K.b 100K_sorted.b 
+test4a: pa1 		
+	./pa1 -a examples/100K.b 100K_sa.b 
 
-test5: pa1 
-	./pa1 examples/1M.b 1M_sorted.b
+test5a: pa1 
+	./pa1 -a examples/1M.b 1M_sa.b
 
-test6: hw13 
-	./hw13 inputs/test6 > output6 
-	diff output6 expected/expected6 
+test1l: pa1 
+	./pa1 -l examples/15.b 15_sl.b  
+	diff 15_sl.b examples/15sl.b   
 
+test2l: pa1 
+	./pa1 -l examples/1K.b 1K_sl.b
+	diff  1K_sl.b examples/1Ksl.b 
+
+test3l: pa1  
+	./pa1 -l examples/10K.b 10K_sl.b 
+
+test4l: pa1 		
+	./pa1 -l examples/100K.b 100K_sl.b 
+
+test5l: pa1 
+	./pa1 -l examples/1M.b 1M_sl.b
 
 clean: # remove all machine generated files
-	rm -f pa1 *.o ?_sorted.b
+	rm -f pa1 *.o *.b memcheck.txt
