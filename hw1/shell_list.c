@@ -6,6 +6,17 @@
 
 #define DEBUG_HW
 
+static typedef struct _subList {
+	Node *node;
+	struct subList *next;
+} subList;
+
+static typedef struct _ListHeads {
+    subList *list;
+	long size;
+    struct ListHeads *next;
+} ListHeads;
+
 //static Node *List_insert(Node *head, long v);
 static Node *Node_construct(long v);
 static void printList(Node *head);
@@ -36,6 +47,15 @@ static Node *Node_construct(long v)
 	p->next = NULL;
 	return p;
 }
+
+static subList *subList_construct(Node *addr)
+{
+    subList *p = malloc(sizeof(subList));
+    p->node = addr;
+    p->next = NULL;
+    return p;
+}
+
 
 static void printList(Node *head)
 {
@@ -129,3 +149,36 @@ int List_Save_To_File(char *filename, Node *head)
 	return cnt;
 }
 
+Node *List_Shellsort(Node *list, long *n_comp)
+{
+
+}
+
+subList *subList_create(Node *nptr, long size, long k)
+{
+	if(nptr == NULL)
+	{
+		return NULL;
+	}
+
+	subList *head = NULL;
+    subList *tail = NULL;
+	
+	head = subList_construct(nptr);
+	tail = head;
+	long subList_size = 1;
+	while(nptr != NULL)
+	{
+		for(long i=0; i<k;++i)
+		{
+			nptr = nptr->next;
+			if(nptr == NULL)
+			{
+				return head;
+			}
+		}
+		subList_size++;
+		tail->next = subList_construct(nptr);
+		tail = tail->next;
+	}
+}
