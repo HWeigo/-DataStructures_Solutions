@@ -213,6 +213,10 @@ static void bubbleSort(subList *head, long size, long *n_comp)
 	return;
 }
 
+static void insertionSort(subList *head, long *n_comp)
+{
+
+}
 
 static Node *subList_sort(Node *nptr, long size, long k, long *n_comp)
 {
