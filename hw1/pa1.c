@@ -7,9 +7,11 @@
 
 int main(int argc, char ** argv)
 {
-    //argv[1]: name of input file (binary)
-    //argv[2]: name of output file (binary)
-    if(argc != 4)
+    //argv[1]: -a sort in array, -l sort in linked list 
+	//argv[2]: name of input file (binary)
+    //argv[3]: name of output file (binary)
+    
+	if(argc != 4)
     {   
         return EXIT_FAILURE;
     } 
