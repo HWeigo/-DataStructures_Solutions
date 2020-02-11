@@ -16,7 +16,7 @@ int main(int argc, char ** argv)
 
 	if(!strcmp(argv[1], "-l"))
 	{
-		printf("Sort in linked list.\n");
+		//printf("Sort in linked list.\n");
 		Node *head = NULL;
 		head = List_Load_From_File(argv[2]);
 		long num_comp =0;
@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 		
 		int writeNum;
 		writeNum = List_Save_To_File(argv[3], head);
-		printf("%d\n", writeNum);
+		//printf("%d\n", writeNum);
 		if(writeNum == 0)
 		{
 			return EXIT_FAILURE;
@@ -42,13 +42,13 @@ int main(int argc, char ** argv)
 
 	if(!strcmp(argv[1], "-a"))
 	{
-		printf("Sort in array.\n");
+		//printf("Sort in array.\n");
 
 	    int size;    
 		long *arr = NULL;
 	    
 		arr = Array_Load_From_File(argv[2], &size);
-		printf("cnt = %d\n", size);
+		//printf("cnt = %d\n", size);
 		
 		long num_comp = 0;
 		Array_Shellsort(arr, size, &num_comp);

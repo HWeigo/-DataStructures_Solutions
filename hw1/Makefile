@@ -3,7 +3,7 @@
 # ***
 
 WARNING = -Wall -Wshadow --pedantic
-ERROR = -Wvla -Werror
+ERROR = -Wvla
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR)
 VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbose
 
@@ -22,7 +22,7 @@ testmemory: pa1
 	$(VAL) ./pa1 examples/10K.b memorytest.b
 #testing only input3 and output3
 
-testall: test1 test2 test3 test4 test5 test6  
+testall: test1a test2a test1l test2l 
 
 test1a: pa1 
 	./pa1 -a examples/15.b 15_sa.b  
