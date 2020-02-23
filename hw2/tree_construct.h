@@ -26,4 +26,5 @@ void PrintLinkedList(ListNode *lptr);
 TreeNode *TreeNodeConstruct(int idx, long freq);
 void PrintTree(TreeNode *tptr);
 void FreeTree(TreeNode *tptr);
+int CalTreeHeight(TreeNode *tptr);
 #endif

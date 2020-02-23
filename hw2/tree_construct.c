@@ -4,6 +4,8 @@
 #include "tree_construct.h"
 #include "count_frequency.h"
 
+#define MAX(a,b) ((a) > (b))?(a):(b)
+
 static int qsortHelper(const void *a, const void *b);
 
 static int qsortHelper(const void *a, const void *b)
@@ -194,4 +196,14 @@ void FreeTree(TreeNode *tptr)
 	FreeTree(tptr->left);
 	FreeTree(tptr->right);
 	free(tptr);
+}
+
+
+int CalTreeHeight(TreeNode *tptr)
+{
+	if(tptr == NULL)
+	{
+		return 0;
+	}
+	return 1 + MAX(CalTreeHeight(tptr->left), CalTreeHeight(tptr->right));
 }
