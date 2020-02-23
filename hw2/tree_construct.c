@@ -45,6 +45,8 @@ static ListNode *ConstructLinkedList(Freq *clist, int *listNum)
 		{
 			head = ListNodeConstruct(tptr);
 			lptr = head;
+			(*listNum)++;
+			i++;
 			continue;
 		}
 		lptr->next = ListNodeConstruct(tptr);
@@ -62,9 +64,7 @@ static ListNode *CombineFirstTwoNodes(ListNode **head)
 	ListNode *r = (*head)->next;
 	*head = r->next;
 
-	TreeNode *tptr = NULL;
-	tptr->charIdx = -1;
-	tptr->freq = (l->tptr)->freq + (r->tptr)->freq;
+	TreeNode *tptr = TreeNodeConstruct(-1, ((l->tptr)->freq+(r->tptr)->freq));
 	tptr->left = l->tptr;
 	tptr->right = r->tptr;
 
@@ -93,7 +93,7 @@ static ListNode *InsertListNode(ListNode *head, ListNode *new)
 	ListNode *p = head;
 	ListNode *q = head->next;
 
-	while((q != NULL) && ((q->tptr)->freq > newNodeFreq))
+	while((q != NULL) && ((q->tptr)->freq <= newNodeFreq))
 	{
 		p = p->next;
 		q = q->next;
@@ -123,10 +123,13 @@ void ConstructTree(Freq *clist, int diffNum)
 	{
 		ListNode *newNode = CombineFirstTwoNodes(&head);
 		head = InsertListNode(head, newNode);
+		PrintLinkedList(head);
 	}
 	TreeNode *huffmanTree = head->tptr;
 	free(head);
 	PrintTree(huffmanTree);
+
+	FreeTree(huffmanTree);
 }
 
 ListNode *ListNodeConstruct(TreeNode *tp)
@@ -176,7 +179,19 @@ void PrintLinkedList(ListNode *lptr)
 	while(lptr != NULL)
 	{
 		cnt ++;
+		printf("%c: %ld\n", (lptr->tptr)->charIdx, (lptr->tptr)->freq);
 		lptr = lptr->next;
 	}
-	printf("%d\n", cnt);
+	printf("%d\n\n", cnt);
+}
+
+void FreeTree(TreeNode *tptr)
+{
+	if(tptr == NULL)
+	{
+		return;
+	}
+	FreeTree(tptr->left);
+	FreeTree(tptr->right);
+	free(tptr);
 }

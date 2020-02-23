@@ -18,8 +18,8 @@ pa2: $(OBJS)
 .c.o:
 	$(GCC) $(TESTFALGS) -c $*.c
 
-testmemory: hw15  
-	$(VAL) ./hw13 inputs/test6
+testmemory: pa2  
+	$(VAL) ./pa2 original/gophers memtest.count
 #testing only input3 and output3
 
 testall: test1 test2 test3 test4 test5 test6  

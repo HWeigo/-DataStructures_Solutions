@@ -25,4 +25,5 @@ void PrintLinkedList(ListNode *lptr);
 // Binary Tree
 TreeNode *TreeNodeConstruct(int idx, long freq);
 void PrintTree(TreeNode *tptr);
+void FreeTree(TreeNode *tptr);
 #endif
