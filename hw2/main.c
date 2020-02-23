@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "count_frequency.h"
 #include "tree_construct.h"
+#include "encode.h"
 
 //#define DEBUG_MAIN_H
 
@@ -33,7 +34,16 @@ int main(int agrc, char **argv)
 
 	// Save frequncies of all 256 character into .count file
 	SaveFreqToFile(argv[2], charFreq);
-	ConstructTree(charFreq, diffNum);
+	
+	// Construct Huffman tree 
+	TreeNode *huffmanTree = ConstructTree(charFreq, diffNum);
+	
+	// Construct encoding table
+	int **table;
+	table = ConstructTable(huffmanTree);
+
+	FreeTree(huffmanTree);
+	FreeTable(table);
 
 	return EXIT_SUCCESS;
 }

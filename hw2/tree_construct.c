@@ -6,6 +6,15 @@
 
 #define MAX(a,b) ((a) > (b))?(a):(b)
 
+typedef struct _ListNode{
+    struct _ListNode *next;
+    TreeNode *tptr;
+}ListNode;
+// Linked List
+static ListNode *ListNodeConstruct(TreeNode *tp);
+static void ListDestroy(ListNode *head);
+static void PrintLinkedList(ListNode *lptr);
+
 static int qsortHelper(const void *a, const void *b);
 
 static int qsortHelper(const void *a, const void *b)
@@ -29,7 +38,7 @@ static ListNode *ConstructLinkedList(Freq *clist, int *listNum)
 {
 	qsort(clist, 256, sizeof(Freq), qsortHelper);
 
-#ifdef DEBUG_TREE_H
+#ifdef DEBUG_TREE 
 	for(int i=0;i<256;i++)
 	{
 		printf("%c: %ld\n", clist[i].character, clist[i].freq);
@@ -106,7 +115,7 @@ static ListNode *InsertListNode(ListNode *head, ListNode *new)
 	return head;
 }
 
-void ConstructTree(Freq *clist, int diffNum)
+TreeNode *ConstructTree(Freq *clist, int diffNum)
 {
 	int listNum;
 	ListNode *head;
@@ -118,23 +127,23 @@ void ConstructTree(Freq *clist, int diffNum)
 	{
 		ListDestroy(head);
 		fprintf(stderr, "diffNum not equal to listNum");
-		return;
+		return NULL;
 	}
 
 	while(head->next != NULL)
 	{
 		ListNode *newNode = CombineFirstTwoNodes(&head);
 		head = InsertListNode(head, newNode);
-		PrintLinkedList(head);
+		//PrintLinkedList(head);
 	}
 	TreeNode *huffmanTree = head->tptr;
 	free(head);
 	PrintTree(huffmanTree);
-
-	FreeTree(huffmanTree);
+	printf("%d\n", CalTreeHeight(huffmanTree));
+	return huffmanTree;
 }
 
-ListNode *ListNodeConstruct(TreeNode *tp)
+static ListNode *ListNodeConstruct(TreeNode *tp)
 {
 	ListNode *p = malloc(sizeof(*p));
 	p->next = NULL;
@@ -142,7 +151,7 @@ ListNode *ListNodeConstruct(TreeNode *tp)
 	return p;
 }
 
-void ListDestroy(ListNode *head)
+static void ListDestroy(ListNode *head)
 {
 	ListNode *p = NULL;
 	while(head != NULL)
@@ -175,7 +184,7 @@ void PrintTree(TreeNode *tptr)
 	PrintTree(tptr->right);
 }
 
-void PrintLinkedList(ListNode *lptr)
+static void PrintLinkedList(ListNode *lptr)
 {
 	int cnt = 0;
 	while(lptr != NULL)
@@ -205,5 +214,9 @@ int CalTreeHeight(TreeNode *tptr)
 	{
 		return 0;
 	}
-	return 1 + MAX(CalTreeHeight(tptr->left), CalTreeHeight(tptr->right));
+	int l = CalTreeHeight(tptr->left);
+	int r = CalTreeHeight(tptr->right);
+	//printf("l:%d, r:%d\n",l,r);
+	int max = MAX(l, r);
+	return (max + 1);
 }

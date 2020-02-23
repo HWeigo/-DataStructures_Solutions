@@ -10,17 +10,17 @@ typedef struct _TreeNode{
 	long freq;
 }TreeNode;
 
-typedef struct _ListNode{
-	struct _ListNode *next;
-	TreeNode *tptr;
-}ListNode;
+//static typedef struct _ListNode{
+//	struct _ListNode *next;
+//	TreeNode *tptr;
+//}ListNode;
 
-void ConstructTree(Freq *clist, int diffNum);
+TreeNode *ConstructTree(Freq *clist, int diffNum);
 
-// Linked List 
-ListNode *ListNodeConstruct(TreeNode *tp);
-void ListDestroy(ListNode *head);
-void PrintLinkedList(ListNode *lptr);
+//// Linked List 
+//static ListNode *ListNodeConstruct(TreeNode *tp);
+//static void ListDestroy(ListNode *head);
+//static void PrintLinkedList(ListNode *lptr);
 
 // Binary Tree
 TreeNode *TreeNodeConstruct(int idx, long freq);

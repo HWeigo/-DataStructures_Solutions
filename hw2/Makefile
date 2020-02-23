@@ -3,13 +3,13 @@
 # ***
 
 WARNING = -Wall -Wshadow --pedantic
-ERROR = -Wvla -Werror
+ERROR = -Wvla #-Werror
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR)
 VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbose
 
 TESTFALGS =  
 
-SRCS = main.c count_frequency.c tree_construct.c 
+SRCS = main.c count_frequency.c tree_construct.c encode.c 
 OBJS = $(SRCS:%.c=%.o)
 
 pa2: $(OBJS)
