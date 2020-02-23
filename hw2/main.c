@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "count_frequency.h"
+#include "tree_construct.h"
 
 #define DEBUG_HW_H
 
@@ -32,6 +33,7 @@ int main(int agrc, char **argv)
 
 	// Save frequncies of all 256 character into .count file
 	SaveFreqToFile(argv[2], charFreq);
-		
+	ConstructTree(charFreq);
+
 	return EXIT_SUCCESS;
 }

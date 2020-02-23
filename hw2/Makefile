@@ -9,7 +9,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = main.c count_frequency.c  
+SRCS = main.c count_frequency.c tree_construct.c 
 OBJS = $(SRCS:%.c=%.o)
 
 pa2: $(OBJS)
