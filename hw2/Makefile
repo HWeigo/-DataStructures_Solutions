@@ -25,27 +25,29 @@ testmemory: hw15
 testall: test1 test2 test3 test4 test5 test6  
 
 test1: pa2 		
-	./pa2 original/gophers 
+	./pa2 original/gophers gophers.count 
+	diff gophers.count count/gophers.count 
 
-test2: hw15  
-	./hw15 inputs/test2in inputs/test2post output2 
-	diff output2 expected/expected2
+test2: pa2   
+	./pa2 original/binary1 binary1.count
+	diff binary1.count count/binary1.count 
 
-test3: hw15 
-	./hw15 inputs/test3in inputs/test3post output3 
-	diff output3 expected/expected3 
+test3: pa2 
+	./pa2 original/empty empty.count
+	diff empty.count count/empty.count 
 
-test4: hw15 		
-	./hw15 inputs/test4in inputs/test4post output4 
-	diff output4 expected/expected4 
+test4: pa2 
+	./pa2 original/lorum lorum.count
+	diff lorum.count count/lorum.count 
 
-test5: hw15 
-	./hw15 inputs/test5in inputs/test5post output5  
-	diff output5 expected/expected5 
+test5: pa2 
+	./pa2 original/stone stone.count
+	diff stone.count count/stone.count 
 
-test6: hw15 
-	./hw15 inputs/test6in inputs/test6post output6 
-	diff output6 expected/expected6 
+test6: pa2 
+	./pa2 original/woods woods.count
+	diff woods.count count/woods.count 
+
 
 clean: # remove all machine generated files
-	rm -f pa2 *.o output?
+	rm -f pa2 *.o *.count output?

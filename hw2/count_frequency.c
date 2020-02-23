@@ -1,23 +1,27 @@
-#include "count_frequency.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include "count_frequency.h"
 
-int CountFrequency(char *filename, Freq *clist)
+void CountFrequency(char *filename, Freq *clist, int *totalNum, int*diffNum)
 {
-//	// Initialize 
-//	for(int i=0; i<256; i++)
-//	{
-//		clist[i].freq = 0;
-//	}
-	
+	// Initialization
+	*totalNum = 0;
+	*diffNum = 0;
+	for(int i=0; i<256; i++)
+	{
+		clist[i].freq = 0;
+		clist[i].character = -1;
+	}
+
+	FILE *fptr;
 	fptr = fopen(filename, "r");
-	
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen failed.");
-		return -1;
+		return;
 	}
+	
 	do 
 	{
 		int charInd = fgetc(fptr);
@@ -25,11 +29,34 @@ int CountFrequency(char *filename, Freq *clist)
 		{
 			break;
 		}
-		clist[charInd].character = (unsigned char) charInd;
-		clist[charInd].Freq ++;
-	}while(1)
+		(*totalNum) ++;
+		clist[charInd].character = charInd;
+		if(clist[charInd].freq == 0)
+		{
+			(*diffNum) ++;
+		}
+		clist[charInd].freq ++;
+	}while(1);
 
 
 	fclose(fptr);
-	return cnt;
+}
+
+void SaveFreqToFile(char *filename, Freq *clist)
+{
+	FILE *fptr;
+	fptr = fopen(filename, "w+");
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return;
+	}
+
+	for(int i=0; i<256; i++)
+	{
+		//fprintf(fptr,"%d", clist[i].freq);
+		fwrite(&clist[i].freq, sizeof(long), 1, fptr);
+	}
+
+	fclose(fptr);
 }

@@ -1,12 +1,13 @@
-#ifdef COUNT_FREQUENCY_H
-#define COUNT_FREQUENCY_H
+#ifndef __COUNT_FREQUENCY_H__
+#define __COUNT_FREQUENCY_H__
 
 typedef struct{
-	unsigned char charecter;	
-	int freq = 0;
+	int character;	
+	long freq;
 }Freq;
 
-int CountFrequency(char *filename, Freq *clist);
+void CountFrequency(char *filename, Freq *clist, int *totalNum, int *diffNum);
+void SaveFreqToFile(char *filename, Freq *clist);
 
 #endif  
 
