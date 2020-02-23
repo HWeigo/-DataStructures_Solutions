@@ -25,29 +25,34 @@ testmemory: pa2
 testall: test1 test2 test3 test4 test5 test6  
 
 test1: pa2 		
-	./pa2 original/gophers gophers.count 
+	./pa2 original/gophers gophers.count gophers.code  
 	diff gophers.count count/gophers.count 
+	diff gophers.code code/gophers.code 
 
 test2: pa2   
-	./pa2 original/binary1 binary1.count
-	diff binary1.count count/binary1.count 
+	./pa2 original/binary1 binary1.count binary1.code 
+	diff binary1.count count/binary1.count code/gophers.code 
+	diff binary1.code code/binary1.code 
 
 test3: pa2 
-	./pa2 original/empty empty.count
+	./pa2 original/empty empty.count empty.code 
 	diff empty.count count/empty.count 
+	diff empty.code count/empty.code 
 
 test4: pa2 
-	./pa2 original/lorum lorum.count
-	diff lorum.count count/lorum.count 
+	./pa2 original/lorum lorum.count lorum.code 
+	diff lorum.count count/lorum.count  
+	diff lorum.code code/lorum.code 
 
 test5: pa2 
-	./pa2 original/stone stone.count
-	diff stone.count count/stone.count 
+	./pa2 original/stone stone.count stone.code 
+	diff stone.count count/stone.count  
+	diff stone.code code/stone.code 
 
 test6: pa2 
-	./pa2 original/woods woods.count
-	diff woods.count count/woods.count 
-
+	./pa2 original/woods woods.count woods.code 
+	diff woods.count count/woods.count
+	diff woods.code code/woods.code 
 
 clean: # remove all machine generated files
 	rm -f pa2 *.o *.count output?

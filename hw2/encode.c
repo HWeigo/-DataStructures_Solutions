@@ -8,9 +8,9 @@ static ListNode *ListNodeConstruct(int value);
 static void Push(Stack *s, int value);
 static void Pop(Stack *s);
 static void PrintStack(Stack *s);
-void Encode(TreeNode *root, Stack *trail, int **table);
+void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr);
 
-int **ConstructTable(TreeNode *root)
+int **ConstructTable(TreeNode *root, char *codeFilename, int *bitWidth)
 {
 	int treeHeight = CalTreeHeight(root);
 	printf("%d\n", treeHeight);
@@ -19,7 +19,9 @@ int **ConstructTable(TreeNode *root)
 	for(int i=0; i<256; i++)
 	{
 		table[i] = malloc(sizeof(int) * treeHeight);
+		bitWidth[i] = 0;
 	}
+
 
 	// Initialization
 	for(int i=0;i<256;i++)
@@ -33,36 +35,50 @@ int **ConstructTable(TreeNode *root)
 	Stack *trail = malloc(sizeof(*trail));
 	trail->head = NULL;
 	trail->tail = NULL;
-
-	Encode(root, trail, table);
 	
+	FILE *fptr = fopen(codeFilename, "w+");
+	Encode(root, trail, table, bitWidth, fptr);
+
+	fclose(fptr);
 	free(trail);
 
 	return table;
 }
 
-void Encode(TreeNode *root, Stack *trail, int **table)
+void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr)
 {
+	if(fptr == NULL)
+	{
+		return;
+	}
+
 	printf("%c: %ld\n", root->charIdx, root->freq);
 	if(root->charIdx != -1)
 	{
 		PrintStack(trail);
+		fprintf(fptr,"%c:",root->charIdx);
 		ListNode *head = trail->head;
-		int i=0;
+		int bit = 0;
 		while(head != NULL)
 		{
-			table[root->charIdx][i] = head->value;
+			table[root->charIdx][bit] = head->value;
+			bit++;
+			fprintf(fptr,"%d",head->value);
 			head = head->next;
 		}
+		fprintf(fptr,"\n");
+		bitWidth[root->charIdx] = bit;
 		Pop(trail);
+
 		return;
 	}
 	Push(trail, 0);
-	Encode(root->left, trail, table);
+	Encode(root->left, trail, table, bitWidth, fptr);
 	Push(trail, 1);
-	Encode(root->right, trail, table);
+	Encode(root->right, trail, table, bitWidth, fptr);
 
 	Pop(trail);
+
 }
 
 

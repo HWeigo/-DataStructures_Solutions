@@ -13,7 +13,7 @@ typedef struct {
 	ListNode *tail;
 }Stack;
 
-int **ConstructTable(TreeNode *root);
+int **ConstructTable(TreeNode *root, char *codeFilename, int *bitWidth);
 void FreeTable(int **table);
 
 #endif

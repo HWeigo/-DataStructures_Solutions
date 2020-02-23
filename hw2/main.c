@@ -39,8 +39,20 @@ int main(int agrc, char **argv)
 	TreeNode *huffmanTree = ConstructTree(charFreq, diffNum);
 	
 	// Construct encoding table
+	// table: 
+	// bitWidth: 
 	int **table;
-	table = ConstructTable(huffmanTree);
+	int bitWidth[256];
+	table = ConstructTable(huffmanTree, argv[3], bitWidth);
+
+//	for(int i = 0; i<256;i++)
+//	{
+//		printf("%c:%d\n",i,bitWidth[i]);
+//	}
+//	for(int i=0; i<5;i++)
+//	{
+//		printf("%d ", table[114][i]);
+//	}
 
 	FreeTree(huffmanTree);
 	FreeTable(table);
