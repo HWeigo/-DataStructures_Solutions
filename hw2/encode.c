@@ -4,6 +4,8 @@
 #include "tree_construct.h"
 #include "encode.h"
 
+static ListNode *ListNodeConstruct(int value);
+
 int **ConstructTable(TreeNode *root)
 {
 	int treeHeight = CalTreeHeight(root);
@@ -15,7 +17,7 @@ int **ConstructTable(TreeNode *root)
 		table[i] = malloc(sizeof(int) * treeHeight);
 	}
 	
-	Queue *trail = malloc(sizeof(*trail));
+	Stack *trail = malloc(sizeof(*trail));
 	trail->head = NULL;
 	trail->tail = NULL;
 
@@ -33,7 +35,53 @@ void FreeTable(int **table)
 	free(table);
 }
 
-void Enqueue(Queue *q, int value)
+void Push(Stack *s, int value)
 {
+	if(s->head == NULL)
+	{
+		s->head = ListNodeConstruct(value);
+		s->tail =s->head;
+		return;
+	}
+	(s->tail)->next = ListNodeConstruct(value);
+	s->tail = (s->tail)->next;
+}
+
+int Pop(Stack *s)
+{
+	if(s->head == NULL)
+	{
+		return -1;
+	}
+	if(s->head == s->tail)
+	{
+		int topValue = (s->head)->value;
+		free(s->head);
+		s->head = NULL;
+		s->tail = NULL;
+		return topValue;
+	}
 	
+	ListNode *p = s->head;
+	ListNode *q = p->next;
+	while(q != s->tail)
+	{
+		p = q;
+		q = p->next;
+	}
+
+	// q is now tail of stack, p is the node in front of q
+	int topValue = q->value;
+	p->next = NULL;
+	free(q);
+
+	return topValue;
+}
+
+static ListNode *ListNodeConstruct(int value)
+{
+    ListNode *p = malloc(sizeof(*p));
+    p->next = NULL;
+    p->value = value;
+    return p;
 }

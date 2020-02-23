@@ -11,7 +11,7 @@ typedef struct _ListNode{
 typedef struct {
 	ListNode *head;
 	ListNode *tail;
-}Queue;
+}Stack;
 
 int **ConstructTable(TreeNode *root);
 void FreeTable(int **table);
