@@ -5,7 +5,7 @@
 #include "count_frequency.h"
 #include "tree_construct.h"
 
-#define DEBUG_HW_H
+//#define DEBUG_MAIN_H
 
 int main(int agrc, char **argv)
 {
@@ -17,7 +17,7 @@ int main(int agrc, char **argv)
 	int totalNum, diffNum;
 	CountFrequency(argv[1], charFreq, &totalNum, &diffNum);
 
-#ifdef DEBUG_HW_H 
+#ifdef DEBUG_MAIN_H 
 	printf("diffNum: %d\n", diffNum);
 	printf("totalNum: %d\n", totalNum);
 	int i= 0;
@@ -33,7 +33,7 @@ int main(int agrc, char **argv)
 
 	// Save frequncies of all 256 character into .count file
 	SaveFreqToFile(argv[2], charFreq);
-	ConstructTree(charFreq);
+	ConstructTree(charFreq, diffNum);
 
 	return EXIT_SUCCESS;
 }

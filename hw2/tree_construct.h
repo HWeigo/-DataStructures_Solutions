@@ -15,6 +15,14 @@ typedef struct _ListNode{
 	TreeNode *tptr;
 }ListNode;
 
-void ConstructTree(Freq *clist);
+void ConstructTree(Freq *clist, int diffNum);
 
+// Linked List 
+ListNode *ListNodeConstruct(TreeNode *tp);
+void ListDestroy(ListNode *head);
+void PrintLinkedList(ListNode *lptr);
+
+// Binary Tree
+TreeNode *TreeNodeConstruct(int idx, long freq);
+void PrintTree(TreeNode *tptr);
 #endif
