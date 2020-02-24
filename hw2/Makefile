@@ -55,4 +55,4 @@ test6: pa2
 	diff woods.code code/woods.code 
 
 clean: # remove all machine generated files
-	rm -f pa2 *.o *.count output?
+	rm -f pa2 *.o *.count *.code *.hbt memcheck.txt output?
