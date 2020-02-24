@@ -51,10 +51,12 @@ void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root,
 		return;
 	}
 	
-	fwrite(&totalCharOri, sizeof(long), 1, outFptr);
+
+	long num1 = totalCharCompressed +3*8 + totalCharInTree;
+	fwrite(&num1, sizeof(long), 1, outFptr);
 	fwrite(&totalCharInTree, sizeof(long), 1, outFptr);
-	long num3 = totalCharCompressed +3*8 + totalCharInTree;
-	fwrite(&num3, sizeof(long), 1, outFptr);
+	fwrite(&totalCharOri, sizeof(long), 1, outFptr);		
+	printf("ori:%ld, tree%ld, compress:%ld", totalCharOri, totalCharInTree, num1);
 	SaveTreeToFileBinary(outFptr, root);
 
 	unsigned char *compressCode = malloc(sizeof(unsigned char) * totalCharCompressed);

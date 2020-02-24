@@ -242,7 +242,7 @@ static void SaveTreeToFileASCIIHelper(FILE *fptr, TreeNode *root, long *numBit)
 	if(root->charIdx != -1)
 	{
 		fprintf(fptr, "1%c", root->charIdx);
-		*numBit += 8;
+		*numBit += 9;
 		return;
 	}
 	else
@@ -275,7 +275,7 @@ long SaveTreeToFileASCII(char *filename, TreeNode *root)
 	}
 	else
 	{
-		return bitNum/8 + 1;
+		return (bitNum/8 + 1);
 	}
 }
 
