@@ -35,7 +35,7 @@ void CalHeaderInformation(int *charFreq, int *charWidth, long *totalCharCompress
 	}
 }
 
-void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root, long totalCharCompressed)
+void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root, long totalCharCompressed, long totalCharInTree)
 {
 	FILE *oriFptr;
 	oriFptr = fopen(oriFilename, "r");
@@ -51,6 +51,9 @@ void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root,
 		return;
 	}
 	
+	fwrite(&totalCharInTree, sizeof(long), 1, outFptr);
+	totalCharCompressed = totalCharCompressed +3*8 + totalCharInTree;
+	fwrite(&totalCharCompressed, sizeof(long), 1, outFptr);
 	SaveTreeToFileBinary(outFptr, root);
 
 	unsigned char *compressCode = malloc(sizeof(unsigned char) * totalCharCompressed);

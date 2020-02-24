@@ -27,7 +27,7 @@ TreeNode *TreeNodeConstruct(int idx, long freq);
 void PrintTree(TreeNode *tptr);
 void FreeTree(TreeNode *tptr);
 int CalTreeHeight(TreeNode *tptr);
-void SaveTreeToFileASCII(char *filename, TreeNode *root);
+long SaveTreeToFileASCII(char *filename, TreeNode *root);
 void SaveTreeToFileBinary(FILE *fptr, TreeNode *root);
 
 #endif

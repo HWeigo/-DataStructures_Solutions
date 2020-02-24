@@ -182,21 +182,6 @@ TreeNode *TreeNodeConstruct(int idx, long freq)
 	return p;
 }
 
-static void SaveTreeToFileASCIIHelper(FILE *fptr, TreeNode *root)
-{
-	if(root->charIdx != -1)
-	{
-		fprintf(fptr, "1%c", root->charIdx);
-		return;
-	}
-	else
-	{
-		fprintf(fptr, "0");
-	}
-	SaveTreeToFileASCIIHelper(fptr, root->left);
-	SaveTreeToFileASCIIHelper(fptr, root->right);
-}
-
 static void SaveTreeToFileBinaryHelper(FILE *fptr, TreeNode *root, int *bitIdx, unsigned char *output)
 {
 	unsigned char temp = 0;
@@ -252,18 +237,46 @@ void SaveTreeToFileBinary(FILE *fptr, TreeNode *root)
 	}
 }
 
-void SaveTreeToFileASCII(char *filename, TreeNode *root)
+static void SaveTreeToFileASCIIHelper(FILE *fptr, TreeNode *root, long *numBit)
+{
+	if(root->charIdx != -1)
+	{
+		fprintf(fptr, "1%c", root->charIdx);
+		*numBit += 8;
+		return;
+	}
+	else
+	{
+		fprintf(fptr, "0");
+		(*numBit)++;
+	}
+	SaveTreeToFileASCIIHelper(fptr, root->left, numBit);
+	SaveTreeToFileASCIIHelper(fptr, root->right, numBit);
+}
+
+
+long SaveTreeToFileASCII(char *filename, TreeNode *root)
 {
 	FILE *fptr;
 	fptr = fopen(filename, "w+");
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen fail.");
-		return;
+		return -1;
 	}
-	SaveTreeToFileASCIIHelper(fptr, root);
 
+	long bitNum = 0;
+	SaveTreeToFileASCIIHelper(fptr, root, &bitNum);
+	
 	fclose(fptr);
+	if(bitNum % 8 == 0)
+	{
+		return bitNum/8;
+	}
+	else
+	{
+		return bitNum/8 + 1;
+	}
 }
 
 void PrintTree(TreeNode *tptr)

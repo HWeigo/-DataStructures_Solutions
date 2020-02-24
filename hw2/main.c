@@ -47,7 +47,7 @@ int main(int agrc, char **argv)
 	TreeNode *huffmanTree = ConstructTree(charFreq, diffNum);
 	
 	//Save huffmanTree into .tree file 
-	SaveTreeToFileASCII(argv[3], huffmanTree);
+	long totalCharInTree = SaveTreeToFileASCII(argv[3], huffmanTree);
 
 	// Construct encoding table
 	// table: 
@@ -69,7 +69,7 @@ int main(int agrc, char **argv)
 	
 	long totalCharCompressed = 0;
 	CalHeaderInformation(charFreqOri, bitWidth, &totalCharCompressed);
-	Compress(argv[1],argv[5], table, huffmanTree, totalCharCompressed);
+	Compress(argv[1],argv[5], table, huffmanTree, totalCharCompressed, totalCharInTree);
 
 	printf("%ld\n", totalCharCompressed);
 
