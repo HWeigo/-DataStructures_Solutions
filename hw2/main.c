@@ -69,7 +69,7 @@ int main(int agrc, char **argv)
 	
 	long totalCharCompressed = 0;
 	CalHeaderInformation(charFreqOri, bitWidth, &totalCharCompressed);
-	Compress(argv[1],argv[5], table, huffmanTree, totalCharCompressed, totalCharInTree);
+	Compress(argv[1],argv[5], table, huffmanTree, totalNum, totalCharCompressed, totalCharInTree);
 
 	printf("%ld\n", totalCharCompressed);
 
