@@ -52,10 +52,10 @@ void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr
 		return;
 	}
 
-	printf("%c: %ld\n", root->charIdx, root->freq);
+	//printf("%c: %ld\n", root->charIdx, root->freq);
 	if(root->charIdx != -1)
 	{
-		PrintStack(trail);
+		//PrintStack(trail);
 		fprintf(fptr,"%c:",root->charIdx);
 		ListNode *head = trail->head;
 		int bit = 0;

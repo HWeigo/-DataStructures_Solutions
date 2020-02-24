@@ -3,6 +3,7 @@
 #include "strings.h"
 #include "tree_construct.h"
 #include "count_frequency.h"
+#include "compress.h"
 
 //#define DEBUG_TREE 
 
@@ -16,7 +17,6 @@ typedef struct _ListNode{
 static ListNode *ListNodeConstruct(TreeNode *tp);
 static void ListDestroy(ListNode *head);
 static void PrintLinkedList(ListNode *lptr);
-static void SaveTreeToFileHelper(FILE *fptr, TreeNode *root);
 
 static int qsortHelper(const void *a, const void *b);
 
@@ -182,7 +182,7 @@ TreeNode *TreeNodeConstruct(int idx, long freq)
 	return p;
 }
 
-static void SaveTreeToFileHelper(FILE *fptr, TreeNode *root)
+static void SaveTreeToFileASCIIHelper(FILE *fptr, TreeNode *root)
 {
 	if(root->charIdx != -1)
 	{
@@ -193,11 +193,66 @@ static void SaveTreeToFileHelper(FILE *fptr, TreeNode *root)
 	{
 		fprintf(fptr, "0");
 	}
-	SaveTreeToFileHelper(fptr, root->left);
-	SaveTreeToFileHelper(fptr, root->right);
+	SaveTreeToFileASCIIHelper(fptr, root->left);
+	SaveTreeToFileASCIIHelper(fptr, root->right);
 }
 
-void SaveTreeToFile(char *filename, TreeNode *root)
+static void SaveTreeToFileBinaryHelper(FILE *fptr, TreeNode *root, int *bitIdx, unsigned char *output)
+{
+	unsigned char temp = 0;
+	if(root->charIdx != -1)
+	{
+		if(*bitIdx == 8)
+		{
+			fwrite(output, sizeof(unsigned char), 1, fptr);
+			*bitIdx = 0;
+			*output = 0;
+		}
+		*output = SetBit(*output, *bitIdx);
+		(*bitIdx) ++;
+
+		if(*bitIdx == 0)
+		{
+			*output = (unsigned char) root->charIdx;
+			fwrite(output, sizeof(unsigned char), 1, fptr);
+			*output = 0x0;
+		}
+		else
+		{
+			temp = (unsigned char) root->charIdx;
+			*output |= (temp << *bitIdx);
+			fwrite(output, sizeof(unsigned char), 1, fptr);
+			*output = temp >> (8-*bitIdx);
+		}
+		return;
+	}
+	else
+	{
+		if(*bitIdx == 8)
+		{
+			fwrite(output, sizeof(unsigned char), 1, fptr);
+			*bitIdx = 0;
+			*output = 0x0;
+		}
+		*output = ClearBit(*output, *bitIdx);
+		(*bitIdx) ++;
+	}
+	SaveTreeToFileBinaryHelper(fptr, root->left, bitIdx, output);
+	SaveTreeToFileBinaryHelper(fptr, root->right, bitIdx, output);
+}
+
+void SaveTreeToFileBinary(FILE *fptr, TreeNode *root)
+{
+	int bitIdx = 0;
+	unsigned char output = 0;
+	SaveTreeToFileBinaryHelper(fptr, root, &bitIdx, &output);
+	if(bitIdx != 0)
+	{
+		fwrite(&output, sizeof(unsigned char),1, fptr);
+	}
+}
+
+void SaveTreeToFileASCII(char *filename, TreeNode *root)
 {
 	FILE *fptr;
 	fptr = fopen(filename, "w+");
@@ -206,7 +261,7 @@ void SaveTreeToFile(char *filename, TreeNode *root)
 		fprintf(stderr, "fopen fail.");
 		return;
 	}
-	SaveTreeToFileHelper(fptr, root);
+	SaveTreeToFileASCIIHelper(fptr, root);
 
 	fclose(fptr);
 }

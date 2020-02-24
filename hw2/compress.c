@@ -5,13 +5,13 @@
 #include "tree_construct.h"
 #include "count_frequency.h"
 
-static unsigned char SetBit(unsigned char num, int bit)
+unsigned char SetBit(unsigned char num, int bit)
 {
 	num |= (1<<bit);
 	return num;
 }
 
-static unsigned char ClearBit(unsigned char num, int bit)
+unsigned char ClearBit(unsigned char num, int bit)
 {
 	num &= ~(1<<bit);
 	return num;
@@ -35,7 +35,7 @@ void CalHeaderInformation(int *charFreq, int *charWidth, long *totalCharCompress
 	}
 }
 
-void Compress(char *oriFilename, char *outFilename, int **table, long totalCharCompressed)
+void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root, long totalCharCompressed)
 {
 	FILE *oriFptr;
 	oriFptr = fopen(oriFilename, "r");
@@ -50,6 +50,8 @@ void Compress(char *oriFilename, char *outFilename, int **table, long totalCharC
 	{
 		return;
 	}
+	
+	SaveTreeToFileBinary(outFptr, root);
 
 	unsigned char *compressCode = malloc(sizeof(unsigned char) * totalCharCompressed);
 	int bitInd = 0;

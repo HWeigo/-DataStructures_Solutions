@@ -49,8 +49,9 @@ test4: pa2
 	diff lorum.code code/lorum.code 
 
 test5: pa2 
-	./pa2 original/stone stone.count stone.code 
+	./pa2 original/stone stone.count stone.tree stone.code stone.hbt 
 	diff stone.count count/stone.count  
+	diff stone.tree tree/stone.tree
 	diff stone.code code/stone.code 
 
 test6: pa2 
