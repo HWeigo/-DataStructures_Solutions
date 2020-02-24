@@ -13,7 +13,7 @@ void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr
 int **ConstructTable(TreeNode *root, char *codeFilename, int *bitWidth)
 {
 	int treeHeight = CalTreeHeight(root);
-	printf("%d\n", treeHeight);
+	//printf("%d\n", treeHeight);
 	int **table;
 	table = malloc(sizeof(int*) * 256);
 	for(int i=0; i<256; i++)

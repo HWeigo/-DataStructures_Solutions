@@ -9,7 +9,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = main.c count_frequency.c tree_construct.c encode.c 
+SRCS = main.c count_frequency.c tree_construct.c encode.c compress.c
 OBJS = $(SRCS:%.c=%.o)
 
 pa2: $(OBJS)
@@ -25,9 +25,9 @@ testmemory: pa2
 testall: test1 test2 test3 test4 test5 test6  
 
 test1: pa2 		
-	./pa2 original/gophers gophers.count gophers.code  
-	diff gophers.count count/gophers.count 
-	diff gophers.code code/gophers.code 
+	./pa2 original/gophers gophers.count gophers.code gophers.hbt 
+	#diff gophers.count count/gophers.count 
+	#diff gophers.code code/gophers.code 
 
 test2: pa2   
 	./pa2 original/binary1 binary1.count binary1.code 

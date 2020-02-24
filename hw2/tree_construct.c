@@ -4,6 +4,8 @@
 #include "tree_construct.h"
 #include "count_frequency.h"
 
+//#define DEBUG_TREE 
+
 #define MAX(a,b) ((a) > (b))?(a):(b)
 
 typedef struct _ListNode{
@@ -120,8 +122,10 @@ TreeNode *ConstructTree(Freq *clist, int diffNum)
 	int listNum;
 	ListNode *head;
 	head = ConstructLinkedList(clist, &listNum);
-	
+
+#ifdef DEBUG_TREE 
 	PrintLinkedList(head);
+#endif 
 
 	if(listNum != diffNum)
 	{
@@ -138,8 +142,12 @@ TreeNode *ConstructTree(Freq *clist, int diffNum)
 	}
 	TreeNode *huffmanTree = head->tptr;
 	free(head);
+
+#ifdef DEBUG_TREE 
 	PrintTree(huffmanTree);
 	printf("%d\n", CalTreeHeight(huffmanTree));
+#endif 
+
 	return huffmanTree;
 }
 
