@@ -16,6 +16,7 @@ typedef struct _ListNode{
 static ListNode *ListNodeConstruct(TreeNode *tp);
 static void ListDestroy(ListNode *head);
 static void PrintLinkedList(ListNode *lptr);
+static void SaveTreeToFileHelper(FILE *fptr, TreeNode *root);
 
 static int qsortHelper(const void *a, const void *b);
 
@@ -179,6 +180,35 @@ TreeNode *TreeNodeConstruct(int idx, long freq)
 	p->freq = freq;
 
 	return p;
+}
+
+static void SaveTreeToFileHelper(FILE *fptr, TreeNode *root)
+{
+	if(root->charIdx != -1)
+	{
+		fprintf(fptr, "1%c", root->charIdx);
+		return;
+	}
+	else
+	{
+		fprintf(fptr, "0");
+	}
+	SaveTreeToFileHelper(fptr, root->left);
+	SaveTreeToFileHelper(fptr, root->right);
+}
+
+void SaveTreeToFile(char *filename, TreeNode *root)
+{
+	FILE *fptr;
+	fptr = fopen(filename, "w+");
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen fail.");
+		return;
+	}
+	SaveTreeToFileHelper(fptr, root);
+
+	fclose(fptr);
 }
 
 void PrintTree(TreeNode *tptr)

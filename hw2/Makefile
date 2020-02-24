@@ -25,23 +25,27 @@ testmemory: pa2
 testall: test1 test2 test3 test4 test5 test6  
 
 test1: pa2 		
-	./pa2 original/gophers gophers.count gophers.code gophers.hbt 
-	#diff gophers.count count/gophers.count 
-	#diff gophers.code code/gophers.code 
+	./pa2 original/gophers gophers.count gophers.tree gophers.code gophers.hbt 
+	diff gophers.count count/gophers.count
+	diff gophers.tree tree/gophers.tree 
+	diff gophers.code code/gophers.code 
 
 test2: pa2   
-	./pa2 original/binary1 binary1.count binary1.code 
-	diff binary1.count count/binary1.count code/gophers.code 
+	./pa2 original/binary1 binary1.count binary1.tree binary1.code binary1.hbt 
+	diff binary1.count count/binary1.count 
+	diff binary1.tree tree/binary1.tree 
 	diff binary1.code code/binary1.code 
 
 test3: pa2 
 	./pa2 original/empty empty.count empty.code 
 	diff empty.count count/empty.count 
-	diff empty.code count/empty.code 
+	diff empty.tree tree/empty.tree 
+	diff empty.code code/empty.code 
 
 test4: pa2 
-	./pa2 original/lorum lorum.count lorum.code 
+	./pa2 original/lorum lorum.count lorum.tree lorum.code lorum.hbt 
 	diff lorum.count count/lorum.count  
+	diff lorum.tree tree/lorum.tree 
 	diff lorum.code code/lorum.code 
 
 test5: pa2 

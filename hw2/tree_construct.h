@@ -27,4 +27,5 @@ TreeNode *TreeNodeConstruct(int idx, long freq);
 void PrintTree(TreeNode *tptr);
 void FreeTree(TreeNode *tptr);
 int CalTreeHeight(TreeNode *tptr);
+void SaveTreeToFile(char *filename, TreeNode *root);
 #endif
