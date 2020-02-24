@@ -24,7 +24,7 @@ void CalHeaderInformation(int *charFreq, int *charWidth, long *totalCharCompress
 	{
 		totalBitCompressed += charFreq[i] * charWidth[i];
 	}
-	printf("bit:%d\n", totalBitCompressed);
+	//printf("bit:%d\n", totalBitCompressed);
 	if((totalBitCompressed % 8) == 0)
 	{
 		*totalCharCompressed = (long) totalBitCompressed / 8;
@@ -56,9 +56,16 @@ void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root,
 	fwrite(&num1, sizeof(long), 1, outFptr);
 	fwrite(&totalCharInTree, sizeof(long), 1, outFptr);
 	fwrite(&totalCharOri, sizeof(long), 1, outFptr);		
-	printf("ori:%ld, tree%ld, compress:%ld", totalCharOri, totalCharInTree, num1);
+	//printf("ori:%ld, tree%ld, compress:%ld", totalCharOri, totalCharInTree, num1);
 	SaveTreeToFileBinary(outFptr, root);
 
+	if(root == NULL)
+	{
+		fclose(oriFptr);
+		fclose(outFptr);
+		return;
+	}
+	
 	unsigned char *compressCode = malloc(sizeof(unsigned char) * totalCharCompressed);
 	int bitInd = 0;
 	int byteInd = 0;

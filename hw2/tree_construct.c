@@ -5,7 +5,7 @@
 #include "count_frequency.h"
 #include "compress.h"
 
-//#define DEBUG_TREE 
+//#define DEBUG_TREE_WEI 
 
 #define MAX(a,b) ((a) > (b))?(a):(b)
 
@@ -13,12 +13,14 @@ typedef struct _ListNode{
     struct _ListNode *next;
     TreeNode *tptr;
 }ListNode;
+
+static int qsortHelper(const void *a, const void *b);
 // Linked List
 static ListNode *ListNodeConstruct(TreeNode *tp);
 static void ListDestroy(ListNode *head);
+#ifdef DEBUG_TREE_WEI 
 static void PrintLinkedList(ListNode *lptr);
-
-static int qsortHelper(const void *a, const void *b);
+#endif 
 
 static int qsortHelper(const void *a, const void *b)
 {
@@ -41,7 +43,7 @@ static ListNode *ConstructLinkedList(Freq *clist, int *listNum)
 {
 	qsort(clist, 256, sizeof(Freq), qsortHelper);
 
-#ifdef DEBUG_TREE 
+#ifdef DEBUG_TREE_WEI 
 	for(int i=0;i<256;i++)
 	{
 		printf("%c: %ld\n", clist[i].character, clist[i].freq);
@@ -51,7 +53,7 @@ static ListNode *ConstructLinkedList(Freq *clist, int *listNum)
 	int i = 0;
 	*listNum = 0;
 	ListNode *lptr;
-	ListNode *head;
+	ListNode *head = NULL;
 	while((i != 256) && (clist[i].freq != 0))
 	{
 		TreeNode *tptr =  TreeNodeConstruct(clist[i].character, clist[i].freq);
@@ -124,7 +126,7 @@ TreeNode *ConstructTree(Freq *clist, int diffNum)
 	ListNode *head;
 	head = ConstructLinkedList(clist, &listNum);
 
-#ifdef DEBUG_TREE 
+#ifdef DEBUG_TREE_WEI 
 	PrintLinkedList(head);
 #endif 
 
@@ -132,6 +134,10 @@ TreeNode *ConstructTree(Freq *clist, int diffNum)
 	{
 		ListDestroy(head);
 		fprintf(stderr, "diffNum not equal to listNum");
+		return NULL;
+	}
+	if(head == NULL)
+	{
 		return NULL;
 	}
 
@@ -144,7 +150,7 @@ TreeNode *ConstructTree(Freq *clist, int diffNum)
 	TreeNode *huffmanTree = head->tptr;
 	free(head);
 
-#ifdef DEBUG_TREE 
+#ifdef DEBUG_TREE_WEI 
 	PrintTree(huffmanTree);
 	printf("%d\n", CalTreeHeight(huffmanTree));
 #endif 
@@ -228,6 +234,11 @@ static void SaveTreeToFileBinaryHelper(FILE *fptr, TreeNode *root, int *bitIdx, 
 
 void SaveTreeToFileBinary(FILE *fptr, TreeNode *root)
 {
+	if(root == NULL)
+	{
+		return;
+	}
+	
 	int bitIdx = 0;
 	unsigned char output = 0;
 	SaveTreeToFileBinaryHelper(fptr, root, &bitIdx, &output);
@@ -259,6 +270,12 @@ long SaveTreeToFileASCII(char *filename, TreeNode *root)
 {
 	FILE *fptr;
 	fptr = fopen(filename, "w+");
+	
+	if(root == NULL)
+	{
+		return 0;
+	}
+
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen fail.");
@@ -290,6 +307,7 @@ void PrintTree(TreeNode *tptr)
 	PrintTree(tptr->right);
 }
 
+#ifdef DEBUG_TREE_WEI 
 static void PrintLinkedList(ListNode *lptr)
 {
 	int cnt = 0;
@@ -301,6 +319,7 @@ static void PrintLinkedList(ListNode *lptr)
 	}
 	printf("%d\n\n", cnt);
 }
+#endif 
 
 void FreeTree(TreeNode *tptr)
 {

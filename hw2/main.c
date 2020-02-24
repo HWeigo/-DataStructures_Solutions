@@ -7,10 +7,15 @@
 #include "encode.h"
 #include "compress.h"
 
-//#define DEBUG_MAIN 
+//#define DEBUG_MAIN_WEI  
 
 int main(int agrc, char **argv)
 {
+	if(agrc != 6)
+	{
+		return EXIT_FAILURE;
+	}
+	
 	Freq charFreq[256];
 	
 	// Count frequencies of all characters
@@ -19,7 +24,7 @@ int main(int agrc, char **argv)
 	int totalNum, diffNum;
 	CountFrequency(argv[1], charFreq, &totalNum, &diffNum);
 
-#ifdef DEBUG_MAIN  
+#ifdef DEBUG_MAIN_WEI 
 	printf("diffNum: %d\n", diffNum);
 	printf("totalNum: %d\n", totalNum);
 	int i= 0;
@@ -55,23 +60,20 @@ int main(int agrc, char **argv)
 	int **table;
 	int bitWidth[256];
 	table = ConstructTable(huffmanTree, argv[4], bitWidth);
-#ifdef DEBUG_MAIN 	
+#ifdef DEBUG_MAIN_WEI 
 	printf("bitWidth and charFreq\n");
 	for(int i = 0; i<256;i++)
 	{
 		printf("%c:%d, %d\n",i,bitWidth[i], charFreqOri[i]);
 	}
-//	for(int i=0; i<5;i++)
-//	{
-//		printf("%d ", table[114][i]);
-//	}
 #endif 
 	
+	// Compress 
 	long totalCharCompressed = 0;
 	CalHeaderInformation(charFreqOri, bitWidth, &totalCharCompressed);
 	Compress(argv[1],argv[5], table, huffmanTree, totalNum, totalCharCompressed, totalCharInTree);
 
-	printf("%ld\n", totalCharCompressed);
+	//printf("%ld\n", totalCharCompressed);
 
 	FreeTree(huffmanTree);
 	FreeTable(table);

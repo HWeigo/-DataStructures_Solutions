@@ -4,10 +4,15 @@
 #include "tree_construct.h"
 #include "encode.h"
 
+//#define DEBUG_ENCODE_WEI
+
 static ListNode *ListNodeConstruct(int value);
 static void Push(Stack *s, int value);
 static void Pop(Stack *s);
+#ifdef DEBUG_ENCODE_WEI
 static void PrintStack(Stack *s);
+#endif
+
 void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr);
 
 int **ConstructTable(TreeNode *root, char *codeFilename, int *bitWidth)
@@ -48,6 +53,11 @@ int **ConstructTable(TreeNode *root, char *codeFilename, int *bitWidth)
 void Encode(TreeNode *root, Stack *trail, int **table, int *bitWidth, FILE *fptr)
 {
 	if(fptr == NULL)
+	{
+		return;
+	}
+
+	if(root == NULL)
 	{
 		return;
 	}
@@ -135,6 +145,7 @@ static void Pop(Stack *s)
 	return;
 }
 
+#ifdef DEBUG_ENCODE_WEI 
 static void PrintStack(Stack *s)
 {
 	ListNode *head = s->head;
@@ -145,6 +156,7 @@ static void PrintStack(Stack *s)
 	}
 	printf("\n");
 }
+#endif 
 
 static ListNode *ListNodeConstruct(int value)
 {
