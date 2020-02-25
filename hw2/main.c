@@ -22,7 +22,11 @@ int main(int agrc, char **argv)
 	// diffNum: number of different character in original file 
 	// totalNum: number of character in original file 
 	int totalNum, diffNum;
-	CountFrequency(argv[1], charFreq, &totalNum, &diffNum);
+	int isSuccess = CountFrequency(argv[1], charFreq, &totalNum, &diffNum);
+	if(isSuccess == -1)
+	{
+		return EXIT_FAILURE;
+	}
 
 #ifdef DEBUG_MAIN_WEI 
 	printf("diffNum: %d\n", diffNum);
@@ -71,10 +75,12 @@ int main(int agrc, char **argv)
 	// Compress 
 	long totalCharCompressed = 0;
 	CalHeaderInformation(charFreqOri, bitWidth, &totalCharCompressed);
-	Compress(argv[1],argv[5], table, huffmanTree, totalNum, totalCharCompressed, totalCharInTree);
-
-	//printf("%ld\n", totalCharCompressed);
-
+	isSuccess = Compress(argv[1],argv[5], table, huffmanTree, totalNum, totalCharCompressed, totalCharInTree);
+	if(isSuccess == -1)
+	{
+		return EXIT_FAILURE;
+	}
+	
 	FreeTree(huffmanTree);
 	FreeTable(table);
 

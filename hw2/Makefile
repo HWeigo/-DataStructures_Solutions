@@ -1,6 +1,4 @@
-WARNING = -Wall -Wshadow --pedantic
-ERROR = -Wvla -Werror
-GCC = gcc -std=c99 -g $(WARNING) $(ERROR)
+GCC = gcc -std=c99 -Wall -Wshadow -Wvla -pedantic -O3
 VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbose
 
 TESTFALGS =  
@@ -15,8 +13,7 @@ pa2: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: pa2  
-	$(VAL) ./pa2 original/empty empty.count empty.tree empty.code empty.hbt 
-#testing only input3 and output3
+	$(VAL) ./pa2 original/empty empty.count empty.tree empty.code empty.hbt
 
 testall: test1 test2 test3 test4 test5 test6  
 

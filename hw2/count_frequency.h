@@ -6,7 +6,7 @@ typedef struct{
 	long freq;
 }Freq;
 
-void CountFrequency(char *filename, Freq *clist, int *totalNum, int *diffNum);
+int CountFrequency(char *filename, Freq *clist, int *totalNum, int *diffNum);
 void SaveFreqToFile(char *filename, Freq *clist);
 
 #endif  

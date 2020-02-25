@@ -3,7 +3,7 @@
 #include <strings.h>
 #include "count_frequency.h"
 
-void CountFrequency(char *filename, Freq *clist, int *totalNum, int*diffNum)
+int CountFrequency(char *filename, Freq *clist, int *totalNum, int*diffNum)
 {
 	// Initialization
 	*totalNum = 0;
@@ -19,7 +19,7 @@ void CountFrequency(char *filename, Freq *clist, int *totalNum, int*diffNum)
 	if(fptr == NULL)
 	{
 		fprintf(stderr, "fopen failed.");
-		return;
+		return -1;
 	}
 	
 	do 
@@ -40,6 +40,7 @@ void CountFrequency(char *filename, Freq *clist, int *totalNum, int*diffNum)
 
 
 	fclose(fptr);
+	return 1;
 }
 
 void SaveFreqToFile(char *filename, Freq *clist)

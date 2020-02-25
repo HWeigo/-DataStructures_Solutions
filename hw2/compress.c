@@ -35,20 +35,20 @@ void CalHeaderInformation(int *charFreq, int *charWidth, long *totalCharCompress
 	}
 }
 
-void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root, long totalCharOri, long totalCharCompressed, long totalCharInTree)
+int Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root, long totalCharOri, long totalCharCompressed, long totalCharInTree)
 {
 	FILE *oriFptr;
 	oriFptr = fopen(oriFilename, "r");
 	if(oriFptr == NULL)
 	{
-		return;
+		return -1;
 	}
 
 	FILE *outFptr;
 	outFptr = fopen(outFilename, "w+");
 	if(outFptr == NULL)
 	{
-		return;
+		return -1;
 	}
 	
 
@@ -63,7 +63,7 @@ void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root,
 	{
 		fclose(oriFptr);
 		fclose(outFptr);
-		return;
+		return 1;
 	}
 	
 	unsigned char *compressCode = malloc(sizeof(unsigned char) * totalCharCompressed);
@@ -108,4 +108,5 @@ void Compress(char *oriFilename, char *outFilename, int **table, TreeNode *root,
 	free(compressCode);
 	fclose(oriFptr);
 	fclose(outFptr);
+	return 1;
 }
