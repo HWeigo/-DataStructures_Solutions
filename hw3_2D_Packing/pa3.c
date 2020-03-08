@@ -20,7 +20,8 @@ int main(int argc, char **argv)
 		fprintf(stderr, "tree construct fail.");
 		return EXIT_FAILURE;
 	}
-
+	PreorderTraversal(root);
+	TreeDestroy(root);
 //    FILE *fptr = NULL;
 //    fptr = fopen(argv[1], "r");
 //    if(fptr == NULL)

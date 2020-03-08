@@ -7,7 +7,7 @@
 static LinkedList *Push(LinkedList *head, TreeNode *tptr);
 static TreeNode *Pop(LinkedList **head);
 static TreeNode *TreeNodeCreate(int id, int width, int height);
-static TreeNode *TreeConstructHelper(LinkedList *head);
+static TreeNode *TreeConstructHelper(LinkedList **head);
 
 bool TreeConstruct(char *filename, TreeNode **root)
 {
@@ -61,33 +61,19 @@ bool TreeConstruct(char *filename, TreeNode **root)
 		}
     }while(!feof(fptr));
 
-	//LinkedList *lptr = stack;
-	//LinkedList *temp = NULL;
-	//TreeNode *tptr =NULL;
-	//tptr = Pop(&stack);
-
-	*root = TreeConstructHelper(stack);
-//	while(lptr!= NULL)
-//	{
-//		//printf("%d, %d, %d\n", (lptr->tptr)->id, (lptr->tptr)->width,(lptr->tptr)->height);
-//		TreeNode *tptr = Pop(&stack);
-//
-//		temp = lptr;
-//		lptr = lptr->next;
-//		free(temp);
-//	}
+	*root = TreeConstructHelper(&stack);
 
 	fclose(fptr);
 	return true;
 }
 
-TreeNode *TreeConstructHelper(LinkedList *head)
+static TreeNode *TreeConstructHelper(LinkedList **head)
 {
 	if(head == NULL)
 	{
 		return NULL;
 	}
-	TreeNode *node = Pop(&head);
+	TreeNode *node = Pop(head);
 	if(node->id >= 0)
 	{
 
@@ -98,7 +84,7 @@ TreeNode *TreeConstructHelper(LinkedList *head)
 	return node;
 }
 
-TreeNode *TreeNodeCreate(int id, int width, int height)
+static TreeNode *TreeNodeCreate(int id, int width, int height)
 {
 	TreeNode *tptr = NULL;
 	tptr = malloc(sizeof(*tptr));
@@ -117,7 +103,7 @@ TreeNode *TreeNodeCreate(int id, int width, int height)
 	return tptr;
 }
 
-LinkedList *Push(LinkedList *head, TreeNode *tptr)
+static LinkedList *Push(LinkedList *head, TreeNode *tptr)
 {
 	LinkedList *lptr = NULL;
 	lptr = malloc(sizeof(*lptr));
@@ -133,7 +119,7 @@ LinkedList *Push(LinkedList *head, TreeNode *tptr)
 	return lptr;
 }
 
-TreeNode *Pop(LinkedList **head)
+static TreeNode *Pop(LinkedList **head)
 {
 	LinkedList *lptr = *head;
 	if(lptr == NULL)
@@ -145,4 +131,37 @@ TreeNode *Pop(LinkedList **head)
 	free(lptr);
 
 	return tptr;
+}
+
+void PreorderTraversal(TreeNode *root)
+{
+	if(root == NULL)
+	{
+		return;
+	}
+	if(root->id == -2)
+	{
+		printf("V\n");
+	}
+	else if(root->id == -1)
+	{
+		printf("H\n");
+	}
+	else
+	{
+		printf("%d(%d,%d)\n", root->id, root->width, root->height);
+	}
+	PreorderTraversal(root->left);
+	PreorderTraversal(root->right);
+}
+
+void TreeDestroy(TreeNode *root)
+{
+	if(root == NULL)
+	{
+		return;
+	}
+	TreeDestroy(root->left);
+	TreeDestroy(root->right);
+	free(root);
 }
