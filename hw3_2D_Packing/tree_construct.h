@@ -9,6 +9,11 @@ typedef struct _TreeNode{
 	int width;
 }TreeNode;
 
-bool TreeConstruct(char *filename, TreeNode *root);
+typedef struct _LinkedList{
+	struct _LinkedList *next;
+	TreeNode *tptr;
+}LinkedList;
+
+bool TreeConstruct(char *filename, TreeNode **root);
 
 #endif
