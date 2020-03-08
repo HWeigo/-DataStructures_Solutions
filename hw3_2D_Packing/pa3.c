@@ -21,6 +21,9 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	PreorderTraversal(root);
+	
+	CalcDimension(root);
+
 	TreeDestroy(root);
 //    FILE *fptr = NULL;
 //    fptr = fopen(argv[1], "r");

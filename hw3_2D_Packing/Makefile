@@ -9,7 +9,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = pa3.c tree_construct.c
+SRCS = pa3.c tree_construct.c packing_operation.c
 OBJS = $(SRCS:%.c=%.o)
 
 pa3: $(OBJS)
@@ -59,4 +59,4 @@ test5l: pa1
 	./pa1 -l examples/1M.b 1M_sl.b
 
 clean: # remove all machine generated files
-	rm -f pa3 *.o *.b memcheck.txt
+	rm -f pa3 *.o memcheck.txt
