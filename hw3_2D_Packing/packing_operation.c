@@ -107,27 +107,37 @@ void CalcCoordinatesHelper(TreeNode *root, int originX, int originY)
 	CalcCoordinatesHelper(root->right, rightX, rightY);
 }
 
-void PrintDimension(TreeNode *root)
+bool PrintDimension(TreeNode *root, char *filename)
 {
+	FILE *fptr = NULL;
+	fptr = fopen(filename , "w");
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return false;
+	}
+
     if(root == NULL)
     {
-        return;
+        return false;
     }
 	PrintDimension(root->left);
     PrintDimension(root->right);
 
     if(root->id == -2)
     {
-        printf("V(%d,%d)\n", root->width, root->height);
-		return;
+        fprintf(fptr, "V(%d,%d)\n", root->width, root->height);
+		return true;
 	}
     if(root->id == -1)
     {
-        printf("H(%d,%d)\n", root->width, root->height);
-		return;
+        fprintf(fptr, "H(%d,%d)\n", root->width, root->height);
+		return true;
 	}
-    printf("%d(%d,%d)\n", root->id, root->width, root->height);
-	return;
+    fprintf(fptr, "%d(%d,%d)\n", root->id, root->width, root->height);
+	
+	fclose(fptr);
+	return true;
 }
 
 void PrintCoordinates(TreeNode *root)
