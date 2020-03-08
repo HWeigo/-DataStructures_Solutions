@@ -99,7 +99,8 @@ static TreeNode *TreeNodeCreate(int id, int width, int height)
 	tptr->id = id;
 	tptr->width = width;
 	tptr->height = height;
-
+	tptr->x = 0;
+	tptr->y = 0;
 	return tptr;
 }
 

@@ -7,6 +7,8 @@ typedef struct _TreeNode{
 	int id;
 	int height;
 	int width;
+	int x;
+	int y;
 }TreeNode;
 
 typedef struct _LinkedList{

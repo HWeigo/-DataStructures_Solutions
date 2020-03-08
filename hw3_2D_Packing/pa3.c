@@ -25,6 +25,10 @@ int main(int argc, char **argv)
 	
 	CalcDimension(root);
 	PrintDimension(root);
+	
+	CalcCoordinates(root);
+	PrintCoordinates(root);
+	
 	TreeDestroy(root);
 
 	return EXIT_SUCCESS;
