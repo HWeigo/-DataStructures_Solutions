@@ -22,6 +22,10 @@ void CalcDimension(TreeNode *root)
 
 void CalcCoordinates(TreeNode *root)
 {
+	if(root == NULL)
+	{
+		return;
+	}
 	CalcCoordinatesHelper(root, 0, 0);
 	return;
 }
@@ -31,7 +35,7 @@ static void CalcDimensionHelper(TreeNode *root, int *width, int *height)
 	// Should not reach here 
 	if(root == NULL)
 	{
-		fprintf(stderr, "Tree error.");
+		fprintf(stderr, "Tree error.\n");
 		return;
 	}
 	// Reach the leaf node 
@@ -71,7 +75,7 @@ void CalcCoordinatesHelper(TreeNode *root, int originX, int originY)
 	// Should not reach here 
 	if(root == NULL)
 	{
-		fprintf(stderr, "Tree error.");
+		fprintf(stderr, "Tree error.\n");
 		return;
 	}
 	// Reach the leaf node 
@@ -107,47 +111,39 @@ void CalcCoordinatesHelper(TreeNode *root, int originX, int originY)
 	CalcCoordinatesHelper(root->right, rightX, rightY);
 }
 
-bool PrintDimension(TreeNode *root, char *filename)
+void PrintDimension(TreeNode *root, FILE *fptr)
 {
-	FILE *fptr = NULL;
-	fptr = fopen(filename , "w");
-	if(fptr == NULL)
-	{
-		fprintf(stderr, "fopen failed.");
-		return false;
-	}
-
     if(root == NULL)
     {
-        return false;
+        return;
     }
-	PrintDimension(root->left);
-    PrintDimension(root->right);
+	PrintDimension(root->left, fptr);
+    PrintDimension(root->right, fptr);
 
     if(root->id == -2)
     {
         fprintf(fptr, "V(%d,%d)\n", root->width, root->height);
-		return true;
+		return;
 	}
     if(root->id == -1)
     {
         fprintf(fptr, "H(%d,%d)\n", root->width, root->height);
-		return true;
+		return;
 	}
     fprintf(fptr, "%d(%d,%d)\n", root->id, root->width, root->height);
-	
-	fclose(fptr);
-	return true;
+
+	return;
 }
 
-void PrintCoordinates(TreeNode *root)
+void PrintCoordinates(TreeNode *root, FILE *fptr)
 {
     if(root == NULL)
     {   
         return;
     }   
-    PrintCoordinates(root->left);
-    PrintCoordinates(root->right);
+
+	PrintCoordinates(root->left, fptr);
+    PrintCoordinates(root->right, fptr);
 
     if(root->id == -2) 
     {   
@@ -159,7 +155,7 @@ void PrintCoordinates(TreeNode *root)
         //printf("H((%d,%d)(%d,%d))\n", root->width, root->height, root->x, root->y);
         return;
     }   
-    printf("%d((%d,%d)(%d,%d))\n", root->id, root->width, root->height, root->x, root->y);
+    fprintf(fptr, "%d((%d,%d)(%d,%d))\n", root->id, root->width, root->height, root->x, root->y);
     return;
 }
 

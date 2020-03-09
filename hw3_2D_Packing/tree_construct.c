@@ -55,9 +55,16 @@ bool TreeConstruct(char *filename, TreeNode **root)
 			TreeNode *tptr = TreeNodeCreate(leafId, width, height);
 			stack = Push(stack, tptr);
 		}
+		else if(numGet == -1)
+		{
+			fprintf(stderr, "Empty input.\n");
+			*root = NULL;
+			return true;
+		}
 		else
 		{
-			fprintf(stderr, "Incorrect input.");
+			fprintf(stderr, "Incorrect input.\n");
+			return false;
 		}
     }while(!feof(fptr));
 
@@ -134,7 +141,7 @@ static TreeNode *Pop(LinkedList **head)
 	return tptr;
 }
 
-void PreorderTraversal(TreeNode *root)
+void PreorderTraversal(TreeNode *root, FILE *fptr)
 {
 	if(root == NULL)
 	{
@@ -142,18 +149,18 @@ void PreorderTraversal(TreeNode *root)
 	}
 	if(root->id == -2)
 	{
-		printf("V\n");
+		fprintf(fptr, "V\n");
 	}
 	else if(root->id == -1)
 	{
-		printf("H\n");
+		fprintf(fptr, "H\n");
 	}
 	else
 	{
-		printf("%d(%d,%d)\n", root->id, root->width, root->height);
+		fprintf(fptr, "%d(%d,%d)\n", root->id, root->width, root->height);
 	}
-	PreorderTraversal(root->left);
-	PreorderTraversal(root->right);
+	PreorderTraversal(root->left, fptr);
+	PreorderTraversal(root->right, fptr);
 }
 
 void TreeDestroy(TreeNode *root)

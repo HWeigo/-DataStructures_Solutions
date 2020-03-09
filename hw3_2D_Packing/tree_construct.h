@@ -17,7 +17,7 @@ typedef struct _LinkedList{
 }LinkedList;
 
 bool TreeConstruct(char *filename, TreeNode **root);
-void PreorderTraversal(TreeNode *root);
+void PreorderTraversal(TreeNode *root, FILE *fptr);
 void TreeDestroy(TreeNode *root);
 
 #endif

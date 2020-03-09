@@ -7,10 +7,11 @@
 
 int main(int argc, char **argv)
 {
-//	if(argc != 4)
-//	{
-//		return EXIT_FAILURE;
-//	}
+	if(argc != 5)
+	{
+		fprintf(stderr, "argc != 5.");
+		return EXIT_FAILURE;
+	}
   
 	bool isSuccess = false;
 
@@ -21,14 +22,37 @@ int main(int argc, char **argv)
 		fprintf(stderr, "tree construct fail.");
 		return EXIT_FAILURE;
 	}
-	//PreorderTraversal(root);
-	
+
+    FILE *fptr = NULL;
+    fptr = fopen(argv[2], "w");
+    if(fptr == NULL)
+    {   
+        fprintf(stderr, "fopen failed.");
+        return false;
+    }
+	PreorderTraversal(root, fptr);
+	fclose(fptr);
+
 	CalcDimension(root);
-	PrintDimension(root);
+	fptr = fopen(argv[3], "w");
+    if(fptr == NULL)
+    {   
+        fprintf(stderr, "fopen failed.");
+        return false;
+    }
+	PrintDimension(root, fptr);
+	fclose(fptr);
 	
 	CalcCoordinates(root);
-	PrintCoordinates(root);
-	
+    fptr = fopen(argv[4], "w");
+    if(fptr == NULL)
+    {   
+        fprintf(stderr, "fopen failed.");
+        return false;
+    }
+	PrintCoordinates(root, fptr);
+	fclose(fptr);
+
 	TreeDestroy(root);
 
 	return EXIT_SUCCESS;

@@ -3,7 +3,7 @@
 
 void CalcDimension(TreeNode *root);
 void CalcCoordinates(TreeNode *root);
-void PrintDimension(TreeNode *root);
-void PrintCoordinates(TreeNode *root);
+void PrintDimension(TreeNode *root, FILE *fptr);
+void PrintCoordinates(TreeNode *root, FILE *fptr);
 
 #endif

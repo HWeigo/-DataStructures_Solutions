@@ -19,44 +19,31 @@ pa3: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: pa3  
-	$(VAL) ./pa3 examples/3.po
+	$(VAL) ./pa3 examples/3.po 8.pr 8.dim 8.pck 
 #testing only input3 and output3
 
 testall: test1a test2a test1l test2l 
 
-test1a: pa1 
-	./pa1 -a examples/15.b 15_sa.b  
-	diff 15_sa.b examples/15sa.b  
+test1: pa3 
+	./pa3 examples/3.po 3.pr 3.dim 3.pck 
+	diff 3.pr examples/3.pr 
+	diff 3.dim examples/3.dim 
+	diff 3.pck examples/3.pck 
 
-test2a: pa1 
-	./pa1 -a examples/1K.b 1K_sa.b
-	diff  1K_sa.b examples/1Ksa.b
+test2: pa3 
+	./pa3 examples/8.po 8.pr 8.dim 8.pck 
+	diff 8.pr examples/8.pr 
+	diff 8.dim examples/8.dim 
+	diff 8.pck examples/8.pck
 
-test3a: pa1  
-	./pa1 -a examples/10K.b 10K_sa.b 
+test3: pa3
+	./pa3 examples/500.po 500.pr 500.dim 500.pck 
 
-test4a: pa1 		
-	./pa1 -a examples/100K.b 100K_sa.b 
+test4: pa3 		
+	./pa3 examples/100.po 100.pr 100.dim 100.pck 
 
-test5a: pa1 
-	./pa1 -a examples/1M.b 1M_sa.b
-
-test1l: pa1 
-	./pa1 -l examples/15.b 15_sl.b  
-	diff 15_sl.b examples/15sl.b   
-
-test2l: pa1 
-	./pa1 -l examples/1K.b 1K_sl.b
-	diff  1K_sl.b examples/1Ksl.b 
-
-test3l: pa1  
-	./pa1 -l examples/10K.b 10K_sl.b 
-
-test4l: pa1 		
-	./pa1 -l examples/100K.b 100K_sl.b 
-
-test5l: pa1 
-	./pa1 -l examples/1M.b 1M_sl.b
+test5: pa3 
+	./pa3 examples/1K.po 1K.pr 1K.dim 1K.pck 
 
 clean: # remove all machine generated files
-	rm -f pa3 *.o memcheck.txt
+	rm -f pa3 *.o *.pr *.pck *.dim memcheck.txt
