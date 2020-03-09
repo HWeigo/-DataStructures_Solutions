@@ -45,7 +45,8 @@ bool TreeConstruct(char *filename, TreeNode **root)
 			}
 			else
 			{
-				fprintf(stderr, "Write a wrong character.");
+				fprintf(stderr, "Incorrect format.\n");
+				fclose(fptr);
 				return false;
 			}
         }
@@ -58,12 +59,15 @@ bool TreeConstruct(char *filename, TreeNode **root)
 		else if(numGet == -1)
 		{
 			fprintf(stderr, "Empty input.\n");
+			free(stack);
 			*root = NULL;
+			fclose(fptr);
 			return true;
 		}
 		else
 		{
 			fprintf(stderr, "Incorrect input.\n");
+			fclose(fptr);
 			return false;
 		}
     }while(!feof(fptr));
@@ -97,7 +101,7 @@ static TreeNode *TreeNodeCreate(int id, int width, int height)
 	tptr = malloc(sizeof(*tptr));
 	if(tptr == NULL)
 	{
-		fprintf(stderr, "TreeNode malloc failed.");
+		fprintf(stderr, "TreeNode malloc failed.\n");
 		return NULL;
 	}
 
@@ -117,7 +121,7 @@ static LinkedList *Push(LinkedList *head, TreeNode *tptr)
 	lptr = malloc(sizeof(*lptr));
 	if(lptr == NULL)
 	{
-		fprintf(stderr, "LinkedList malloc failed.");
+		fprintf(stderr, "LinkedList malloc failed.\n");
 		return NULL;
 	}
 	

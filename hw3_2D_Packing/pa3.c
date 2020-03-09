@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 	isSuccess = TreeConstruct(argv[1], &root);
 	if(isSuccess == false)
 	{
-		fprintf(stderr, "tree construct fail.");
+		fprintf(stderr, "tree construct fail.\n");
 		return EXIT_FAILURE;
 	}
 

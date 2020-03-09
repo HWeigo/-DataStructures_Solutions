@@ -46,8 +46,10 @@ static void CalcDimensionHelper(TreeNode *root, int *width, int *height)
 		*height = root->height;
 		return;
 	}
-	int leftWidth, leftHeight;
-	int rightWidth, rightHeight;
+	int leftWidth = 0;
+	int leftHeight = 0;
+	int rightWidth = 0;
+	int rightHeight = 0;
 	CalcDimensionHelper(root->left, &leftWidth, &leftHeight);
 	CalcDimensionHelper(root->right, &rightWidth, &rightHeight);
 
@@ -89,8 +91,10 @@ void CalcCoordinatesHelper(TreeNode *root, int originX, int originY)
 	root->x = originX;
 	root->y = originY;
 
-	int leftX, leftY;
-	int rightX, rightY;
+	int leftX = 0;
+	int leftY = 0;
+	int rightX = 0;
+	int rightY = 0;
 	// H node 
 	if(root->id == -1)
 	{
