@@ -7,7 +7,8 @@
 int main(int argc, char **argv)
 {
 	bool isSuccess = true;
-	isSuccess = Txt2Binary(argv[1], argv[2]);
+	//isSuccess = Txt2Binary(argv[1], argv[2]);
+	isSuccess = Binary2Txt(argv[1], argv[2]);
 	if(isSuccess == false)
 	{
 		return EXIT_FAILURE;
