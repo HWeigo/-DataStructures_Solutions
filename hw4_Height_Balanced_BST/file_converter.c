@@ -67,6 +67,7 @@ bool Binary2Txt(char *inputFile, char *outputFile)
 
 	int char1;
 	char char2[10];
+	size_t numGet1, numGet2;
 	while(!feof(inFptr))
 	{
 		fread(&char1, sizeof(int), 1, inFptr);
@@ -75,7 +76,11 @@ bool Binary2Txt(char *inputFile, char *outputFile)
 		{
 			break;
 		}
-		fprintf(outFptr, "%d %s\n", char1, char2);
+		if(char2[0] <4)
+		{
+			char2[0] += 0x30;
+		}
+		fprintf(outFptr, "%d %s\n", char1, &char2[0]);
 	}
 
 	fclose(inFptr);
