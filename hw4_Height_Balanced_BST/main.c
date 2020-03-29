@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "file_converter.h"
 #include "evaluation.h"
+#include "hbt.h"
 
 int main(int argc, char **argv)
 {

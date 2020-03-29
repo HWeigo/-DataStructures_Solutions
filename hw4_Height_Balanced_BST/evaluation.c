@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "evaluation.h"
+#include "tree.h"
 #include "hbt.h"
 
 // Return true only in input file is valid 
@@ -22,6 +23,7 @@ bool Evaluation(char *filename)
 	}
 	isValid = 0;
 
+	int nodesNum = 0;
 	size_t numGet1, numGet2;
 	int char1;
 	char char2[10];
@@ -36,50 +38,73 @@ bool Evaluation(char *filename)
         if((numGet1 != 1) || (numGet2 != 1) || char2[0] >= 4) 
         {
 			fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
-            return false;
+            fclose(fptr);
+			return false;
         }
-
+		nodesNum++;
 	}
 	isValid = 1;
- 	
+
+	int *keys = malloc(sizeof(int) * nodesNum);
+	fseek(fptr, 0, SEEK_SET);
+	for(int i=0; i<nodesNum; i++)
+	{
+		numGet1 = fread(&char1, sizeof(int), 1, fptr);
+        numGet2 = fread(&char2, sizeof(char), 1, fptr);
+		keys[i] = char1;
+		printf("%d ", char1);
+	}
+
+	Tnode *root = NULL;
+	int idx = 0;
+	root = PreorderBSTConstruct(keys, &idx, nodesNum, 10000);
+	if(root == NULL)
+	{
+		free(keys);
+		fclose(fptr);
+		return false;
+	}
+ 	PrintTreePreorder(root);
+	
 	fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
+	fclose(fptr);
 	return true;
 }
  
-Tnode *PreorderBstConstruct(FILE *fptr, int ub, int *isValid)
-{
-	size_t numGet1, numGet2;
-	if((feof(fptr) || (*isValid == 0)))
-	{
-		return NULL;
-	}
-	numGet1 = fread(&char1, sizeof(int), 1, fptr);
-    if(feof(fptr))
-    {
-        return NULL;
-    }
-    numGet2 = fread(&char2, sizeof(char), 1, fptr);
-    if((numGet1 != 1) || (numGet2 != 1) || char2[0] >= 4) 
-    {
-		isValid = 0;
-        return NULL;
-    }
-
-	
-	if()
-
-
-
-}
-
-
-Tnode *CreateTNode(int key)
-{
-	Tnode *node = malloc(sizeof(*node));
-	node->key = key;
-	node->balance = 0;
-	node->left = NULL;
-	node->right = NULL;
-
-	return node;
-}
+//Tnode *PreorderBstConstruct(FILE *fptr, int ub, int *isValid)
+//{
+//	size_t numGet1, numGet2;
+//	if((feof(fptr) || (*isValid == 0)))
+//	{
+//		return NULL;
+//	}
+//	numGet1 = fread(&char1, sizeof(int), 1, fptr);
+//    if(feof(fptr))
+//    {
+//        return NULL;
+//    }
+//    numGet2 = fread(&char2, sizeof(char), 1, fptr);
+//    if((numGet1 != 1) || (numGet2 != 1) || char2[0] >= 4) 
+//    {
+//		isValid = 0;
+//        return NULL;
+//    }
+//
+//	
+//	if()
+//
+//
+//
+//}
+//
+//
+//Tnode *CreateTNode(int key)
+//{
+//	Tnode *node = malloc(sizeof(*node));
+//	node->key = key;
+//	node->balance = 0;
+//	node->left = NULL;
+//	node->right = NULL;
+//
+//	return node;
+//}

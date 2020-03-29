@@ -33,6 +33,8 @@ bool Txt2Binary(char *inputFile, char *outputFile)
 		if(numGet != 2)
 		{
 			fprintf(stderr, "numGet !=2.");
+			fclose(inFptr);
+			fclose(outFptr);
 			return false;
 		}
 		//printf("%d %s\n", char1, char2);
@@ -66,21 +68,22 @@ bool Binary2Txt(char *inputFile, char *outputFile)
 	}
 
 	int char1;
-	char char2[10];
-	size_t numGet1, numGet2;
+	//char char2[10];
+	char char2;
+	//size_t numGet1, numGet2;
 	while(!feof(inFptr))
 	{
 		fread(&char1, sizeof(int), 1, inFptr);
-		fread(char2, sizeof(char), 1, inFptr);
+		fread(&char2, sizeof(char), 1, inFptr);
 		if(feof(inFptr))
 		{
 			break;
 		}
-		if(char2[0] <4)
+		if(char2 <4)
 		{
-			char2[0] += 0x30;
+			char2 += 0x30;
 		}
-		fprintf(outFptr, "%d %s\n", char1, &char2[0]);
+		fprintf(outFptr, "%d %c\n", char1, char2);
 	}
 
 	fclose(inFptr);

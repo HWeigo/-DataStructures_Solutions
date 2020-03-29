@@ -9,7 +9,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = main.c file_converter.c evaluation.c
+SRCS = main.c file_converter.c evaluation.c tree.c
 OBJS = $(SRCS:%.c=%.o)
 
 pa4: $(OBJS)
@@ -24,8 +24,16 @@ testmemory: pa4
 
 testall: test1a test2a test1l test2l 
 
-test1: pa4 
-	./pa4 examples/ops0.txt ops0.b 
+testB2T: pa4
+	./pa4 examples/ops2.b ops2.txt
+	./pa4 examples/tree2.b tree2.txt 
+
+testT2B: pa4
+	./pa4 examples/ops2.txt ops2.b
+	./pa4 examples/tree2.txt tree2.b 
+
+testEvaluate: pa4 
+	./pa4 examples/tree2.b
 
 test2: pa3 
 	./pa3 examples/8.po 8.pr 8.dim 8.pck 
