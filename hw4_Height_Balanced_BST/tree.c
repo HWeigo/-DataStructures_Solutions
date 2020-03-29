@@ -77,6 +77,28 @@ Tnode *CreateTreeNode(int key)
 	return node;
 }
 
+int CheckBST(Tnode *root)
+{
+	if(root == NULL)
+	{
+		return 1;
+	}
+	if((root->left != NULL) && ((root->left)->key > root->key))
+	{
+		return 0;
+	}
+	if((root->right != NULL) && ((root->right)->key < root->key))
+	{
+		return 0;
+	}
+	if((!CheckBST(root->left) || (!CheckBST(root->right))))
+	{
+		return 0;
+	}
+
+	return 1;
+}
+
 void PrintTreePreorder(Tnode *root)
 {
 	if(root == NULL)
@@ -87,3 +109,4 @@ void PrintTreePreorder(Tnode *root)
 	PrintTreePreorder(root->left);
 	PrintTreePreorder(root->right);
 }
+
