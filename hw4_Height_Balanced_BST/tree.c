@@ -99,6 +99,27 @@ int CheckBST(Tnode *root)
 	return 1;
 }
 
+static int MAX(int a, int b)
+{
+	return (a>b?a:b);
+}
+
+int CheckHeightBalance(Tnode *root, int *isHB)
+{
+	if(root == NULL)
+	{
+		return 0;
+	}
+	int left = CheckHeightBalance(root->left, isHB);
+	int right = CheckHeightBalance(root->right, isHB);
+	root->balance = left-right;
+	if((root->balance > 1) || (root->balance < -1))
+	{
+		*isHB = 0;
+	}
+	return (1 + MAX(left, right));
+}
+
 void PrintTreePreorder(Tnode *root)
 {
 	if(root == NULL)

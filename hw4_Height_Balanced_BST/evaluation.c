@@ -72,6 +72,8 @@ bool Evaluation(char *filename)
 	}
 
 	isBST = CheckBST(root);
+	isHeightBalanced = 1;
+	CheckHeightBalance(root, &isHeightBalanced);
 #ifdef DEBUG_HBT 
  	PrintTreePreorder(root);
 #endif 

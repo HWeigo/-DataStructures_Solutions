@@ -8,6 +8,6 @@ Tnode *PreorderBSTConstruct(int *arr, int *idx, int size, int ub);
 Tnode *CreateTreeNode(int key);
 void PrintTreePreorder(Tnode *root);
 int CheckBST(Tnode *root);
-
+int CheckHeightBalance(Tnode *root, int *isHB);
 
 #endif 
