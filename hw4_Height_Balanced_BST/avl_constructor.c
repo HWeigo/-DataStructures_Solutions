@@ -79,6 +79,8 @@ bool AVLConstruct(char *filename)
 		if(char2 == 'i')
 		{
 			root = Insert(root, char1, &isUnbalancedInsert);
+		    printf("print tree.\n");
+		    PrintTreePreorder(root);
 		}
 		else if(char2 == 'd')
 		{

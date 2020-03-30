@@ -45,7 +45,9 @@ int main(int argc, char **argv)
 //	root = Insert(root, 2, &isUnbalancedInsert);
 //	printf("print tree.\n");
 //	PrintTreePreorder(root);
-//
+//	root = Insert(root, 2, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);
 //	root = Delete(root, 3, &isUnbalancedDelete);	
 //	printf("print tree.\n");
 //	PrintTreePreorder(root);
