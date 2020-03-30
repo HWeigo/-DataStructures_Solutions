@@ -19,24 +19,22 @@ int main(int argc, char **argv)
 //		return EXIT_FAILURE;
 //	}
 	Tnode *root = NULL;
-	int isUnbalanced = 0;
-//	root = Insert(root, -5, &isUnbalanced);
-//	root = Insert(root, -4, &isUnbalanced);
-//	root = Insert(root, -3, &isUnbalanced);
-//	printf("print tree.\n");
-//	PrintTreePreorder(root);
-//	root = Insert(root, -2, &isUnbalanced);
-//	printf("print tree.\n");
-//	PrintTreePreorder(root);
-//	root = Insert(root, -1, &isUnbalanced);
-//	printf("print tree.\n");
-//	PrintTreePreorder(root);
-	root = Insert(root, 0, &isUnbalanced);
-	root = Insert(root, 2, &isUnbalanced);
-	root = Insert(root, 0, &isUnbalanced);
-	root = Insert(root, 1, &isUnbalanced);
-	root = Insert(root, 0, &isUnbalanced);
-	
+	int isUnbalancedInsert = 0;
+	int isUnbalancedDelete = 0;
+	root = Insert(root, -5, &isUnbalancedInsert);
+	root = Insert(root, -4, &isUnbalancedInsert);
+	root = Insert(root, -3, &isUnbalancedInsert);
+	root = Insert(root, -2, &isUnbalancedInsert);
+	root = Insert(root, -1, &isUnbalancedInsert);
+	root = Insert(root, 0, &isUnbalancedInsert);
+	root = Insert(root, 1, &isUnbalancedInsert);
+	root = Insert(root, 2, &isUnbalancedInsert);
+	root = Insert(root, 3, &isUnbalancedInsert);
+	root = Insert(root, 4, &isUnbalancedInsert);
+	printf("print tree.\n");
+	PrintTreePreorder(root);
+
+	root = Delete(root, -2, &isUnbalancedDelete);	
 	printf("print tree.\n");
 	PrintTreePreorder(root);
 
