@@ -62,16 +62,6 @@ static Tnode *LeftRotate(Tnode *Tn)
 //		}
 //	}
 
-//	switch(Tn->balance)
-//	{
-//		case -1:
-//			switch(rightTn->balance)
-//			{
-//				case 1:
-//					Tn
-//					break;
-//			}
-//	}
 }
 
 Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
@@ -169,3 +159,6 @@ Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
 
 	return root;
 }
+
+
+
