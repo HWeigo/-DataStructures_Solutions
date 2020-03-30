@@ -90,6 +90,7 @@ bool AVLConstruct(char *opsFile, char *treeFile)
 			root = Insert(root, char1, &isUnbalancedInsert, &isMemoryAllocated);
 			if(!isMemoryAllocated)
 			{
+				SaveTreeToFile(root, treeFptr);
 				fprintf(stdout, "0\n");
 	            //fprintf(stderr, "wrong format");
 	            TreeDestroy(root);
@@ -112,6 +113,7 @@ bool AVLConstruct(char *opsFile, char *treeFile)
 		}
 		else 
 		{
+			SaveTreeToFile(root, treeFptr);
 			fprintf(stdout, "0\n");
             //fprintf(stderr, "wrong format");
             TreeDestroy(root);
