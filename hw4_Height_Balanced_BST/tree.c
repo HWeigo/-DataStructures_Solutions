@@ -126,7 +126,7 @@ void PrintTreePreorder(Tnode *root)
 	{
 		return;
 	}
-	fprintf(stdout, "%d ", root->key);
+	fprintf(stdout, "%d %d\n", root->key, (int)root->balance);
 	PrintTreePreorder(root->left);
 	PrintTreePreorder(root->right);
 }
