@@ -85,6 +85,9 @@ bool AVLConstruct(char *filename)
 		else if(char2 == 'd')
 		{
 			root = Delete(root, char1, &isUnbalancedDelete);
+		    printf("print tree.\n");
+		    PrintTreePreorder(root);
+
 		}
 		else 
 		{
