@@ -293,6 +293,7 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 			root = RightRotate(root);
 			root->balance = 0;
 			(root->right)->balance = 0;
+			*isUnbalanced = 0;
 		}
 		if(leftNode->balance == -1)
 		{
@@ -308,12 +309,14 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 				root->balance = 0;
 				(root->left)->balance = 0;
 				(root->right)->balance = -1;
+				*isUnbalanced = 0;
 			}
 			if(root->balance == -1)
 			{
 				root->balance = 0;
 				(root->left)->balance = 1;
 				(root->right)->balance = 0;
+				*isUnbalanced = 0;
 			}
 		}
 		*isUnbalanced = 0;		
@@ -326,6 +329,7 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 			root = LeftRotate(root);
 			root->balance = 0;
 			(root->left)->balance = 0;
+			*isUnbalanced = 0;
 		}
 		if(rightNode->balance == 1)
 		{
@@ -340,16 +344,18 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 			{
 				root->balance = 0;
 				(root->left)->balance = 0;
-				(root->right)->balance = -1;
+				(root->right)->balance = -1;	
+				*isUnbalanced = 0;
 			}
 			if(root->balance == -1)
 			{
 				root->balance = 0;
 				(root->left)->balance = 1;
 				(root->right)->balance = 0;
+				*isUnbalanced = 0;
+
 			}
 		}
-		*isUnbalanced = 0;
 	}
 
 	return root;
