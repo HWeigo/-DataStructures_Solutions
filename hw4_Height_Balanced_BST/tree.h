@@ -9,5 +9,7 @@ Tnode *CreateTreeNode(int key);
 void PrintTreePreorder(Tnode *root);
 int CheckBST(Tnode *root);
 int CheckHeightBalance(Tnode *root, int *isHB);
+void TreeDestroy(Tnode *root);
+void SaveTreeToFile(Tnode *root, FILE *fptr);
 
 #endif 

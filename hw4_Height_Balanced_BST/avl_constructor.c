@@ -8,6 +8,7 @@
 #include "hbt.h"
 #include "avl_constructor.h"
 
+#define DEBUG_AVL
 
 static Tnode *RightRotate(Tnode *Tn)
 {
@@ -31,76 +32,89 @@ static Tnode *LeftRotate(Tnode *Tn)
 	return rightTn;
 }
 
-bool AVLConstruct(char *filename)
+bool AVLConstruct(char *opsFile, char *treeFile)
 {
-	FILE *fptr = NULL;
-    fptr = fopen(filename, "r");
+	FILE *opsFptr = NULL;
+    opsFptr = fopen(opsFile, "r");
 
-    if(fptr == NULL)
+    if(opsFptr == NULL)
     {
         fprintf(stderr, "fopen failed.");
         return false;
     }
 
-    int nodesNum = 0;
+	FILE *treeFptr = NULL;
+    treeFptr = fopen(treeFile, "w");
+
+    if(treeFptr == NULL)
+    {
+        fprintf(stderr, "fopen failed.");
+        return false;
+    }
+    
+	int nodesNum = 0;
     size_t numGet1, numGet2;
     int char1;
     char char2;
-    while(!feof(fptr))
+    while(!feof(opsFptr))
     {
-        numGet1 = fread(&char1, sizeof(int), 1, fptr);
-        if(feof(fptr))
+        numGet1 = fread(&char1, sizeof(int), 1, opsFptr);
+        if(feof(opsFptr))
         {
             break;
         }
-        numGet2 = fread(&char2, sizeof(char), 1, fptr);
+        numGet2 = fread(&char2, sizeof(char), 1, opsFptr);
         if((numGet1 != 1) || (numGet2 != 1))
         {
             fprintf(stderr, "wrong format");
-            fclose(fptr);
+            fclose(opsFptr);
             return false;
         }
         nodesNum++;
     }
 
-    //int *keys = malloc(sizeof(int) * nodesNum);
-    //char *branchs = malloc(sizeof(char) * nodesNum);
     Tnode *root = NULL;
     int isUnbalancedInsert = 0;
     int isUnbalancedDelete = 0;
 
-	fseek(fptr, 0, SEEK_SET);
+	fseek(opsFptr, 0, SEEK_SET);
     for(int i=0; i<nodesNum; i++)
     {   
-        numGet1 = fread(&char1, sizeof(int), 1, fptr);
-        numGet2 = fread(&char2, sizeof(char), 1, fptr);
-        //keys[i] = char1;
-        //branchs[i] = char2;
+        numGet1 = fread(&char1, sizeof(int), 1, opsFptr);
+        numGet2 = fread(&char2, sizeof(char), 1, opsFptr);
 		if(char2 == 'i')
 		{
 			root = Insert(root, char1, &isUnbalancedInsert);
-		    printf("print I tree.\n");
+#ifdef DEBUG_AVL 
+			printf("print I tree.\n");
 		    PrintTreePreorder(root);
+#endif
 		}
 		else if(char2 == 'd')
 		{
 			root = Delete(root, char1, &isUnbalancedDelete);
-		    printf("print D tree.\n");
+#ifdef DEBUG_AVL 
+			printf("print D tree.\n");
 		    PrintTreePreorder(root);
-
+#endif
 		}
 		else 
 		{
             fprintf(stderr, "wrong format");
-            fclose(fptr);
+            fclose(opsFptr);
             return false;
 		}
     }
-
-	printf("print tree.\n");
+#ifdef DEBUG_AVL 
+	printf("print Final tree.\n");
     PrintTreePreorder(root);
+#endif
+	SaveTreeToFile(root, treeFptr);
+	TreeDestroy(root);
 
-	fclose(fptr);
+
+	fclose(opsFptr);
+	fclose(treeFptr);
 	return true;
 }
 
@@ -319,7 +333,13 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 				*isUnbalanced = 0;
 			}
 		}
-		*isUnbalanced = 0;		
+		if(leftNode->balance == 0)
+		{
+			root = RightRotate(root);
+			root->balance = -1;
+			(root->right)->balance = 1;
+			*isUnbalanced = 0;
+		}
 	}
 	if(root->balance == -2)
 	{
@@ -355,6 +375,13 @@ Tnode *Delete(Tnode *root, int key, int *isUnbalanced)
 				*isUnbalanced = 0;
 
 			}
+		}
+		if(rightNode->balance == 0)
+		{
+			root = LeftRotate(root);
+			root->balance = 1;
+			(root->left)->balance = -1;
+			*isUnbalanced = 0;
 		}
 	}
 

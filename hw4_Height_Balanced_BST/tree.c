@@ -120,6 +120,17 @@ int CheckHeightBalance(Tnode *root, int *isHB)
 	return (1 + MAX(left, right));
 }
 
+void TreeDestroy(Tnode *root)
+{
+	if(root == NULL)
+	{
+		return;
+	}
+	TreeDestroy(root->left);
+	TreeDestroy(root->right);
+	free(root);
+}
+
 void PrintTreePreorder(Tnode *root)
 {
 	if(root == NULL)
@@ -140,3 +151,24 @@ void PrintTreePreorder(Tnode *root)
 	PrintTreePreorder(root->right);
 }
 
+void SaveTreeToFile(Tnode *root, FILE *fptr)
+{
+	if(root == NULL)
+	{
+		return;
+	}
+	char branch = 0;
+	if(root->left != NULL)
+	{
+		branch += 2;
+	}
+	if(root->right != NULL)
+	{
+		branch += 1;
+	}
+    fwrite(&(root->key), sizeof(int), 1, fptr);
+	fwrite(&branch, sizeof(char), 1, fptr);
+
+	SaveTreeToFile(root->left, fptr);
+	SaveTreeToFile(root->right, fptr);
+}

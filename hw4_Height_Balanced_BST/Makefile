@@ -20,10 +20,12 @@ pa4: $(OBJS)
 
 testmemory: pa4
 	$(VAL) ./pa4 examples/3.po 8.pr 8.dim 8.pck 
-#testing only input3 and output3
+
+testmemoryAVL: pa4
+	$(VAL) ./pa4 examples/ops3.b tree3.b
 
 testall: test1a test2a test1l test2l 
-
+testallAVL: testAVL0 testAVL1 testAVL2 testAVL3
 testB2T: pa4
 	./pa4 examples/ops2.b ops2.txt
 	./pa4 examples/tree2.b tree2.txt 
@@ -35,20 +37,21 @@ testT2B: pa4
 testEvaluate: pa4 
 	./pa4 examples/tree2.b
 
-test2: pa3 
-	./pa3 examples/8.po 8.pr 8.dim 8.pck 
-	diff 8.pr examples/8.pr 
-	diff 8.dim examples/8.dim 
-	diff 8.pck examples/8.pck
+testAVL0: pa4  
+	./pa4 examples/ops0.b tree0.b
+	diff tree0.b examples/tree0.b 
 
-test3: pa3
-	./pa3 examples/500.po 500.pr 500.dim 500.pck 
+testAVL1: pa4  
+	./pa4 examples/ops1.b tree1.b
+	diff tree1.b examples/tree1.b 
 
-test4: pa3 		
-	./pa3 examples/100.po 100.pr 100.dim 100.pck 
+testAVL2: pa4  
+	./pa4 examples/ops2.b tree2.b
+	diff tree2.b examples/tree2.b 
 
-test5: pa3 
-	./pa3 examples/1K.po 1K.pr 1K.dim 1K.pck 
+testAVL3: pa4  
+	./pa4 examples/ops3.b tree3.b
+	diff tree3.b examples/tree3.b 
 
 clean: # remove all machine generated files
 	rm -f pa4 *.o *.b *.txt memcheck.txt
