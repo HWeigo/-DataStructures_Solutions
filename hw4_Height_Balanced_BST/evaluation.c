@@ -6,7 +6,8 @@
 #include "tree.h"
 #include "hbt.h"
 
-#define DEBUG_HBT
+//#define DEBUG_HBT
+
 // Return true only in input file is valid 
 bool Evaluation(char *filename)
 {
@@ -36,13 +37,20 @@ bool Evaluation(char *filename)
             break;
         }
         numGet2 = fread(&char2, sizeof(char), 1, fptr);
-        if((numGet1 != 1) || (numGet2 != 1) || char2 >= 4) 
+        if((numGet1 != 1) || (numGet2 != 1) || (char2 > 3) || (char2 < 0)) 
         {
 			fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
             fclose(fptr);
 			return false;
         }
 		nodesNum++;
+	}
+	// empty file
+	if(!nodesNum)
+	{
+		fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
+		fclose(fptr);
+		return false;
 	}
 	isValid = 1;
 
@@ -80,8 +88,11 @@ bool Evaluation(char *filename)
 #endif 
 
 	fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
+	
 	free(keys);
 	free(branchs);
+	TreeDestroy(root);
+
 	fclose(fptr);
 	return true;
 }

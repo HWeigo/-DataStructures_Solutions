@@ -11,10 +11,35 @@
 int main(int argc, char **argv)
 {
 	bool isSuccess = true;
-	//isSuccess = Txt2Binary(argv[1], argv[2]);
-	//isSuccess = Binary2Txt(argv[1], argv[2]);
-	//isSuccess = Evaluation(argv[1]); 
-	isSuccess = AVLConstruct(argv[1], argv[2]);
+
+	if((argc < 3) || (argc > 4))
+	{
+		fprintf(stderr, "wrong commend.");
+		return EXIT_FAILURE;
+	}
+
+	if(!strcmp(argv[1], "-b"))
+	{
+		isSuccess = AVLConstruct(argv[2], argv[3]);
+	}
+	else if(!strcmp(argv[1], "-e"))
+	{
+		isSuccess = Evaluation(argv[2]); 
+	}
+	else if(!strcmp(argv[1], "-t2b"))
+	{
+		isSuccess = Txt2Binary(argv[2], argv[3]);
+	}
+	else if(!strcmp(argv[1], "-b2t"))
+	{
+		isSuccess = Binary2Txt(argv[2], argv[3]);
+	}
+	else
+	{
+		fprintf(stderr, "wrong commend.");
+		return EXIT_FAILURE;
+	}
+
 	if(isSuccess == false)
 	{
 		return EXIT_FAILURE;
