@@ -8,7 +8,7 @@
 #include "hbt.h"
 #include "avl_constructor.h"
 
-#define DEBUG_AVL
+//#define DEBUG_AVL
 
 static Tnode *RightRotate(Tnode *Tn)
 {
@@ -39,7 +39,8 @@ bool AVLConstruct(char *opsFile, char *treeFile)
 
     if(opsFptr == NULL)
     {
-        fprintf(stderr, "fopen failed.");
+        fprintf(stdout,"-1\n");
+		//fprintf(stderr, "fopen failed.");
         return false;
     }
 
@@ -66,7 +67,8 @@ bool AVLConstruct(char *opsFile, char *treeFile)
         numGet2 = fread(&char2, sizeof(char), 1, opsFptr);
         if((numGet1 != 1) || (numGet2 != 1))
         {
-            fprintf(stderr, "wrong format");
+            fprintf(stdout, "0\n");
+			//fprintf(stderr, "wrong format");
             fclose(opsFptr);
             return false;
         }
@@ -78,13 +80,23 @@ bool AVLConstruct(char *opsFile, char *treeFile)
     int isUnbalancedDelete = 0;
 
 	fseek(opsFptr, 0, SEEK_SET);
+	int isMemoryAllocated = 1;
     for(int i=0; i<nodesNum; i++)
     {   
         numGet1 = fread(&char1, sizeof(int), 1, opsFptr);
         numGet2 = fread(&char2, sizeof(char), 1, opsFptr);
 		if(char2 == 'i')
 		{
-			root = Insert(root, char1, &isUnbalancedInsert);
+			root = Insert(root, char1, &isUnbalancedInsert, &isMemoryAllocated);
+			if(!isMemoryAllocated)
+			{
+				fprintf(stdout, "0\n");
+	            //fprintf(stderr, "wrong format");
+	            TreeDestroy(root);
+				fclose(opsFptr);
+				fclose(treeFptr);
+	            return false;
+			}
 #ifdef DEBUG_AVL 
 			printf("print I tree.\n");
 		    PrintTreePreorder(root);
@@ -100,8 +112,11 @@ bool AVLConstruct(char *opsFile, char *treeFile)
 		}
 		else 
 		{
-            fprintf(stderr, "wrong format");
-            fclose(opsFptr);
+			fprintf(stdout, "0\n");
+            //fprintf(stderr, "wrong format");
+            TreeDestroy(root);
+			fclose(opsFptr);
+			fclose(treeFptr);
             return false;
 		}
     }
@@ -110,27 +125,33 @@ bool AVLConstruct(char *opsFile, char *treeFile)
     PrintTreePreorder(root);
 #endif
 	SaveTreeToFile(root, treeFptr);
+	
+	fprintf(stdout, "1\n");
 	TreeDestroy(root);
-
-
 	fclose(opsFptr);
 	fclose(treeFptr);
 	return true;
 }
 
 
-Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
+Tnode *Insert(Tnode *root, int key, int *isUnbalanced, int *isMemoryAllocated)
 {
 	if(root == NULL)
 	{
 		*isUnbalanced = 1;
-		return CreateTreeNode(key);
+		Tnode *newNode = CreateTreeNode(key);
+		if(newNode == NULL)
+		{
+			fprintf(stdout, "0\n");
+			*isMemoryAllocated = 0;
+		}
+		return newNode;
 	}
 	
 	*isUnbalanced = 0;
 	if(key <= root->key)
 	{
-		root->left = Insert(root->left, key, isUnbalanced);
+		root->left = Insert(root->left, key, isUnbalanced, isMemoryAllocated);
 		if(*isUnbalanced)
 		{
 			root->balance ++;
@@ -142,7 +163,7 @@ Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
 	}
 	else
 	{
-		root->right = Insert(root->right, key, isUnbalanced);
+		root->right = Insert(root->right, key, isUnbalanced, isMemoryAllocated);
 		if(*isUnbalanced)
 		{
 			root->balance --;

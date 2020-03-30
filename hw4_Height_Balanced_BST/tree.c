@@ -66,6 +66,7 @@ Tnode *CreateTreeNode(int key)
 	Tnode *node = malloc(sizeof(*node));
 	if(node == NULL)
 	{
+		//fprintf(stdout, "0\n");
 		fprintf(stderr, "malloc failed.");
 		return NULL;
 	}

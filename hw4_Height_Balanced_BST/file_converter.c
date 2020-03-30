@@ -70,11 +70,17 @@ bool Binary2Txt(char *inputFile, char *outputFile)
 	int char1;
 	//char char2[10];
 	char char2;
-	//size_t numGet1, numGet2;
+	size_t numGet1, numGet2;
 	while(!feof(inFptr))
 	{
-		fread(&char1, sizeof(int), 1, inFptr);
-		fread(&char2, sizeof(char), 1, inFptr);
+		numGet1 = fread(&char1, sizeof(int), 1, inFptr);
+		numGet2 = fread(&char2, sizeof(char), 1, inFptr);
+		if((numGet1 != 1) || (numGet2 != 1))
+		{
+			fclose(inFptr);
+			fclose(outFptr);
+			return false;
+		}
 		if(feof(inFptr))
 		{
 			break;
