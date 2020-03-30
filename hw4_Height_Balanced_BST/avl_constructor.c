@@ -6,6 +6,7 @@
 #include "evaluation.h"
 #include "tree.h"
 #include "hbt.h"
+#include "avl_constructor.h"
 
 
 static Tnode *RightRotate(Tnode *Tn)
@@ -16,16 +17,6 @@ static Tnode *RightRotate(Tnode *Tn)
 	leftTn->right = Tn;
 	Tn->left = tmp;
 
-//	if(Tn->balance == -2)
-//	{
-//		Tn->balance = 0;
-//		leftTn->balance = 0;
-//	}
-//	if(Tn->balance == -1)
-//	{
-//		if()
-//	}
-//
 	return leftTn;
 }
 
@@ -38,31 +29,76 @@ static Tnode *LeftRotate(Tnode *Tn)
 	Tn->right = tmp;
 
 	return rightTn;
-//	if(Tn->balance == -2)
-//	{
-//		Tn->balance = 0;
-//		rightTn->balance = 0;
-//	}
-//	if(Tn->balance == -1)
-//	{
-//		if(rightTn->balance == 1)
-//		{
-//			Tn->balance = 0;
-//			rightTn->balance = 2;
-//		}
-//		if(rightTn->balance == -1)
-//		{
-//			Tn->balance = 1;
-//			rightTn->balance = 0;
-//		}
-//		if(rightTn->balance == 0)
-//		{
-//			Tn->balance = 0;
-//			rightTn->balance = 1;
-//		}
-//	}
-
 }
+
+bool AVLConstruct(char *filename)
+{
+	FILE *fptr = NULL;
+    fptr = fopen(filename, "r");
+
+    if(fptr == NULL)
+    {
+        fprintf(stderr, "fopen failed.");
+        return false;
+    }
+
+    int nodesNum = 0;
+    size_t numGet1, numGet2;
+    int char1;
+    char char2;
+    while(!feof(fptr))
+    {
+        numGet1 = fread(&char1, sizeof(int), 1, fptr);
+        if(feof(fptr))
+        {
+            break;
+        }
+        numGet2 = fread(&char2, sizeof(char), 1, fptr);
+        if((numGet1 != 1) || (numGet2 != 1))
+        {
+            fprintf(stderr, "wrong format");
+            fclose(fptr);
+            return false;
+        }
+        nodesNum++;
+    }
+
+    //int *keys = malloc(sizeof(int) * nodesNum);
+    //char *branchs = malloc(sizeof(char) * nodesNum);
+    Tnode *root = NULL;
+    int isUnbalancedInsert = 0;
+    int isUnbalancedDelete = 0;
+
+	fseek(fptr, 0, SEEK_SET);
+    for(int i=0; i<nodesNum; i++)
+    {   
+        numGet1 = fread(&char1, sizeof(int), 1, fptr);
+        numGet2 = fread(&char2, sizeof(char), 1, fptr);
+        //keys[i] = char1;
+        //branchs[i] = char2;
+		if(char2 == 'i')
+		{
+			root = Insert(root, char1, &isUnbalancedInsert);
+		}
+		else if(char2 == 'd')
+		{
+			root = Delete(root, char1, &isUnbalancedDelete);
+		}
+		else 
+		{
+            fprintf(stderr, "wrong format");
+            fclose(fptr);
+            return false;
+		}
+    }
+
+	printf("print tree.\n");
+    PrintTreePreorder(root);
+
+	fclose(fptr);
+	return true;
+}
+
 
 Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
 {
@@ -80,6 +116,10 @@ Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
 		{
 			root->balance ++;
 		}
+		if(root->balance == 0)
+		{
+			*isUnbalanced = 0;
+		}
 	}
 	else
 	{
@@ -87,6 +127,10 @@ Tnode *Insert(Tnode *root, int key, int *isUnbalanced)
 		if(*isUnbalanced)
 		{
 			root->balance --;
+		}
+		if(root->balance == 0)
+		{
+			*isUnbalanced = 0;
 		}
 	}
 

@@ -5,5 +5,5 @@
 
 Tnode *Insert(Tnode *root, int key, int *isUnbalanced);
 Tnode *Delete(Tnode *root, int key, int *isUnbalanced);
-
+bool AVLConstruct(char *filename);
 #endif

@@ -10,33 +10,45 @@
 
 int main(int argc, char **argv)
 {
-//	bool isSuccess = true;
-//	//isSuccess = Txt2Binary(argv[1], argv[2]);
-//	//isSuccess = Binary2Txt(argv[1], argv[2]);
-//	isSuccess = Evaluation(argv[1]); 
-//	if(isSuccess == false)
-//	{
-//		return EXIT_FAILURE;
-//	}
-	Tnode *root = NULL;
-	int isUnbalancedInsert = 0;
-	int isUnbalancedDelete = 0;
-	root = Insert(root, -5, &isUnbalancedInsert);
-	root = Insert(root, -4, &isUnbalancedInsert);
-	root = Insert(root, -3, &isUnbalancedInsert);
-	root = Insert(root, -2, &isUnbalancedInsert);
-	root = Insert(root, -1, &isUnbalancedInsert);
-	root = Insert(root, 0, &isUnbalancedInsert);
-	root = Insert(root, 1, &isUnbalancedInsert);
-	root = Insert(root, 2, &isUnbalancedInsert);
-	root = Insert(root, 3, &isUnbalancedInsert);
-	root = Insert(root, 4, &isUnbalancedInsert);
-	printf("print tree.\n");
-	PrintTreePreorder(root);
+	bool isSuccess = true;
+	//isSuccess = Txt2Binary(argv[1], argv[2]);
+	//isSuccess = Binary2Txt(argv[1], argv[2]);
+	//isSuccess = Evaluation(argv[1]); 
+	isSuccess = AVLConstruct(argv[1]);
+	if(isSuccess == false)
+	{
+		return EXIT_FAILURE;
+	}
 
-	root = Delete(root, -2, &isUnbalancedDelete);	
-	printf("print tree.\n");
-	PrintTreePreorder(root);
+//	Tnode *root = NULL;
+//	int isUnbalancedInsert = 0;
+//	int isUnbalancedDelete = 0;
+//	root = Insert(root, 3, &isUnbalancedInsert);
+//	root = Insert(root, 3, &isUnbalancedInsert);
+//	root = Insert(root, 3, &isUnbalancedInsert);
+//	root = Insert(root, 3, &isUnbalancedInsert);
+//	root = Insert(root, 1, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);
+//	root = Insert(root, 1, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);
+//	root = Insert(root, 1, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);	
+//	root = Insert(root, 1, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);	
+//	root = Insert(root, 2, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);	
+//	root = Insert(root, 2, &isUnbalancedInsert);
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);
+//
+//	root = Delete(root, 3, &isUnbalancedDelete);	
+//	printf("print tree.\n");
+//	PrintTreePreorder(root);
 
 	return EXIT_SUCCESS;
 }

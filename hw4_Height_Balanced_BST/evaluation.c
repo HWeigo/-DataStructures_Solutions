@@ -67,6 +67,7 @@ bool Evaluation(char *filename)
 	if(root == NULL)
 	{
 		free(keys);
+		free(branchs);
 		fclose(fptr);
 		return false;
 	}
@@ -79,6 +80,8 @@ bool Evaluation(char *filename)
 #endif 
 
 	fprintf(stdout, "%d,%d,%d\n", isValid, isBST, isHeightBalanced);
+	free(keys);
+	free(branchs);
 	fclose(fptr);
 	return true;
 }
