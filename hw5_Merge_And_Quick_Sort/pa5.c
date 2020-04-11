@@ -8,6 +8,7 @@
 
 static long *LoadIntoArray(char *filename, int *size);
 static void printArray(long *array, int size);
+static int SaveToFile(char *filename, long *array, int size);
 
 int main(int argc, char **argv)
 {
@@ -24,6 +25,22 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
+	if(strcmp(argv[1], "-q"))
+	{
+	}
+
+	if(strcmp(argv[1], "-m"))
+	{
+	}
+	
+	int num2File = SaveToFile(argv[3], array, size);
+	if(size != num2File)
+	{
+		fprintf(stderr, "fail to save array into file.");
+		free(array);
+		return EXIT_FAILURE;
+	}
+	free(array);
 
     return EXIT_SUCCESS;
 }
@@ -79,6 +96,42 @@ static long *LoadIntoArray(char *filename, int *size)
 	printArray(lptr, *size);
 #endif
 	return lptr;
+}
+
+static int SaveToFile(char *filename, long *array, int size)
+{
+#ifdef DEBUG_HW
+	printf("After sorting:\n");
+	printArray(array, size);
+#endif
+
+	FILE *fptr;
+	fptr  = fopen(filename, "w");
+
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		fclose(fptr);
+		return -1;
+	}
+	
+	int cnt = 0;
+	for(int i=0; i<size; ++i)
+	{
+		size_t tmp = fwrite(&array[i], sizeof(long), 1, fptr);
+		if(tmp != 1)
+		{
+			fclose(fptr);
+			return -1;
+		}
+		else
+		{
+			cnt++;
+		}
+	}
+
+	fclose(fptr);
+	return cnt;
 }
 
 
