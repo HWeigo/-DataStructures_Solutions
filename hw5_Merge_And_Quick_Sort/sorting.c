@@ -13,7 +13,7 @@ void Quick_Sort(long *Array, int Size)
 {
 	QuickSortHelper(Array, 0, Size-1);
 }
-
+#ifdef DEBUG_HW 
 static void printArray(long *array, int size)
 {
     for(int i=0; i<size;++i)
@@ -22,7 +22,7 @@ static void printArray(long *array, int size)
     }   
     printf("\n");
 }
-
+#endif 
 static void QuickSortHelper(long *array, int lb, int ub)
 {
 	if(lb >= ub)
