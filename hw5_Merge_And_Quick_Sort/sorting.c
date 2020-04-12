@@ -5,11 +5,13 @@
 #include "sorting.h"
 
 //#define DEBUG_HW
+
 static long MedianOfThree(long *array, int lb, int mid, int ub);
 static void Swap(long *array, int idx1, int idx2);
 static void QuickSortHelper(long *array, int lb, int ub);
 static void InsertionSort(long *array, int lb, int ub);
 static void Merge(long *array, long *tmp, int lb, int mid, int ub);
+static int MIN(int a, int b);
 #ifdef DEBUG_HW 
 static void printArray(long *array, int size)
 {
@@ -26,14 +28,17 @@ void Quick_Sort(long *Array, int Size)
 	QuickSortHelper(Array, 0, Size-1);
 }
 
-static int MIN(int a, int b)
-{
-	return (a>b)?(b):(a);
-}
 void Merge_Sort(long *Array, int Size)
 {
-	//MergeSortHelper(Array, 0, Size-1);
-//	InsertionSort(Array, 0, Size - 1);
+	int idx = 0;
+	int n = 16;
+	while(idx < (Size-n))
+	{
+		InsertionSort(Array, idx, idx+n-1);
+		idx += n;
+	}
+	InsertionSort(Array, idx, Size-1);
+
 	long *sorted = Array;
 	long *merged = malloc(sizeof(long) * Size);
 
@@ -44,12 +49,11 @@ void Merge_Sort(long *Array, int Size)
 		return;
 	}
 	memcpy(merged, sorted, sizeof(long)*Size);
-
-//	printf("before.\n");
-//	printArray(sorted, Size);
-//	printArray(merged, Size);
-	
-	int n = 1, idx = 0;
+#ifdef DEBUG_HW 
+	printf("before.\n");
+	printArray(sorted, Size);
+	printArray(merged, Size);
+#endif 
 	while(n < Size)
 	{
 		idx = 0;
@@ -66,10 +70,12 @@ void Merge_Sort(long *Array, int Size)
 		tmp = sorted;
 		sorted = merged;
 		merged = tmp;
-		n = n * 2; 
-//	printf("after.\n");
-//	printArray(sorted, Size);
-//	printArray(merged, Size);
+		n = n * 2;
+#ifdef DEBUG_HW 
+		printf("after.\n");
+		printArray(sorted, Size);
+		printArray(merged, Size);
+#endif 
 	}
 	if(merged == Array)
 	{
@@ -80,11 +86,12 @@ void Merge_Sort(long *Array, int Size)
 	{
 		free(merged);
 	}
-
-//	printf("after.\n");
-//	printArray(sorted, Size);
-//	printArray(merged, Size);
-//	printArray(Array, Size);
+#ifdef DEBUG_HW 
+	printf("after.\n");
+	printArray(sorted, Size);
+	printArray(merged, Size);
+	printArray(Array, Size);
+#endif 
 }
 
 static void Merge(long *array, long *tmp, int lb, int mid, int ub)
@@ -112,21 +119,6 @@ static void Merge(long *array, long *tmp, int lb, int mid, int ub)
 	}
 }
 
-static void MergeSortHelper(long *array, long *tmp, int lb, int ub)
-{
-//	if((ub-lb)<8)
-//	{
-//		InsertionSort(array, lb, ub);
-//	}
-//	int mid = (lb + ub)>>1;
-//	MergeSortHelper(array, tmp, lb, mid);
-//	MergeSortHelper(array, tmp, mid+1, ub);
-//	Merge(array, tmp, lb, mid, ub);
-//	int size = 8;
-	
-
-
-}
 
 static void InsertionSort(long *array, int lb, int ub)
 {
@@ -243,5 +235,8 @@ static void Swap(long *array, int idx1, int idx2)
 	array[idx2] = tmp;
 }
 
-
+static int MIN(int a, int b)
+{
+	return (a>b)?(b):(a);
+}
 

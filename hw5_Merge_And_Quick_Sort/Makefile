@@ -15,10 +15,12 @@ pa5: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: pa5 
-	$(VAL) ./pa5 -q examples/10K.b outputs/10K.b
+	$(VAL) ./pa5 -m examples/10K.b outputs/10K.b
 
-testall: test1a test2a test1l test2l 
+testall: testallMergeSort testallQuickSort 
 testallQuickSort: testq0 testq1 testq2 testq3 testq4 
+testallMergeSort: testm0 testm1 testm2 testm3 testm4 
+
 
 testB2T: pa4
 	./pa4 examples/ops2.b ops2.txt
