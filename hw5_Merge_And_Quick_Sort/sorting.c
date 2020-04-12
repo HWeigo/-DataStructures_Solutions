@@ -4,15 +4,11 @@
 #include <stdbool.h>
 #include "sorting.h"
 
-//#define DEBUG_HW
+#define DEBUG_HW
 static long MedianOfThree(long *array, int lb, int mid, int ub);
 static void Swap(long *array, int idx1, int idx2);
 static void QuickSortHelper(long *array, int lb, int ub);
-
-void Quick_Sort(long *Array, int Size)
-{
-	QuickSortHelper(Array, 0, Size-1);
-}
+static void InsertionSort(long *array, int lb, int ub);
 #ifdef DEBUG_HW 
 static void printArray(long *array, int size)
 {
@@ -23,6 +19,51 @@ static void printArray(long *array, int size)
     printf("\n");
 }
 #endif 
+
+void Quick_Sort(long *Array, int Size)
+{
+	QuickSortHelper(Array, 0, Size-1);
+}
+
+void Merge_Sort(long *Array, int Size)
+{
+	//MergeSortHelper(Array, 0, Size-1);
+	InsertionSort(Array, 0, Size - 1);
+}
+
+static void Merge(long *array, int lb, int mid, int ub)
+{
+	return;
+}
+
+static void MergeSortHelper(long *array, int lb, int ub)
+{
+	if((ub-lb)<8)
+	{
+		InsertionSort(array, lb, ub);
+	}
+	int mid = (lb + ub)>>1;
+	MergeSortHelper(array, lb, mid);
+	MergeSortHelper(array, mid+1, ub);
+	Merge(array, lb, mid, ub);
+}
+
+static void InsertionSort(long *array, int lb, int ub)
+{
+	for(int i=lb+1; i<=ub; i++)
+	{
+		long tmp = array[i];
+		int j = i;
+		while(((j-1) >= lb) && (array[j-1] > tmp))
+		{
+			array[j] = array[j-1];
+			j--;
+		}
+		array[j] = tmp;
+		//printArray(array, ub-lb+1);
+	}
+}
+
 static void QuickSortHelper(long *array, int lb, int ub)
 {
 	if(lb >= ub)
@@ -122,62 +163,5 @@ static void Swap(long *array, int idx1, int idx2)
 	array[idx2] = tmp;
 }
 
-//static int Patition(long *array, int lb, int ub)
-//{
-//	int mid = (lb + ub)/2;
-//	int pivotIdx = 0;
-//	if(array[lb] < array[mid])
-//	{
-//		if(array[mid] < array[ub])
-//		{
-//			pivotIdx = mid;
-//		}
-//		else if(array[lb] < array[ub])
-//		{
-//			pivotIdx = ub;
-//		}
-//		else
-//		{
-//			pivotIdx = lb;
-//		}
-//	}
-//	else if(array[ub] < array[mid])
-//	{
-//		pivotIdx = mid;
-//	}
-//	else if(array[ub] < array[lb])
-//	{
-//		pivotIdx = ub;
-//	}
-//	else
-//	{
-//		pivotIdx = lb;
-//	}
-//	
-//	int pivot = array[pivotIdx];
-//	int down = lb;
-//	int up = ub;
-//	while(down < up)
-//	{
-//		while((array[down] <= pivot) && (down < up))
-//		{
-//			down++;
-//		}
-//		while((array[up] >= pivot) && (up > down))
-//		{
-//			up--;
-//		}
-//		if(down < up)
-//		{
-//			long tmp = array[down];
-//			array[down] = array[up];
-//			array[up] = tmp;
-//		}
-//	}
-//	return up;
-//}
 
-void Merge_Sort(long *Array, int Size)
-{
 
-}

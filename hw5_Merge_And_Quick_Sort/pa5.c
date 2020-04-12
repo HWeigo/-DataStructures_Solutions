@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 
 	if(!strcmp(argv[1], "-m"))
 	{
+		Merge_Sort(array, size);
 	}
 	
 	int num2File = SaveToFile(argv[3], array, size);
