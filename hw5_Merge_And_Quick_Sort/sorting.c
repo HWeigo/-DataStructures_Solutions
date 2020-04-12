@@ -41,7 +41,7 @@ static void QuickSortHelper(long *array, int lb, int ub)
 			}
 			down++;
 		}
-		while((array[up] >= pivot) && (down < up))
+		while((array[up] >= pivot) && (lb < up))
 		{
 			if(array[up] == pivot)
 			{
@@ -76,8 +76,8 @@ static void QuickSortHelper(long *array, int lb, int ub)
 		j--;
 	}
 
-	QuickSortHelper(array, lb, down-leftLength);
-	QuickSortHelper(array, up+rightLength, ub);
+	QuickSortHelper(array, lb, up-leftLength);
+	QuickSortHelper(array, down+rightLength, ub);
 }
 
 static long MedianOfThree(long *array, int lb, int mid, int ub)
