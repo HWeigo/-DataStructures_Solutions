@@ -9,6 +9,7 @@
 static long *LoadIntoArray(char *filename, int *size);
 static void printArray(long *array, int size);
 static int SaveToFile(char *filename, long *array, int size);
+static bool Txt2Binary(char *inputFile, char *outputFile);
 
 int main(int argc, char **argv)
 {
@@ -18,6 +19,12 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
     }
 
+	if(!strcmp(argv[1], "-c"))
+	{
+		Txt2Binary(argv[2], argv[3]);
+		return EXIT_SUCCESS;
+	}
+	
 	int size = 0;
 	long *array = LoadIntoArray(argv[2], &size);
 	if(array == NULL)
@@ -25,11 +32,13 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 
-	if(strcmp(argv[1], "-q"))
+	if(!strcmp(argv[1], "-q"))
 	{
+		Quick_Sort(array, size);
+		printArray(array, size);
 	}
 
-	if(strcmp(argv[1], "-m"))
+	if(!strcmp(argv[1], "-m"))
 	{
 	}
 	
@@ -143,3 +152,46 @@ static void printArray(long *array, int size)
 	}
 	printf("\n");
 }
+
+
+static bool Txt2Binary(char *inputFile, char *outputFile)
+{
+	FILE *inFptr = NULL;
+	inFptr = fopen(inputFile, "r");
+
+	if(inFptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return false;
+	}
+
+	FILE *outFptr = NULL;
+	outFptr = fopen(outputFile, "w");
+
+	if(outFptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return false;
+	}
+
+	int numGet = 0;
+	long char1;
+	do
+	{
+		numGet = fscanf(inFptr, "%ld\n", &char1);
+		if(numGet != 1)
+		{
+			fprintf(stderr, "numGet !=2.");
+			fclose(inFptr);
+			fclose(outFptr);
+			return false;
+		}
+		//printf("%d %s\n", char1, char2);
+		fwrite(&char1, sizeof(long), 1, outFptr);
+	}while(!feof(inFptr));
+
+	fclose(inFptr);
+	fclose(outFptr);
+	return true;
+}
+
