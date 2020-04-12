@@ -58,6 +58,10 @@ void Merge_Sort(long *Array, int Size)
 			Merge(merged, sorted, idx, idx+n-1, MIN(idx+2*n-1, Size-1));
 			idx = idx + 2 * n;
 		}
+		if(idx < Size)
+		{
+			memcpy(&merged[idx],&sorted[idx], sizeof(long) * (Size-idx));
+		}
 
 		tmp = sorted;
 		sorted = merged;
