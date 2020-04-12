@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "sorting.h"
 
+//#define DEBUG_HW
 static long MedianOfThree(long *array, int lb, int mid, int ub);
 static void Swap(long *array, int idx1, int idx2);
 static void QuickSortHelper(long *array, int lb, int ub);
@@ -83,9 +84,10 @@ static void QuickSortHelper(long *array, int lb, int ub)
 		i++;
 		j--;
 	}
+#ifdef DEBUG_HW
 	printf("pivot: %ld\n down: %d, up: %d\n", pivot, down, up);	
-
 	printArray(array, 25);
+#endif
 	QuickSortHelper(array, lb, up-leftLength);
 	QuickSortHelper(array, down+rightLength, ub);
 }

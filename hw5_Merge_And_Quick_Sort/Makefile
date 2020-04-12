@@ -31,11 +31,25 @@ testT2B: pa4
 	./pa4 examples/ops2.txt ops2.b
 	./pa4 examples/tree2.txt tree2.b 
 
-testEvaluate0: pa4 
-	./pa4 -e examples/tree2.b
+testq0: pa5  
+	./pa5 -q examples/15.b outputs/15.b
+	diff outputs/15.b examples/15_sa.b
 
-testEvaluate1: pa4 
-	./pa4 -e examples/invalidtree0.b 
+testq1: pa5 
+	./pa5 -q examples/1K.b outputs/1K.b
+	diff outputs/1K.b examples/1K_sa.b
+
+testq2: pa5 
+	./pa5 -q examples/10K.b outputs/10K.b
+	diff outputs/10K.b examples/10K_sa.b
+
+testq3: pa5 
+	./pa5 -q examples/100K.b outputs/100K.b
+	diff outputs/100K.b examples/100K_sa.b
+
+testq4: pa5 
+	./pa5 -q examples/1M.b outputs/1M.b
+	diff outputs/1M.b examples/1M_sa.b
 
 testEvaluate2: pa4 
 	./pa4 -e examples/invalidtree1.b 

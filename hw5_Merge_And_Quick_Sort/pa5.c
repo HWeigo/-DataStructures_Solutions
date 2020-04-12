@@ -4,12 +4,14 @@
 #include <stdbool.h>
 #include "sorting.h"
 
-#define DEBUG_HW 
+//#define DEBUG_HW 
 
 static long *LoadIntoArray(char *filename, int *size);
-static void printArray(long *array, int size);
 static int SaveToFile(char *filename, long *array, int size);
 static bool Txt2Binary(char *inputFile, char *outputFile);
+#ifdef DEBUG_HW
+static void printArray(long *array, int size);
+#endif 
 
 int main(int argc, char **argv)
 {
@@ -35,7 +37,7 @@ int main(int argc, char **argv)
 	if(!strcmp(argv[1], "-q"))
 	{
 		Quick_Sort(array, size);
-		printArray(array, size);
+		//printArray(array, size);
 	}
 
 	if(!strcmp(argv[1], "-m"))
@@ -143,7 +145,7 @@ static int SaveToFile(char *filename, long *array, int size)
 	return cnt;
 }
 
-
+#ifdef DEBUG_HW 
 static void printArray(long *array, int size)
 {
 	for(int i=0; i<size;++i)
@@ -152,7 +154,7 @@ static void printArray(long *array, int size)
 	}
 	printf("\n");
 }
-
+#endif 
 
 static bool Txt2Binary(char *inputFile, char *outputFile)
 {
