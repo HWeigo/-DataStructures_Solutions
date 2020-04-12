@@ -21,18 +21,79 @@ static void QuickSortHelper(long *array, int lb, int ub)
 	QuickSortHelper(array, patitionIdx +1, ub);
 }
 
+static int MedianOfThree(long *array, int lb, int ub)
+{
+	int mid = (lb + ub)/2;
+	if(array[mid] > array[ub])
+	{
+		Swap(array, mid, ub);
+	}
+	if(array[lb] > array[ub])
+	{
+		Swap(array, lb, ub);
+	}
+	if(array[lb] > array[mid])
+	{
+		Swap(array, lb, mid);
+	}
+	// Now array[lb]<=array[mid]<=array[ub]
+	return array[mid];
+}
+
+static void Swap(long *array, int idx1, int idx2)
+{
+	if(array == NULL)
+	{
+		fprintf(stderr, "empty array");
+		return;
+	}
+	long tmp = array[idx1];
+	array[idx1] = array[idx2];
+	array[idx2] = tmp;
+}
+
 static int Patition(long *array, int lb, int ub)
 {
-	pivot = ;
-	down = lb;
-	up = ub;
+	int mid = (lb + ub)/2;
+	int pivotIdx = 0;
+	if(array[lb] < array[mid])
+	{
+		if(array[mid] < array[ub])
+		{
+			pivotIdx = mid;
+		}
+		else if(array[lb] < array[ub])
+		{
+			pivotIdx = ub;
+		}
+		else
+		{
+			pivotIdx = lb;
+		}
+	}
+	else if(array[ub] < array[mid])
+	{
+		pivotIdx = mid;
+	}
+	else if(array[ub] < array[lb])
+	{
+		pivotIdx = ub;
+	}
+	else
+	{
+		pivotIdx = lb;
+	}
+	
+	int pivot = array[pivotIdx];
+	int down = lb;
+	int up = ub;
 	while(down < up)
 	{
-		while(array[down] > pivot)
+		while((array[down] <= pivot) && (down < up))
 		{
 			down++;
 		}
-		while(array[up] > pivot)
+		while((array[up] >= pivot) && (up > down))
 		{
 			up--;
 		}
