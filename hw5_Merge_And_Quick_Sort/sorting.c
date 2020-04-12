@@ -13,6 +13,14 @@ void Quick_Sort(long *Array, int Size)
 	QuickSortHelper(Array, 0, Size-1);
 }
 
+static void printArray(long *array, int size)
+{
+    for(int i=0; i<size;++i)
+    {   
+        printf("%ld ", array[i]);
+    }   
+    printf("\n");
+}
 
 static void QuickSortHelper(long *array, int lb, int ub)
 {
@@ -31,7 +39,7 @@ static void QuickSortHelper(long *array, int lb, int ub)
 
 	while(down < up)
 	{
-		while((array[down] <= pivot) && (down < up))
+		while((array[down] <= pivot) && (down <= up))
 		{
 			if(array[down] == pivot)
 			{
@@ -41,7 +49,7 @@ static void QuickSortHelper(long *array, int lb, int ub)
 			}
 			down++;
 		}
-		while((array[up] >= pivot) && (lb < up))
+		while((array[up] >= pivot) && (down <= up))
 		{
 			if(array[up] == pivot)
 			{
@@ -75,7 +83,9 @@ static void QuickSortHelper(long *array, int lb, int ub)
 		i++;
 		j--;
 	}
+	printf("pivot: %ld\n down: %d, up: %d\n", pivot, down, up);	
 
+	printArray(array, 25);
 	QuickSortHelper(array, lb, up-leftLength);
 	QuickSortHelper(array, down+rightLength, ub);
 }
