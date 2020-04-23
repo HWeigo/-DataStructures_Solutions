@@ -23,6 +23,7 @@ static void printArray(long *array, int size)
 }
 #endif 
 
+// BUG: Memory Leak If Same Number Appears!
 void Quick_Sort(long *Array, int Size)
 {
 	QuickSortHelper(Array, 0, Size-1);
