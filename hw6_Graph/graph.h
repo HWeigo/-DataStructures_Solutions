@@ -9,5 +9,7 @@ typedef struct _LinkList{
 
 LinkList **GraphConstruct(char *filename);
 void DestroyGraph(LinkList **graph, int totalNodes);
+short *TopologicalSort(LinkList **graph, int totalNodes);
+
 
 #endif 

@@ -7,6 +7,8 @@
 
 static void PrintGraph(LinkList **graph, int totalNodes);
 static LinkList *AddAdjacentyNode(short index);
+static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
+        short *color, short *parent, short *queue, int *queueNum);
 
 LinkList **GraphConstruct(char *filename)
 {
@@ -181,6 +183,14 @@ LinkList **GraphConstruct(char *filename)
 	}
 	
 	PrintGraph(graph, totalNodes);
+
+	short *queue = TopologicalSort(graph, totalNodes);
+	printf("TopologicalSort:\n");
+	for(int i=0;i<totalNodes;++i)
+	{
+		printf("%hd ", queue[i]);
+	}
+	
 	DestroyGraph(graph, totalNodes);
 
 
@@ -189,6 +199,64 @@ LinkList **GraphConstruct(char *filename)
 	return graph;
 
 }
+
+enum Color{BLACK, GRAY, WHITE};
+short *TopologicalSort(LinkList **graph, int totalNodes)
+{
+	short *color = malloc(sizeof(short) * totalNodes);
+	short *parent = malloc(sizeof(short) * totalNodes);
+	short *queue = malloc(sizeof(short) * totalNodes);
+	if((color == NULL) || (parent == NULL) || (queue == NULL))
+	{
+		free(color);
+		free(parent);
+		free(queue);
+		fprintf(stderr, "malloc failed.");
+		return NULL;
+	}
+
+	for(int i=0;i<totalNodes;++i)
+	{
+		color[i] = WHITE;
+		parent[i] = -1;
+	}
+	int queueNum = 0;
+	for(int i=0;i<totalNodes;++i)
+	{
+		if(color[i] == WHITE)
+		{
+			TopoSortHelper(graph, i, totalNodes, color, parent, queue, &queueNum);
+		}
+	}
+
+
+
+	return queue;
+}
+
+static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
+		short *color, short *parent, short *queue, int *queueNum)
+{
+	color[index] = GRAY;
+	LinkList *p = NULL;
+	p = graph[index];
+	while(p != NULL)
+	{
+		short destIndex = p->dest;
+		if(color[destIndex] == WHITE)
+		{
+			parent[destIndex] = index;
+			TopoSortHelper(graph, destIndex, totalNodes, color, parent, \
+					queue, queueNum);
+		}
+		p = p->next;
+	}
+	color[index] = BLACK;
+	queue[totalNodes-1-(*queueNum)] = index;
+	(*queueNum)++;
+}
+
+
 
 static LinkList *AddAdjacentyNode(short index)
 {
