@@ -190,6 +190,7 @@ LinkList **GraphConstruct(char *filename)
 	{
 		printf("%hd ", queue[i]);
 	}
+	free(queue);
 	
 	DestroyGraph(graph, totalNodes);
 
@@ -200,6 +201,7 @@ LinkList **GraphConstruct(char *filename)
 
 }
 
+// queue stores the index in queue, while index might > SHRT_MAX, thus needs to change form queue to int 
 enum Color{BLACK, GRAY, WHITE};
 short *TopologicalSort(LinkList **graph, int totalNodes)
 {
@@ -229,8 +231,8 @@ short *TopologicalSort(LinkList **graph, int totalNodes)
 		}
 	}
 
-
-
+	free(color);
+	free(parent);
 	return queue;
 }
 
@@ -256,7 +258,31 @@ static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
 	(*queueNum)++;
 }
 
-
+//void FindLongestPath(LinkList **graph, short *queue, int totalNodes)
+//{
+//	int *length = malloc(sizeof(int) * totalNodes);
+//	int *parent = malloc(sizeof(int) * totalNodes);
+//	for(int i=0;i<totalNodes;++i)
+//	{
+//		length[i] = 0;
+//		parent[i] = ;
+//	}
+//	for(int i=0;i<totalNodes;++i)
+//	{
+//		short index = queue[i];
+//		int destLength = length[i] + 1;
+//		LinkList *p = graph[index];
+//		while(p != NULL)
+//		{
+//			short destIndex = p->dest;
+//			if(length[destIndex] < destLength)
+//			{
+//				
+//			}
+//		}
+//
+//	}
+//}
 
 static LinkList *AddAdjacentyNode(short index)
 {
