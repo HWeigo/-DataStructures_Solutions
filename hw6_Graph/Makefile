@@ -5,7 +5,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = main.c file_converter.c 
+SRCS = main.c file_converter.c graph.c 
 OBJS = $(SRCS:%.c=%.o)
 
 pa6: $(OBJS)
@@ -15,7 +15,7 @@ pa6: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: pa6
-	$(VAL) ./pa5 -m examples/10K.b outputs/10K.b
+	$(VAL) ./pa6 -s examples/4_4.b  
 
 testall: testallMergeSort testallQuickSort 
 testallQuickSort: testq0 testq1 testq2 testq3 testq4 
@@ -30,10 +30,11 @@ testT2B: pa4
 	./pa4 examples/ops2.txt ops2.b
 	./pa4 examples/tree2.txt tree2.b 
 
-testq0: pa5  
-	./pa5 -q examples/15.b outputs/15_q.b
-	diff outputs/15_q.b examples/15_sa.b
+tests44: pa6   
+	./pa6 -s examples/4_4.b  
 
+tests45: pa6
+	./pa6 -s examples/4_5.b
 testq1: pa5 
 	./pa5 -q examples/1K.b outputs/1K_q.b
 	diff outputs/1K_q.b examples/1K_sa.b

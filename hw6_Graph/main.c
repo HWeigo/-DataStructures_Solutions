@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "file_converter.h"
+#include "graph.h"
 
 int main(int argc, char **argv)
 {
@@ -15,6 +16,9 @@ int main(int argc, char **argv)
 	bool isSuccess = true;
 	if(!strcmp(argv[1], "-s"))
 	{
+		LinkList **graph = NULL;
+		graph = GraphConstruct(argv[2]);
+		//Destroy(graph,16);
 	}
 
 	if(!strcmp(argv[1], "-e"))
