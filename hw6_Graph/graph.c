@@ -73,17 +73,20 @@ LinkList **GraphConstruct(char *filename)
 	
 	// find edges's adjacency
 	short index = 0; 
-	LinkList **head = NULL;
+	LinkList *head = NULL;
+	LinkList *p = NULL;
+	LinkList *tmp = NULL;
 	for(int i=0;i<m;++i)
 	{
 		for(int j=0;j<n;++j)
 		{
-			*head = graph[index];
+			head = NULL;
+			p = NULL;
 			// check if this node have left adjacent node 
 			if((index%n != 0) && (nodes[index] < nodes[index-1]))
 			{
-				head = &(AddAdjacentyNode(index-1));
-				if(head == NULL)
+				tmp = AddAdjacentyNode(index-1);
+				if(tmp == NULL)
 				{
 					fprintf(stderr, "fail to add node.");
 					free(nodes);
@@ -91,13 +94,23 @@ LinkList **GraphConstruct(char *filename)
 					DestroyGraph(graph, totalNodes);
 					return NULL;
 				}
-				*head = (*head)->next;
+				if(head == NULL)
+				{
+					head = tmp;
+					p = head;
+				}
+				else
+				{
+					p->next = tmp;
+					p = p->next;
+				}
 			}
 			// check if this node have upper adjacent node 
 			if((index >= n) && (nodes[index] < nodes[index-n]))
 			{
-				head = &(AddAdjacentyNode(index-n));
-				if(head == NULL)
+
+				tmp = AddAdjacentyNode(index-n);
+				if(tmp == NULL)
 				{
 					fprintf(stderr, "fail to add node.");
 					free(nodes);
@@ -105,13 +118,22 @@ LinkList **GraphConstruct(char *filename)
 					DestroyGraph(graph, totalNodes);
 					return NULL;
 				}
-				*head = (*head)->next;
+				if(head == NULL)
+				{
+					head = tmp;
+					p = head;
+				}
+				else
+				{
+					p->next = tmp;
+					p = p->next;
+				}
 			}		
 			// check if this node have right adjacent node 
 			if(((index+1)%n != 0) && (nodes[index] < nodes[index+1]))
 			{
-				head = &(AddAdjacentyNode(index+1));
-				if(head == NULL)
+				tmp = AddAdjacentyNode(index+1);
+				if(tmp == NULL)
 				{
 					fprintf(stderr, "fail to add node.");
 					free(nodes);
@@ -119,13 +141,22 @@ LinkList **GraphConstruct(char *filename)
 					DestroyGraph(graph, totalNodes);
 					return NULL;
 				}
-				*head = (*head)->next;
+				if(head == NULL)
+				{
+					head = tmp;
+					p = head;
+				}
+				else
+				{
+					p->next = tmp;
+					p = p->next;
+				}
 			}
 			// check if this node have lower adjacent node 
 			if((index < (totalNodes-n)) && (nodes[index] < nodes[index+n]))
 			{
-				head = &(AddAdjacentyNode(index+n));
-				if(head == NULL)
+				tmp = AddAdjacentyNode(index+n);
+				if(tmp == NULL)
 				{
 					fprintf(stderr, "fail to add node.");
 					free(nodes);
@@ -133,8 +164,18 @@ LinkList **GraphConstruct(char *filename)
 					DestroyGraph(graph, totalNodes);
 					return NULL;
 				}
-				*head = (*head)->next;
+				if(head == NULL)
+				{
+					head = tmp;
+					p = head;
+				}
+				else
+				{
+					p->next = tmp;
+					p = p->next;
+				}
 			}
+			graph[index] = head;
 			index++;
 		}
 	}
