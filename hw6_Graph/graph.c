@@ -12,7 +12,7 @@ static void PrintGraph(LinkList **graph, int totalNodes);
 static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
         short *color, int *parent, int *queue, int *queueNum);
 static void Index2Coordinate(int ind, short *row, short *col, int n);
-static int *OutputPath(char *filename, int *parent, int length, int end);
+static int *OutputPath(int *parent, int length, int end);
 
 
 bool FindSequence(char *inputFile, char *outputFile)
@@ -38,7 +38,7 @@ bool FindSequence(char *inputFile, char *outputFile)
 	
 	int *sequence = NULL;
 	int length = 0;
-	sequence = FindLongestPath(outputFile, graph, queue, totalNodes, &length);
+	sequence = FindLongestPath(graph, queue, totalNodes, &length);
 
 	FILE *fptr = NULL;
 	fptr = fopen(outputFile, "w");
@@ -305,7 +305,7 @@ static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
 	(*queueNum)++;
 }
 
-int *FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNodes, int *longestLength)
+int *FindLongestPath(LinkList **graph, int *queue, int totalNodes, int *longestLength)
 {
 	int *length = malloc(sizeof(int) * totalNodes);
 	int *parent = malloc(sizeof(int) * totalNodes);
@@ -342,7 +342,7 @@ int *FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNode
 	printf("\nlongest length: %d, index: %d\n", *longestLength, longestIndex);
 #endif 
 	int *sequence = NULL;
-	sequence = OutputPath(filename, parent, *longestLength, longestIndex);
+	sequence = OutputPath(parent, *longestLength, longestIndex);
 	
 	free(length);
 	free(parent);
@@ -385,7 +385,8 @@ static void Index2Coordinate(int ind, short *row, short *col, int n)
 	*row = (short)ind/n;
 	*col = (short)ind - (*row)*n;
 }
-static int *OutputPath(char *filename, int *parent, int length, int end)
+
+static int *OutputPath(int *parent, int length, int end)
 {
 	int *sequence = malloc(sizeof(int) * length);
 	if(sequence == NULL)

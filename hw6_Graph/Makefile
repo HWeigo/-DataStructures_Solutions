@@ -18,11 +18,11 @@ testmemorys: pa6
 	$(VAL) ./pa6 -s examples/5_5.b outputs/5_5.t outputs/5_5.s 
 
 testmemorye: pa6
-	$(VAL) ./pa6 -e examples/4_6.b examples/4_4_00.s 
+	$(VAL) ./pa6 -e examples/4_4.b examples/4_4_10.s 
 
 testall: testallMergeSort testallQuickSort 
 testalls: tests44 tests45 tests55 tests1010 
-
+testalle: teste44 teste4400 teste4410 teste4411 
 
 testB2T: pa6
 	./pa6 -c examples/4_4.b 4_4_hw.t
@@ -54,10 +54,13 @@ tests1010: pa6
 
 teste44: pa6
 	./pa6 -e examples/4_4.b examples/4_4.s
+
 teste4400: pa6
 	./pa6 -e examples/4_4.b examples/4_4_00.s
+
 teste4410: pa6
 	./pa6 -e examples/4_4.b examples/4_4_10.s
+
 teste4411: pa6
 	./pa6 -e examples/4_4.b examples/4_4_11.s
 clean: # remove all machine generated files
