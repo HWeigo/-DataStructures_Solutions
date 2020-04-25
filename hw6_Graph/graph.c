@@ -5,12 +5,42 @@
 #include <limits.h>
 #include "graph.h"
 
+#define DEBUG_HW
+
 static void PrintGraph(LinkList **graph, int totalNodes);
 static LinkList *AddAdjacentyNode(int index);
 static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
         short *color, int *parent, int *queue, int *queueNum);
+static void Index2Coordinate(int ind, int *row, int *col, int n);
+static bool OutputPath(char *filename, int *parent, int length, int end);
 
-LinkList **GraphConstruct(char *filename)
+
+bool FindSequence(char *inputFile, char *outputFile)
+{
+	LinkList **graph = NULL;
+	
+	int totalNodes = 0;
+	graph = GraphConstruct(inputFile, &totalNodes);
+	if((graph == NULL) || (totalNodes == 0))
+	{
+		fprintf(stderr, "graph construct failed.");
+		return false;
+	}
+	int *queue = TopologicalSort(graph, totalNodes);
+	printf("TopologicalSort:\n");
+	for(int i=0;i<totalNodes;++i)
+	{
+		printf("%hd ", queue[i]);
+	}
+	FindLongestPath(outputFile, graph, queue, totalNodes);
+	
+	free(queue);
+	DestroyGraph(graph, totalNodes);
+	return true;
+}
+
+
+LinkList **GraphConstruct(char *filename, int *nodesNum)
 {
 	FILE *fptr = NULL;
 	fptr = fopen(filename, "r");
@@ -183,18 +213,7 @@ LinkList **GraphConstruct(char *filename)
 	}
 	
 	PrintGraph(graph, totalNodes);
-
-	int *queue = TopologicalSort(graph, totalNodes);
-	printf("TopologicalSort:\n");
-	for(int i=0;i<totalNodes;++i)
-	{
-		printf("%hd ", queue[i]);
-	}
-	FindLongestPath(graph, queue, totalNodes);
-	free(queue);
-	
-	DestroyGraph(graph, totalNodes);
-
+	*nodesNum = totalNodes;
 
 	free(nodes);
 	fclose(fptr);
@@ -258,14 +277,14 @@ static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
 	(*queueNum)++;
 }
 
-void FindLongestPath(LinkList **graph, int *queue, int totalNodes)
+void FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNodes)
 {
 	int *length = malloc(sizeof(int) * totalNodes);
 	int *parent = malloc(sizeof(int) * totalNodes);
 	for(int i=0;i<totalNodes;++i)
 	{
 		length[i] = 1;
-		parent[i] = 0;
+		parent[i] = -1;
 	}
 
 	int longestLength = 1;
@@ -292,6 +311,9 @@ void FindLongestPath(LinkList **graph, int *queue, int totalNodes)
 		}
 	}
 	printf("\nlongest length: %d, index: %d\n", longestLength, longestIndex);
+	OutputPath(filename, parent, longestLength, longestIndex);
+	free(length);
+	free(parent);
 }
 
 static LinkList *AddAdjacentyNode(int index)
@@ -325,6 +347,49 @@ void DestroyGraph(LinkList **graph, int totalNodes)
 	free(graph);
 }
 
+static void Index2Coordinate(int ind, int *row, int *col, int n)
+{
+	*row = (int)ind/n;
+	*col = ind - (*row)*n;
+}
+static int *OutputPath(char *filename, int *parent, int length, int end,)
+{
+	FILE *fptr = NULL;
+	fptr = fopen(filename, "w");
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return false;
+	}
+
+	int *sequence = malloc(sizeof(int) * length);
+	if(sequence == NULL)
+	{
+		fprintf(stderr, "malloc failed.");
+		return false;
+	}
+
+	sequence[length-1] = end;
+	for(int i=length-2;i>=0;--i)
+	{
+		sequence[i] = parent[sequence[i+1]];
+	}
+#ifdef DEBUG_HW
+	printf("print path\n");
+#endif
+	int row = -1;
+	int col = -1;
+	for(int i=0;i<length;++i)
+	{
+#ifdef DEBUG_HW
+		printf("%d %d ", sequence[i]);
+#endif
+	}
+
+	free(sequence);
+	return true;
+}
+
 static void PrintGraph(LinkList **graph, int totalNodes)
 {
 	LinkList *head = NULL;
@@ -340,3 +405,4 @@ static void PrintGraph(LinkList **graph, int totalNodes)
 		printf("\n");
 	}
 }
+

@@ -31,7 +31,7 @@ testT2B: pa4
 	./pa4 examples/tree2.txt tree2.b 
 
 tests44: pa6   
-	./pa6 -s examples/4_4.b  
+	./pa6 -s examples/4_4.b outputs/4_4.t outputs/4_4.s 
 
 tests45: pa6
 	./pa6 -s examples/4_5.b
