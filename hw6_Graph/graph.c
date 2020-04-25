@@ -272,22 +272,23 @@ void FindLongestPath(LinkList **graph, int *queue, int totalNodes)
 	int longestIndex = 0;
 	for(int i=0;i<totalNodes;++i)
 	{
-		short index = queue[i];
-		int destLength = length[i] + 1;
+		int index = queue[i];
+		int destLength = length[index] + 1;
 		LinkList *p = graph[index];
 		while(p != NULL)
 		{
-			short destIndex = p->dest;
+			int destIndex = p->dest;
 			if(length[destIndex] < destLength)
 			{
 				length[destIndex] = destLength;
-				parent[destIndex] = i;
+				parent[destIndex] = index;
 			}
+			p = p->next;
 		}
-		if(length[i] > longestLength)
+		if(length[index] > longestLength)
 		{
-			longestLength = length[i];
-			longestIndex = i;
+			longestLength = length[index];
+			longestIndex = index;
 		}
 	}
 	printf("\nlongest length: %d, index: %d\n", longestLength, longestIndex);

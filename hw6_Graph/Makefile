@@ -35,6 +35,13 @@ tests44: pa6
 
 tests45: pa6
 	./pa6 -s examples/4_5.b
+
+tests55: pa6
+	./pa6 -s examples/5_5.b
+
+tests1010: pa6
+	./pa6 -s examples/10_10.b 
+
 testq1: pa5 
 	./pa5 -q examples/1K.b outputs/1K_q.b
 	diff outputs/1K_q.b examples/1K_sa.b
@@ -72,4 +79,4 @@ testm4: pa5
 	diff outputs/1M_m.b examples/1M_sa.b
 
 clean: # remove all machine generated files
-	rm -f pa6 *.o *.t 
+	rm -f pa6 *.o *.t memcheck.txt 
