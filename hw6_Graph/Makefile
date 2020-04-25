@@ -5,7 +5,7 @@ VAL = valgrind --tool=memcheck --log-file=memcheck.txt --leak-check=full --verbo
 
 TESTFALGS =  
 
-SRCS = main.c file_converter.c graph.c 
+SRCS = main.c file_converter.c graph.c evaluation.c 
 OBJS = $(SRCS:%.c=%.o)
 
 pa6: $(OBJS)
@@ -15,10 +15,10 @@ pa6: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: pa6
-	$(VAL) ./pa6 -s examples/4_4.b  
+	$(VAL) ./pa6 -s examples/5_5.b outputs/5_5.t outputs/5_5.s 
 
 testall: testallMergeSort testallQuickSort 
-testallQuickSort: testq0 testq1 testq2 testq3 testq4 
+testalls: tests44 tests45 tests55 tests1010 
 testallMergeSort: testm0 testm1 testm2 testm3 testm4 
 
 
@@ -32,51 +32,26 @@ testT2B: pa4
 
 tests44: pa6   
 	./pa6 -s examples/4_4.b outputs/4_4.t outputs/4_4.s 
+	diff outputs/4_4.t examples/4_4.t
+	diff outputs/4_4.s examples/4_4.s 
 
 tests45: pa6
-	./pa6 -s examples/4_5.b
+	./pa6 -s examples/4_5.b outputs/4_5.t outputs/4_5.s 
+	diff outputs/4_5.t examples/4_5.t
+	diff outputs/4_5.s examples/4_5.s
 
 tests55: pa6
-	./pa6 -s examples/5_5.b
+	./pa6 -s examples/5_5.b outputs/5_5.t outputs/5_5.s 
+	diff outputs/5_5.t examples/5_5.t
+	diff outputs/5_5.s examples/5_5.s 
 
 tests1010: pa6
-	./pa6 -s examples/10_10.b 
+	./pa6 -s examples/10_10.b outputs/10_10.t outputs/10_10.s
+	diff outputs/10_10.t examples/10_10.t
+	diff outputs/10_10.s examples/10_10.s 
 
-testq1: pa5 
-	./pa5 -q examples/1K.b outputs/1K_q.b
-	diff outputs/1K_q.b examples/1K_sa.b
-
-testq2: pa5 
-	./pa5 -q examples/10K.b outputs/10K_q.b
-	diff outputs/10K_q.b examples/10K_sa.b
-
-testq3: pa5 
-	./pa5 -q examples/100K.b outputs/100K_q.b
-	diff outputs/100K_q.b examples/100K_sa.b
-
-testq4: pa5 
-	./pa5 -q examples/1M.b outputs/1M_q.b
-	diff outputs/1M_q.b examples/1M_sa.b
-
-testm0: pa5  
-	./pa5 -m examples/15.b outputs/15_m.b
-	diff outputs/15_m.b examples/15_sa.b
-
-testm1: pa5 
-	./pa5 -m examples/1K.b outputs/1K_m.b
-	diff outputs/1K_m.b examples/1K_sa.b
-
-testm2: pa5 
-	./pa5 -m examples/10K.b outputs/10K_m.b
-	diff outputs/10K_m.b examples/10K_sa.b
-
-testm3: pa5 
-	./pa5 -m examples/100K.b outputs/100K_m.b
-	diff outputs/100K_m.b examples/100K_sa.b
-
-testm4: pa5 
-	./pa5 -m examples/1M.b outputs/1M_m.b
-	diff outputs/1M_m.b examples/1M_sa.b
+teste44: pa6
+	./pa6 -e examples/4_4.b examples/4_4.s
 
 clean: # remove all machine generated files
-	rm -f pa6 *.o *.t memcheck.txt 
+	rm -f pa6 *.o *.t memcheck.txt outputs/*.t outputs/*.s 

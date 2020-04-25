@@ -16,15 +16,21 @@ int main(int argc, char **argv)
 	bool isSuccess = true;
 	if(!strcmp(argv[1], "-s"))
 	{
-		//LinkList **graph = NULL;
-		//graph = GraphConstruct(argv[2]);
-		//Destroy(graph,16);
 		isSuccess = Binary2Txt(argv[2], argv[3]);
+		if(!isSuccess)
+		{
+			return EXIT_FAILURE;
+		}
 		isSuccess = FindSequence(argv[2], argv[4]);
+		if(!isSuccess)
+		{
+			return EXIT_FAILURE;
+		}
 	}
 
 	if(!strcmp(argv[1], "-e"))
 	{
+		isSuccess = Evaluation(argv[2], argv[3]);
 	}
 	
 	if(!strcmp(argv[1], "-c"))

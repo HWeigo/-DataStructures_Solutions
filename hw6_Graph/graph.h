@@ -7,10 +7,10 @@ typedef struct _LinkList{
 	struct _LinkList *next;
 }LinkList;
 
-LinkList **GraphConstruct(char *filename, int *nodesNum);
+LinkList **GraphConstruct(char *filename, int *nodesNum, int *mapn);
 void DestroyGraph(LinkList **graph, int totalNodes);
 int *TopologicalSort(LinkList **graph, int totalNodes);
-void FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNodes);
+int *FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNodes, int *longestLength);
 bool FindSequence(char *inputFile, char *outputFile);
 
 #endif 
