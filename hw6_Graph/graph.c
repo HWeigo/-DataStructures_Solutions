@@ -6,9 +6,9 @@
 #include "graph.h"
 
 static void PrintGraph(LinkList **graph, int totalNodes);
-static LinkList *AddAdjacentyNode(short index);
-static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
-        short *color, short *parent, short *queue, int *queueNum);
+static LinkList *AddAdjacentyNode(int index);
+static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
+        short *color, int *parent, int *queue, int *queueNum);
 
 LinkList **GraphConstruct(char *filename)
 {
@@ -74,7 +74,7 @@ LinkList **GraphConstruct(char *filename)
 	//graph[2] = AddAdjacentyNode(1);
 	
 	// find edges's adjacency
-	short index = 0; 
+	int index = 0; 
 	LinkList *head = NULL;
 	LinkList *p = NULL;
 	LinkList *tmp = NULL;
@@ -184,12 +184,13 @@ LinkList **GraphConstruct(char *filename)
 	
 	PrintGraph(graph, totalNodes);
 
-	short *queue = TopologicalSort(graph, totalNodes);
+	int *queue = TopologicalSort(graph, totalNodes);
 	printf("TopologicalSort:\n");
 	for(int i=0;i<totalNodes;++i)
 	{
 		printf("%hd ", queue[i]);
 	}
+	FindLongestPath(graph, queue, totalNodes);
 	free(queue);
 	
 	DestroyGraph(graph, totalNodes);
@@ -198,16 +199,15 @@ LinkList **GraphConstruct(char *filename)
 	free(nodes);
 	fclose(fptr);
 	return graph;
-
 }
 
 // queue stores the index in queue, while index might > SHRT_MAX, thus needs to change form queue to int 
 enum Color{BLACK, GRAY, WHITE};
-short *TopologicalSort(LinkList **graph, int totalNodes)
+int *TopologicalSort(LinkList **graph, int totalNodes)
 {
 	short *color = malloc(sizeof(short) * totalNodes);
-	short *parent = malloc(sizeof(short) * totalNodes);
-	short *queue = malloc(sizeof(short) * totalNodes);
+	int *parent = malloc(sizeof(int) * totalNodes);
+	int *queue = malloc(sizeof(int) * totalNodes);
 	if((color == NULL) || (parent == NULL) || (queue == NULL))
 	{
 		free(color);
@@ -236,15 +236,15 @@ short *TopologicalSort(LinkList **graph, int totalNodes)
 	return queue;
 }
 
-static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
-		short *color, short *parent, short *queue, int *queueNum)
+static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
+		short *color, int *parent, int *queue, int *queueNum)
 {
 	color[index] = GRAY;
 	LinkList *p = NULL;
 	p = graph[index];
 	while(p != NULL)
 	{
-		short destIndex = p->dest;
+		int destIndex = p->dest;
 		if(color[destIndex] == WHITE)
 		{
 			parent[destIndex] = index;
@@ -258,33 +258,42 @@ static void TopoSortHelper(LinkList **graph, short index, int totalNodes, \
 	(*queueNum)++;
 }
 
-//void FindLongestPath(LinkList **graph, short *queue, int totalNodes)
-//{
-//	int *length = malloc(sizeof(int) * totalNodes);
-//	int *parent = malloc(sizeof(int) * totalNodes);
-//	for(int i=0;i<totalNodes;++i)
-//	{
-//		length[i] = 0;
-//		parent[i] = ;
-//	}
-//	for(int i=0;i<totalNodes;++i)
-//	{
-//		short index = queue[i];
-//		int destLength = length[i] + 1;
-//		LinkList *p = graph[index];
-//		while(p != NULL)
-//		{
-//			short destIndex = p->dest;
-//			if(length[destIndex] < destLength)
-//			{
-//				
-//			}
-//		}
-//
-//	}
-//}
+void FindLongestPath(LinkList **graph, int *queue, int totalNodes)
+{
+	int *length = malloc(sizeof(int) * totalNodes);
+	int *parent = malloc(sizeof(int) * totalNodes);
+	for(int i=0;i<totalNodes;++i)
+	{
+		length[i] = 1;
+		parent[i] = 0;
+	}
 
-static LinkList *AddAdjacentyNode(short index)
+	int longestLength = 1;
+	int longestIndex = 0;
+	for(int i=0;i<totalNodes;++i)
+	{
+		short index = queue[i];
+		int destLength = length[i] + 1;
+		LinkList *p = graph[index];
+		while(p != NULL)
+		{
+			short destIndex = p->dest;
+			if(length[destIndex] < destLength)
+			{
+				length[destIndex] = destLength;
+				parent[destIndex] = i;
+			}
+		}
+		if(length[i] > longestLength)
+		{
+			longestLength = length[i];
+			longestIndex = i;
+		}
+	}
+	printf("\nlongest length: %d, index: %d\n", longestLength, longestIndex);
+}
+
+static LinkList *AddAdjacentyNode(int index)
 {
 	LinkList *node = NULL;
 	node = malloc(sizeof(LinkList));
@@ -324,7 +333,7 @@ static void PrintGraph(LinkList **graph, int totalNodes)
 		head = graph[i];
 		while(head != NULL)
 		{
-			printf("%hd ", head->dest);
+			printf("%d ", head->dest);
 			head = head->next;
 		}
 		printf("\n");

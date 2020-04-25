@@ -72,4 +72,4 @@ testm4: pa5
 	diff outputs/1M_m.b examples/1M_sa.b
 
 clean: # remove all machine generated files
-	rm -f pa6 *.t 
+	rm -f pa6 *.o *.t 
