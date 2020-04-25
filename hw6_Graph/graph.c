@@ -8,7 +8,6 @@
 //#define DEBUG_HW
 
 static void PrintGraph(LinkList **graph, int totalNodes);
-static LinkList *AddAdjacentyNode(int index);
 static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
         short *color, int *parent, int *queue, int *queueNum);
 static void Index2Coordinate(int ind, short *row, short *col, int n);
@@ -349,7 +348,7 @@ int *FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNode
 	return sequence;
 }
 
-static LinkList *AddAdjacentyNode(int index)
+LinkList *AddAdjacentyNode(int index)
 {
 	LinkList *node = NULL;
 	node = malloc(sizeof(LinkList));

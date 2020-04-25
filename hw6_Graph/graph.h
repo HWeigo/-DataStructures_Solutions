@@ -12,5 +12,6 @@ void DestroyGraph(LinkList **graph, int totalNodes);
 int *TopologicalSort(LinkList **graph, int totalNodes);
 int *FindLongestPath(char *filename, LinkList **graph, int *queue, int totalNodes, int *longestLength);
 bool FindSequence(char *inputFile, char *outputFile);
+LinkList *AddAdjacentyNode(int index);
 
 #endif 

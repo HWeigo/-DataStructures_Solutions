@@ -52,6 +52,11 @@ tests1010: pa6
 
 teste44: pa6
 	./pa6 -e examples/4_4.b examples/4_4.s
-
+teste4400: pa6
+	./pa6 -e examples/4_4.b examples/4_4_00.s
+teste4410: pa6
+	./pa6 -e examples/4_4.b examples/4_4_10.s
+teste4411: pa6
+	./pa6 -e examples/4_4.b examples/4_4_11.s
 clean: # remove all machine generated files
 	rm -f pa6 *.o *.t memcheck.txt outputs/*.t outputs/*.s 
