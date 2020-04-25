@@ -14,12 +14,14 @@ pa6: $(OBJS)
 .c.o:
 	$(GCC) $(TESTFALGS) -c $*.c
 
-testmemory: pa6
+testmemorys: pa6
 	$(VAL) ./pa6 -s examples/5_5.b outputs/5_5.t outputs/5_5.s 
+
+testmemorye: pa6
+	$(VAL) ./pa6 -e examples/4_6.b examples/4_4_00.s 
 
 testall: testallMergeSort testallQuickSort 
 testalls: tests44 tests45 tests55 tests1010 
-testallMergeSort: testm0 testm1 testm2 testm3 testm4 
 
 
 testB2T: pa6

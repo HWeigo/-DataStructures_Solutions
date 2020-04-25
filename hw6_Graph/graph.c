@@ -6,8 +6,9 @@
 #include "graph.h"
 
 //#define DEBUG_HW
-
+#ifdef DEBUG_HW 
 static void PrintGraph(LinkList **graph, int totalNodes);
+#endif 
 static void TopoSortHelper(LinkList **graph, int index, int totalNodes, \
         short *color, int *parent, int *queue, int *queueNum);
 static void Index2Coordinate(int ind, short *row, short *col, int n);
@@ -409,6 +410,7 @@ static int *OutputPath(char *filename, int *parent, int length, int end)
 	return sequence;
 }
 
+#ifdef DEBUG_HW 
 static void PrintGraph(LinkList **graph, int totalNodes)
 {
 	LinkList *head = NULL;
@@ -424,4 +426,4 @@ static void PrintGraph(LinkList **graph, int totalNodes)
 		printf("\n");
 	}
 }
-
+#endif 

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "file_converter.h"
 #include "graph.h"
+#include "evaluation.h"
 
 int main(int argc, char **argv)
 {

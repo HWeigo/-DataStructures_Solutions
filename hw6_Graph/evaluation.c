@@ -5,8 +5,12 @@
 #include <limits.h>
 #include "graph.h"
 
+//#define CHECK_LONGEST
+
+#ifdef CHECK_LONGEST
 static LinkList **GraphConstructForEvaluate(short *nodes, short m, short n);
 static int FindLongestPathForEvaluate(LinkList **graph, int *queue, int totalNodes);
+#endif 
 
 bool Evaluation(char *inputFile, char *outputFile)
 {
@@ -30,15 +34,21 @@ bool Evaluation(char *inputFile, char *outputFile)
 	if((isBinaryValid == -1) || (isSequenceValid == -1))
 	{
 		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
-		fclose(inFptr);
-		fclose(outFptr);
+		if(isBinaryValid == 0)
+		{
+			fclose(inFptr);
+		}
+		if(isSequenceValid==0)
+		{
+			fclose(outFptr);
+		}
 		return false;
 	}
 	
 	// Check whether binary file is valid 
 	isBinaryValid = 1;
 	size_t numGet = 0;
-    short m;
+    short m=0;
     numGet = fread(&m, sizeof(short), 1, inFptr);
     if((numGet != 1) || (m <= 0) || (m>SHRT_MAX))
     {
@@ -48,7 +58,7 @@ bool Evaluation(char *inputFile, char *outputFile)
 		fclose(outFptr);
         return false;
 	}   
-    short n;
+    short n=0;
     numGet = fread(&n, sizeof(short), 1, inFptr);
     if((numGet != 1) || (n <= 0) || (n>SHRT_MAX))
     {   
@@ -66,10 +76,10 @@ bool Evaluation(char *inputFile, char *outputFile)
     if(nodes == NULL)
     { 
 		isBinaryValid = 0;
-		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
-        fclose(inFptr);
-		fclose(outFptr);
-        return false;
+//		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
+//        fclose(inFptr);
+//		fclose(outFptr);
+//        return false;
     }   
     short value;
     for(int i=0;i<totalNodes;++i)
@@ -78,12 +88,11 @@ bool Evaluation(char *inputFile, char *outputFile)
         if((numGet != 1) || (value<SHRT_MIN) || (value>SHRT_MAX))
         {
 			isBinaryValid = 0;
-			printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,\
-					isIncreasing,isMaximal);
-			fclose(inFptr);
-			fclose(outFptr);
-            free(nodes);
-            return NULL;
+//			printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
+//			fclose(inFptr);
+//			fclose(outFptr);
+//            free(nodes);
+//            return NULL;
         }
         nodes[i] = value;
 #ifdef DEBUG_HW 
@@ -98,16 +107,15 @@ bool Evaluation(char *inputFile, char *outputFile)
     if(numGet != 1) 
     {   
 		isSequenceValid = 0;
-   		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
-        free(nodes);
-		fclose(inFptr);
-		fclose(outFptr);
-        return false;
+//   		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
+//        free(nodes);
+//		fclose(inFptr);
+//		fclose(outFptr);
+//        return false;
 	}
 	int *sequence = malloc(sizeof(int) * sequenceLength);
     if(sequence == NULL) 
     {   
-		isSequenceValid = 0;
    		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
         free(nodes);
 		fclose(inFptr);
@@ -122,23 +130,32 @@ bool Evaluation(char *inputFile, char *outputFile)
 	    if(numGet != 1)
 	    {   
 			isSequenceValid = 0;
-			free(nodes);
-			free(sequence);
-	        fclose(inFptr);
-			fclose(outFptr);
-	        return false;
+//			free(nodes);
+//			free(sequence);
+//	        fclose(inFptr);
+//			fclose(outFptr);
+//	        return false;
 		}
 		numGet = fread(&col, sizeof(short),1, outFptr);
 	    if(numGet != 1)
 	    {   
 			isSequenceValid = 0;
-			free(nodes);
-			free(sequence);
-	        fclose(inFptr);
-			fclose(outFptr);
-	        return false;
+//			free(nodes);
+//			free(sequence);
+//	        fclose(inFptr);
+//			fclose(outFptr);
+//	        return false;
 		}
 		sequence[i] = (int) row*n+col;
+	}
+	if((!isSequenceValid) || (!isBinaryValid))
+	{
+   		printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
+        free(nodes);
+		free(sequence);
+		fclose(inFptr);
+		fclose(outFptr);
+		return false;
 	}
 
 	// Check whether sequence is increasing
@@ -157,7 +174,6 @@ bool Evaluation(char *inputFile, char *outputFile)
 	{
 		index = sequence[i];	
 		int parentIndex = sequence[i-1];
-		printf("%d ", index);
 		int isAdjacent = 0;
 		int gap = parentIndex - index;
 		if((gap==1)||(gap==-1)||(gap==n)||(gap==-n)) 
@@ -176,8 +192,28 @@ bool Evaluation(char *inputFile, char *outputFile)
 		prevValue=nodes[index];
 	}
 	isIncreasing = 1;
+
+	// Check whether it's a maximal sequence 
+	isMaximal = 1;
+	int startInd = sequence[0];
+	if(((startInd%n != 0) && (nodes[startInd] > nodes[startInd-1])) || \
+			((startInd >= n) && (nodes[startInd] > nodes[startInd-n])) || \
+			(((startInd+1)%n != 0) && (nodes[startInd] > nodes[startInd+1])) || \
+			((startInd < (totalNodes-n)) && (nodes[startInd] > nodes[startInd+n])))
+	{
+		isMaximal = 0;
+	}
 	
-	// Check whether it's longest path
+	int endInd = sequence[sequenceLength-1];
+	if(((endInd%n != 0) && (nodes[endInd] < nodes[endInd-1])) || \
+			((endInd >= n) && (nodes[endInd] < nodes[endInd-n])) || \
+			(((endInd+1)%n != 0) && (nodes[endInd] < nodes[endInd+1])) || \
+			((endInd < (totalNodes-n)) && (nodes[endInd] < nodes[endInd+n])))
+	{
+		isMaximal = 0;
+	}
+#ifdef CHECK_LONGEST 
+	// Check whether it's the longest path
 	LinkList **graph = NULL;
 	graph = GraphConstructForEvaluate(nodes, m, n);
 	if(graph == NULL)
@@ -196,11 +232,11 @@ bool Evaluation(char *inputFile, char *outputFile)
 	{
 		isMaximal = 1;
 	}
-	
-	printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
-	
 	DestroyGraph(graph, totalNodes);
 	free(queue);
+#endif 
+	printf("%d,%d,%d,%d\n",isBinaryValid,isSequenceValid,isIncreasing,isMaximal);
+	
 	free(nodes);
 	free(sequence);
 	fclose(inFptr);
@@ -208,6 +244,7 @@ bool Evaluation(char *inputFile, char *outputFile)
 	return true;
 }
 
+#ifdef CHECK_LONGEST 
 static LinkList **GraphConstructForEvaluate(short *nodes, short m, short n)
 {
     // Initial Graph 
@@ -323,9 +360,6 @@ static LinkList **GraphConstructForEvaluate(short *nodes, short m, short n)
 			index++;
 		}
 	}
-#ifdef DEBUG_HW 
-	//PrintGraph(graph, totalNodes);
-#endif 
 	return graph;
 }
 
@@ -361,3 +395,4 @@ static int FindLongestPathForEvaluate(LinkList **graph, int *queue, int totalNod
 	free(length);
 	return longestLength;
 }
+#endif 
