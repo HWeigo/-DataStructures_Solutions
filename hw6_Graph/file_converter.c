@@ -76,4 +76,49 @@ bool Binary2Txt(char *inputFile, char *outputFile)
 	return true;
 }
 
+void SequenceConstruct(char *filename)
+{
+	FILE *fptr = fopen(filename, "w");
+	if(fptr == NULL)
+	{
+		return;
+	}
+	int length = 5;
+	fwrite(&length, sizeof(int), 1, fptr);
+	short *sequence = malloc(sizeof(short) * (length-1));
+	for(int i=0;i<(length*2);++i)
+	{
+		sequence[i] = 0;
+	}
+	for(int i=0;i<(length*2);++i)
+	{
+		fwrite(&sequence[i], sizeof(short), 1, fptr);
+	}
+	free(sequence);
+	fclose(fptr);
+}
 
+void TableConstruct(char *filename)
+{
+	FILE *fptr = fopen(filename, "w");
+	if(fptr == NULL)
+	{
+		return;
+	}
+	short m = 2;
+	short n = 5;
+	fwrite(&m, sizeof(short), 1, fptr);
+	fwrite(&n, sizeof(short), 1, fptr);
+	short *table = malloc(sizeof(short) * m*n);
+	for(int i=0;i<(m*n);++i)
+	{
+		table[i] = i;
+	}
+	table[5] = 0;
+	for(int i=0;i<(m*n);++i)
+	{
+		fwrite(&table[i], sizeof(short), 1, fptr);
+	}
+	free(table);
+	fclose(fptr);
+}

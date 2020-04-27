@@ -32,15 +32,18 @@ int main(int argc, char **argv)
 	if(!strcmp(argv[1], "-e"))
 	{
 		isSuccess = Evaluation(argv[2], argv[3]);
+		if(!isSuccess)
+		{
+			return EXIT_FAILURE;
+		}
 	}
 	
-	if(!strcmp(argv[1], "-c"))
-	{
-		isSuccess = Binary2Txt(argv[2],argv[3]);	
-	}
-	if(!isSuccess)
-	{
-		return EXIT_FAILURE;
-	}
+//	if(!strcmp(argv[1], "-c"))
+//	{
+//		//isSuccess = Binary2Txt(argv[2],argv[3]);	
+//		TableConstruct(argv[2]);
+//		SequenceConstruct(argv[3]);
+//	}
+
 	return EXIT_SUCCESS;
 }

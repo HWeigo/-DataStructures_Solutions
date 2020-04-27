@@ -3,4 +3,7 @@
 
 
 bool Binary2Txt(char *inputFile, char *outputFile);
+void TableConstruct(char *filename);
+void SequenceConstruct(char *filename);
+
 #endif 
